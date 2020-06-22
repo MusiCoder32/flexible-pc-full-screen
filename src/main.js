@@ -2,11 +2,11 @@ import Vue from 'vue'
 import App from './App.vue'
 import '@/assets/main.scss'
 import ECharts from 'vue-echarts'
-import chinaMap from '@/assets/china.json'
+import sichuanMap from '@/assets/sichuan.json'
 
 Vue.config.productionTip = false
 
-ECharts.registerMap('china', chinaMap)
+ECharts.registerMap('sichuan', sichuanMap)
 Vue.component('chart', ECharts)
 
 new Vue({

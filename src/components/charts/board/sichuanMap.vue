@@ -3,6 +3,7 @@
 </template>
 
 <script>
+
 let geoCoordMap = {
     '成都市':[104.0815300000,30.6558230000],
     '绵阳市':[104.6855600000,31.4736630000],
@@ -48,7 +49,6 @@ let data = [
     {name: '巴中市', value: 290},
     {name: '眉山市', value: 290},
 ];
-
 function convertData(data) {
   let res = []
   for (let i = 0; i < data.length; i++) {
@@ -70,7 +70,7 @@ export default {
           trigger: 'item'
         },
         geo: {
-          map: 'sichuan',
+          map: 'map',
           label: {
             emphasis: {
               show: false
