@@ -16,7 +16,9 @@ export default {
             originRx: 40,
             originRy: 18,
             originRh: 4,
+            originStdDeviation: 3,
             originInnerRadius: 0.4,
+            stdDeviation: 3,
             width: 193,
             height: 165,
             rx: 40,
@@ -31,11 +33,20 @@ export default {
             ],
             animationInterval: null,
             svg: {},
-            id: 'mapPoint'
+            feGaussianBlur: {},
+            shadow: {},
+            id: 'mapPoint',
+            sizeRatio:0,
         }
     },
     mounted () {
         _this = this
+
+        let docEle = document.documentElement
+        let screenRatioByDesign = 16 / 9;
+        let screenRatio = docEle.clientWidth / docEle.clientHeight;
+        this.sizeRatio = docEle.clientWidth / 1920 * (screenRatio > screenRatioByDesign ? (screenRatioByDesign / screenRatio) : 1)
+
         this.computedSize()
         this.pieCircleDraw(this.id, this.salesData, this.width, this.height, this.rx, this.ry, this.h, this.innerRadius, false)
         window.addEventListener('resize', _this.onResize)
@@ -49,18 +60,21 @@ export default {
             this.computedSize()
             this.svg.attr('width', this.width).attr('height', this.height)
             this.pieDraw(this.svg)
+            d3.select("#g_animation" + this.id).attr("transform", "translate(" + _this.width / 2 + "," + _this.height / 2 + ")")
+            this.feGaussianBlur
+                .attr("stdDeviation", this.stdDeviation);
+            this.shadow.attr('rx', this.rx + 2*this.sizeRatio)
+                .attr('ry', this.ry + 3*this.sizeRatio)
         },
         computedSize () {
-            let docEle = document.documentElement
-            let screenRatioByDesign = 16 / 9;
-            let screenRatio = docEle.clientWidth / docEle.clientHeight;
-            let sizeRatio = docEle.clientWidth / 1920 * (screenRatio > screenRatioByDesign ? (screenRatioByDesign / screenRatio) : 1)
+            let sizeRatio = this.sizeRatio
             this.width = sizeRatio * this.originWidth
             this.height = sizeRatio * this.originHeight
+            this.h = sizeRatio * this.originRh
             this.rx = sizeRatio * this.originRx
             this.ry = sizeRatio * this.originRy
+            this.stdDeviation = sizeRatio * this.originStdDeviation
             this.innerRadius = sizeRatio * this.originInnerRadius
-
         },
         animationCircle (svg) {
             let animationColor = '#007BFF'
@@ -83,14 +97,13 @@ export default {
                 i = i % 101
             }, 100)
 
-            animation.append('ellipse')
+            this.shadow = animation.append('ellipse')
                 .attr('cx', 0)
                 .attr('cy', 3)
                 .attr('rx', this.rx + 2)
                 .attr('ry', this.ry + 3)
                 .style("fill", '#082155')
                 .attr('filter', 'url(#pieShadow)')
-            // .style("fill", '#00B9FF')
         },
         pieDraw (svg) {
             let _data = d3.pie().sort(null).value(function (d) {
@@ -101,7 +114,8 @@ export default {
             let ry = this.ry;
             let h = this.h;
             let ir = this.innerRadius;
-            svg.select(`g_pie${id}`) && (svg.select(`g_pie${id}`).remove())
+            console.log(d3.select(`#g_pie${id}`))
+            d3.select(`#g_pie${id}`) && (d3.select(`#g_pie${id}`).remove())
             let slices = svg.append("g").attr("id", "g_pie" + id).attr("transform", "translate(" + this.width / 2 + "," + this.height / 2 + ")")
                 .attr("class", "slices");
             slices.selectAll().data(_data).enter().append('g').attr("id", function (d, i) {
@@ -134,9 +148,9 @@ export default {
                     })
             })
         },
-        pieCircleDraw (id, data, cw , ch) {
+        pieCircleDraw (id, data, cw, ch) {
 
-            let x , y;
+            let x, y;
             x = cw / 2;
             y = ch / 2;
             let svg = d3.select("#" + id).append('svg')
@@ -149,8 +163,8 @@ export default {
                 .attr("id", "pieShadow")
                 .attr("width", "200%")
                 .attr("height", "200%")
-
-            filter.append("feGaussianBlur")
+            this.feGaussianBlur = filter.append("feGaussianBlur")
+            this.feGaussianBlur
                 .attr("in", "SourceGraphic")
                 .attr("result", "blurOut")
                 .attr("stdDeviation", "3");
@@ -242,11 +256,6 @@ export default {
             return ret.join(" ");
         },
 
-        getPercent (d) {
-            return (d.endAngle - d.startAngle > 0.2 ?
-                Math.round(1000 * (d.endAngle - d.startAngle) / (Math.PI * 2)) / 10 + '%' : '');
-        },
-
         mouseover (id, current) {
             let selectString = `g[id^=${id}_pie_group_]`
             let gArray = d3.selectAll(selectString)._groups[0]
@@ -271,7 +280,7 @@ export default {
                         if (res > 4) {
                             res = res - 4
                         }
-                        return h * res + 3
+                        return 1.5 * h * res
                     }
                 )
                 .attr('rx', (d, i) => {
