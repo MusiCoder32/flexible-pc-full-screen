@@ -39,7 +39,7 @@ export default {
     .slider {
         position: absolute;
         top: 27px;
-        left: 0;
+        left: -16px;
         height: 675px;
         width: 204px;
         > img {
