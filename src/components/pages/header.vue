@@ -1,41 +1,43 @@
 <template>
-    <div class="header">
-        <div class="logo">
-            <img src="../../assets/img/logo.png"/>
-        </div>
-        <div class="" @click="handleFullScreen">
-            <a src='http://baidu.com' class="font-size-medium">
-                <i class="el-icon-rank"></i>金属非金属矿山安全生产风险智能监测系统
-            </a>
-        </div>
-        <div class="" @click="handleFullScreen">
-            <a src='http://baidu.com' class="font-size-medium">
-                <i class="el-icon-rank"></i>化工园区危险化学品应急监控及事故预警
-            </a>
-        </div>
-        <div class="" @click="handleFullScreen">
-            <a src='http://baidu.com'>
-                <i class="el-icon-rank"></i>
-            </a>
-        </div>
-        <div class="">
-            <div class="btn-fullscreen" @click="handleFullScreen">
-
-                <i class="el-icon-rank"></i>2020年06月16日 星期二
-
+    <div class="vBox vh_content_start">
+        <div class="header font-size-medium">
+            <div class="logo">
+                <img class="margin8" src="../../assets/img/logo.png"/>
             </div>
-            <div class="btn-fullscreen" @click="handleFullScreen">
-                <i class="el-icon-rank"></i>22:50:40
+            <div class="">
+                <a src='http://baidu.com' class=" hBox vh_items_center header-not-coal-icon">
+                    <img class="margin8" src="../../assets/img/web1x_非煤logo_img.png"/>
+                    金属非金属矿山安全生产风险智能监测系统
+                </a>
             </div>
-            <div class="header-user-con">
+            <div class="">
+                <a src='http://baidu.com' class=" hBox vh_items_center header-chemical-icon">
+                    <img class="margin8" src="../../assets/img/web1x_化工logo_img.png"/>
+                    化工园区危险化学品应急监控及事故预警
+                </a>
+            </div>
+            <div class="hBox vh_content_between vh_items_center header-left">
+                <div class="hBox vh_items_center header-left-date">
+                    <img class="margin8" src="../../assets/img/web1x_日期icon_img.png"/>
+                    2020年06月16日 星期二
+                </div>
+                <div class="hBox vh_items_center header-left-time">
+                    <img class="margin8" src="../../assets/img/web1x_时间icon_img.png" height="20" width="20"/>
+                    22:50:40
+                </div>
                 <!-- 全屏显示 -->
-                <div class="btn-fullscreen" @click="handleFullScreen">
+                <div class="header-left-full-screen" @click="handleFullScreen">
                     <el-tooltip effect="dark" :content="fullscreen?`取消全屏`:`全屏`" placement="bottom">
-                        <i class="el-icon-rank"></i>
+                        <img v-if="fullscreen" src="../../assets/img/web1x_退出全屏icon_img.png"/>
+                        <img v-if="!fullscreen" src="../../assets/img/web1x_全屏展示icon_img.png"/>
                     </el-tooltip>
                 </div>
-            </div>
 
+            </div>
+        </div>
+        <div class="hBox vh_content_between header-border">
+            <div></div>
+            <div></div>
         </div>
     </div>
 </template>
@@ -89,22 +91,72 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+    .header-border {
+        div:first-child {
+            width:313px;
+            border-top:18px solid #005eff;
+            border-right:36px solid transparent;
+        }
+        div:last-child {
+            width:100px;
+            border-top:18px solid #005eff;
+            border-left:36px solid transparent;
+        }
+    }
     .header {
         box-sizing: border-box;
-        width: 100%;
-        height: 78px;
+        height: 60px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        font-size: 14px;
-        color: #999;
+        color: white;
         background-image: linear-gradient(180deg, #007BFF, #005EFF);
+
+        .margin8 {
+            margin-right: 8px;
+        }
+
+        .header-left {
+            width: 465px;
+            margin-right: 39px;
+            .header-left-date {
+                img {
+                    height: 21px;
+                    width: 20px;
+                }
+            }
+            .header-left-time {
+                img {
+                    height: 20px;
+                    width: 20px;
+                }
+            }
+            .header-left-full-screen {
+                img {
+                    height: 18px;
+                    width: 18px;
+                }
+            }
+        }
 
         .logo {
             margin-left: 26px;
             img {
                 height: 42px;
                 width: 229px;
+            }
+        }
+        .header-not-coal-icon {
+            img {
+                height: 22px;
+                width: 24px;
+                margin-right: 8px;
+            }
+        }
+        .header-chemical-icon {
+            img {
+                height: 24px;
+                width: 15px;
             }
         }
 

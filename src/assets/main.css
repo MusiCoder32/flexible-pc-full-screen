@@ -1,0 +1,99 @@
+@font-face {
+    font-family: 'BebasNeue';
+    src: url('./font/BebasNeue-Regular.eot'),url('./font/BebasNeue-Regular.otf'),url('./font/BebasNeue-Regular.ttf'),url('./font/BebasNeue-Regular.woff'),url('./font/BebasNeue-Regular.woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    background: url(./img/web1x_火狐截图_2020-06-17T01-53-22.918Z.png) no-repeat fixed center;
+    background-size: cover;
+    font-family: PingFangSC, PingFangSC-Regular;
+    color:white;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+.content {
+    width: 100%;
+    height: 100%;
+}
+.font-size-x1 {
+    font-size: 22px;
+}
+
+.font-size-x {
+    font-size: 20px;
+}
+
+.font-size-large {
+    font-size: 18px;
+}
+
+.font-size-medium {
+    font-size: 16px;
+}
+
+.font-size-base {
+    font-size: 14px;
+}
+
+.echarts {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.vBox {
+    display: flex;
+    flex-direction: column;
+}
+
+.hBox {
+    display: flex;
+}
+
+.vh-grow {
+    flex-grow: 1;
+}
+
+.vh_content_center {
+    justify-content: center;
+}
+
+.vh_content_between {
+    justify-content: space-between;
+}
+
+.vh_content_around {
+    justify-content: space-around;
+}
+
+.vh_content_start {
+    justify-content: flex-start;
+}
+
+.vh_content_end {
+    justify-content: flex-end;
+}
+
+.vh_items_center {
+    align-items: center;
+}
+
+.vh_items_start {
+    align-items: flex-start;
+}
+
+.vh_items_end {
+    align-items: flex-end;
+}
+

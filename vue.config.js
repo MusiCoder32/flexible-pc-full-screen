@@ -1,14 +1,56 @@
 const HtmlWebpackInlinePlugin = require('html-webpack-inline-plugin');
 
 module.exports = {
-  lintOnSave: false,
-  outputDir: 'docs',
-  baseUrl: 'flexible-pc-full-screen',
-  configureWebpack: {
-    plugins: [
-      new HtmlWebpackInlinePlugin({
-        compress: false
-      })
-    ]
-  },
+    publicPath: '8000',
 }
+const moment = require('moment');
+process.env.VUE_APP_TIME = moment().format('YYYY.MM.DD hh:mm:ss a');
+
+module.exports = {
+    publicPath: './', // 默认值为'./'
+    // publicPath: './init-manager', // 默认值为'./'
+    assetsDir: 'assets',
+    lintOnSave: false,
+    productionSourceMap: false,
+    devServer: {
+        port: 8000,
+        before(app) {
+            // app.get("/api/test", (req, res) => {
+            //     console.log(req.route.path);
+            //     var data = mock('/aip/index')
+            //     console.log(data)
+            //     res.json(data);
+            // });
+        },
+        proxy: {
+            '/web': {
+                // target:'http://192.168.9.236/',
+                // target: 'http://192.168.9.122/',
+                // target: 'http://192.168.9.219/',
+                target:'http://192.168.9.108/',
+                // target: 'http://192.168.9.249/',
+                changeOrigin: true
+            }
+        }
+    },
+    configureWebpack: {
+        plugins: [
+            new HtmlWebpackInlinePlugin({
+                compress: false
+            })
+        ]
+    },
+    chainWebpack: config => {
+        config.plugin('html')
+            .tap(args => {
+                if (process.env.NODE_ENV === 'production') {
+                    args[0].minify.removeComments = false;
+                }
+                return args;
+            });
+    }
+};
+//导出webpack配置
+//npx vue-cli-service inspect > output.js
+
+

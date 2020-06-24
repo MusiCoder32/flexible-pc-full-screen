@@ -12,7 +12,7 @@ export default new Router({
             children: [
                 {
                     path: 'first',
-                    component: () => import('../pages/first-map.vue'),
+                    component: () => import('../pages/first-map/index.vue'),
                     meta: { title: '一张图' }
                 }
             ]

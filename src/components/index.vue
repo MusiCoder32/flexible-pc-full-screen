@@ -1,7 +1,9 @@
 <template>
     <div class='dashboard'>
         <v-header></v-header>
-        <router-view></router-view>
+        <div class="child-content hBox vh_content_center vh_items_center">
+            <router-view></router-view>
+        </div>
     </div>
 </template>
 
@@ -72,10 +74,14 @@ export default {
 
 <style lang="scss" scoped>
     .dashboard {
-
         width: 100%;
         height: 100%;
+        background: rgba(0,0,0,0.4);
+    }
 
+    .child-content {
+        width: 100%;
+        height: calc(100% - 78px);
     }
 
 

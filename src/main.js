@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-import '@/assets/main.scss'
+import '@/assets/main.css'
 import ECharts from 'vue-echarts'
 import sichuanMap from '@/assets/sichuan.json'
 
