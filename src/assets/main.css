@@ -1,6 +1,12 @@
 @font-face {
     font-family: 'BebasNeue';
-    src: url('./font/BebasNeue-Regular.eot'),url('./font/BebasNeue-Regular.otf'),url('./font/BebasNeue-Regular.ttf'),url('./font/BebasNeue-Regular.woff'),url('./font/BebasNeue-Regular.woff2');
+    src: url('./font/BebasNeue-Regular.ttf'),url('./font/BebasNeue-Regular.otf'),url('./font/BebasNeue-Regular.eot'),url('./font/BebasNeue-Regular.woff'),url('./font/BebasNeue-Regular.woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'PingFang';
+    src: url('./font/PingFang Regular.ttf');
     font-weight: normal;
     font-style: normal;
 }
@@ -14,7 +20,7 @@ body, html {
 body {
     background: url(./img/web1x_火狐截图_2020-06-17T01-53-22.918Z.png) no-repeat fixed center;
     background-size: cover;
-    font-family: PingFangSC, PingFangSC-Regular;
+    font-family: 'PingFang';
     color:white;
 }
 
