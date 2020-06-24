@@ -1,26 +1,25 @@
 <template>
-  <div id="app">
-    <DashBoard/>
-  </div>
+    <router-view></router-view>
 </template>
 
 <script>
 import DashBoard from './components/index.vue'
 
 export default {
-  name: 'app',
-  components: {
-    DashBoard
-  }
+    name: 'app',
+    components: {
+        DashBoard
+    }
 }
 </script>
 
 <style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+    @import "./assets/main.scss";
+    #app {
+        font-family: 'Avenir', Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-align: center;
+        color: #2c3e50;
+    }
 </style>

@@ -35,17 +35,14 @@ export default {
             svg: {},
             feGaussianBlur: {},
             shadow: {},
+            bars: {},
             id: 'mapPoint',
-            sizeRatio:0,
+            sizeRatio: 0,
         }
     },
     mounted () {
         _this = this
 
-        let docEle = document.documentElement
-        let screenRatioByDesign = 16 / 9;
-        let screenRatio = docEle.clientWidth / docEle.clientHeight;
-        this.sizeRatio = docEle.clientWidth / 1920 * (screenRatio > screenRatioByDesign ? (screenRatioByDesign / screenRatio) : 1)
 
         this.computedSize()
         this.pieCircleDraw(this.id, this.salesData, this.width, this.height, this.rx, this.ry, this.h, this.innerRadius, false)
@@ -58,15 +55,26 @@ export default {
     methods: {
         onResize () {
             this.computedSize()
+            //更新svg
             this.svg.attr('width', this.width).attr('height', this.height)
+            //更新pie
             this.pieDraw(this.svg)
+            //更新animationCircle
             d3.select("#g_animation" + this.id).attr("transform", "translate(" + _this.width / 2 + "," + _this.height / 2 + ")")
             this.feGaussianBlur
                 .attr("stdDeviation", this.stdDeviation);
-            this.shadow.attr('rx', this.rx + 2*this.sizeRatio)
-                .attr('ry', this.ry + 3*this.sizeRatio)
+            this.shadow.attr('rx', this.rx + 2 * this.sizeRatio)
+                .attr('ry', this.ry + 3 * this.sizeRatio)
+
+            //更新bar
+            this.barDraw(this.svg)
         },
         computedSize () {
+
+            let docEle = document.documentElement
+            let screenRatioByDesign = 16 / 9;
+            let screenRatio = docEle.clientWidth / docEle.clientHeight;
+            this.sizeRatio = docEle.clientWidth / 1920 * (screenRatio > screenRatioByDesign ? (screenRatioByDesign / screenRatio) : 1)
             let sizeRatio = this.sizeRatio
             this.width = sizeRatio * this.originWidth
             this.height = sizeRatio * this.originHeight
@@ -74,7 +82,7 @@ export default {
             this.rx = sizeRatio * this.originRx
             this.ry = sizeRatio * this.originRy
             this.stdDeviation = sizeRatio * this.originStdDeviation
-            this.innerRadius = sizeRatio * this.originInnerRadius
+            // this.innerRadius = sizeRatio * this.originInnerRadius
         },
         animationCircle (svg) {
             let animationColor = '#007BFF'
@@ -87,12 +95,12 @@ export default {
                     animationColor = '#007BFF'
                 })
             let circleData = [0.80, 0.60, 0.40, 0.20]
-            this.updateCircle(animation.selectAll('ellipse').data(circleData).enter().append('ellipse'), animationColor, _this.rx, _this.ry, _this.h)
+            this.updateCircle(animation.selectAll('ellipse').data(circleData).enter().append('ellipse'), animationColor)
 
             let i = 0
             this.animationInterval = setInterval(() => {
                 let j = i / 25
-                this.updateCircle(animation.selectAll('ellipse').data(circleData), animationColor, _this.rx, _this.ry, _this.h, j)
+                this.updateCircle(animation.selectAll('ellipse').data(circleData), animationColor, j)
                 i++
                 i = i % 101
             }, 100)
@@ -148,6 +156,29 @@ export default {
                     })
             })
         },
+        barDraw (svg) {
+            let id = this.id
+            let x = this.width / 2
+            let y = this.height / 2
+            d3.select(`#g_bar${id}`) && (d3.select(`#g_bar${id}`).remove())
+            let bars = svg.append("g").attr("id", "g_bar" + id).attr("transform", `translate(${x},${y + 3 * _this.sizeRatio})`)
+            let fd = [33, 40, 29]
+            bars.selectAll(".bar").data(fd).enter()
+                .append("rect")
+                .attr("class", "bar")
+                .attr("x", function (d, i) {
+                    return (i * 11 - 15) * _this.sizeRatio;
+                })
+                .attr("y", function (d) {
+                    return -d * _this.sizeRatio;
+                })
+                .attr("width", 8 * _this.sizeRatio)
+                .attr("height", function (d) {
+                    return d * _this.sizeRatio;
+                })
+                .attr('fill', 'url(#g_bar_linerGradient)')
+            this.bars = bars.selectAll(".bar").data(fd)
+        },
         pieCircleDraw (id, data, cw, ch) {
 
             let x, y;
@@ -191,27 +222,8 @@ export default {
             linearGradient.append('stop')
                 .attr('offset', '100%')
                 .attr('style', 'stop-color:#007BFF;stop-opacity:0')
+            this.barDraw(svg)
 
-            let bars = svg.append("g").attr("id", "g_bar" + id).attr("transform", `translate(${x},${y + 3})`)
-            // Create bars for histogram to contain rectangles and freq labels.
-            let fd = [33, 40, 29]
-            // create function for x-axis mapping.
-
-
-            bars.selectAll(".bar").data(fd).enter()
-                .append("rect")
-                .attr("class", "bar")
-                .attr("x", function (d, i) {
-                    return i * 11 - 15;
-                })
-                .attr("y", function (d) {
-                    return -d;
-                })
-                .attr("width", 8)
-                .attr("height", function (d) {
-                    return d;
-                })
-                .attr('fill', 'url(#g_bar_linerGradient)')
         },
         pieTop (d, rx, ry, ir) {
             if (d.endAngle - d.startAngle == 0) return "M 0 0";
@@ -273,7 +285,10 @@ export default {
             }
         },
 
-        updateCircle (circleArr, color, rx, ry, h, scale = 1) {
+        updateCircle (circleArr, color, scale = 1) {
+            let rx = this.rx;
+            let ry = this.ry;
+            let h = this.h
             circleArr.attr('cx', 0)
                 .attr('cy', (d, i) => {
                         let res = i + scale
@@ -288,14 +303,14 @@ export default {
                     if ((i + scale) > 4) {
                         res = res - 4
                     }
-                    return rx + 10 * res
+                    return rx + rx / 4 * res
                 })
                 .attr('ry', (d, i) => {
                         let res = i + scale
                         if (res > 4) {
                             res = res - 4
                         }
-                        return ry + 5 * res
+                        return ry + ry / 3 * res
                     }
                 )
                 .style("fill", color)
