@@ -1,6 +1,9 @@
 <template>
-    <div :id="id" class="map-point">
-    </div>
+
+        <div :id="id" class="map-point">
+            <div class="text-value">90</div>
+            <div class="text-name">凉山</div>
+        </div>
 </template>
 <script>
 import * as d3 from "d3"
@@ -12,7 +15,7 @@ export default {
     data () {
         return {
             originWidth: 193,
-            originHeight: 165,
+            originHeight: 115,
             originRx: 40,
             originRy: 18,
             originRh: 4,
@@ -20,7 +23,7 @@ export default {
             originInnerRadius: 0.4,
             stdDeviation: 3,
             width: 193,
-            height: 165,
+            height: 125,
             rx: 40,
             ry: 18,
             h: 4,
@@ -180,7 +183,6 @@ export default {
             this.bars = bars.selectAll(".bar").data(fd)
         },
         pieCircleDraw (id, data, cw, ch) {
-
             let x, y;
             x = cw / 2;
             y = ch / 2;
@@ -327,8 +329,25 @@ export default {
 </script>
 
 <style scoped>
+    .marker-content {
+        width: 193px;
+        height: 204px;
+    }
+    .text-value {
+        font-size: 30px;
+        font-family: 'BebasNeue';
+        text-align: left;
+    }
+    .text-name {
+        font-size: 12px;
+        font-family: 'BebasNeue';
+        text-align: left;
+    }
     .map-point {
         width: 193px;
-        height: 165px;
+        height: 204px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 </style>

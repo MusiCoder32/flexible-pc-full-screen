@@ -44,19 +44,26 @@
 <script>
 import bus from '../common/bus';
 // import moment from 'moment';
-
+let _this;
 export default {
-    data () {
+    data() {
         return {
             fullscreen: false,
-            name: 'admin',
+            name: 'admin'
         };
     },
     computed: {},
+    mounted() {
+        _this = this;
+        window.addEventListener('resize', ()=>{
+            _this.fullscreen = document.isFullScreen || document.mozIsFullScreen || document.webkitIsFullScreen;
+        })
+    },
     methods: {
         // 全屏事件
-        handleFullScreen () {
+        handleFullScreen() {
             let element = document.documentElement;
+
             if (this.fullscreen) {
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
@@ -80,12 +87,9 @@ export default {
                 }
             }
             this.fullscreen = !this.fullscreen;
-        },
+        }
     },
-    mounted () {
-
-    },
-    destroyed () {
+    destroyed() {
         bus.$off();
     }
 };
@@ -93,16 +97,17 @@ export default {
 <style lang="scss" scoped>
     .header-border {
         div:first-child {
-            width:313px;
-            border-top:18px solid #005eff;
-            border-right:36px solid transparent;
+            width: 313px;
+            border-top: 18px solid #005eff;
+            border-right: 36px solid transparent;
         }
         div:last-child {
-            width:100px;
-            border-top:18px solid #005eff;
-            border-left:36px solid transparent;
+            width: 100px;
+            border-top: 18px solid #005eff;
+            border-left: 36px solid transparent;
         }
     }
+
     .header {
         box-sizing: border-box;
         height: 60px;

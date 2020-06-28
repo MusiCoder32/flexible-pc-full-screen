@@ -7,7 +7,7 @@
 
         </div>
         <div class="three-block">
-
+            <three-block></three-block>
         </div>
         <div class="four-block">
 
@@ -18,11 +18,17 @@
 <script>
 import FirstMap from '../pie-bar-animation'
 import FirstBlock from './first-block'
+import TwoBlock from './two-block'
+import ThreeBlock from './three-block'
+import FourBlock from './four-block'
 
 export default {
     components: {
         FirstMap,
-        FirstBlock
+        FirstBlock,
+        TwoBlock,
+        ThreeBlock,
+        FourBlock
     },
     data () {
         return {}
@@ -48,7 +54,6 @@ export default {
         }
         .three-block {
             height: 286px;
-            background: white;
         }
         .four-block {
             background: orange;
