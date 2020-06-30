@@ -4,7 +4,7 @@ import '@/assets/main.css'
 import ECharts from 'vue-echarts'
 import sichuanMap from '@/assets/sichuan.json'
 
-import router from './components/router/router'
+import router from './router/router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css'; // 默认主题
 import '@/assets/element-variables.scss'

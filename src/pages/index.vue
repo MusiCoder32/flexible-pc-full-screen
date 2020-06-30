@@ -8,17 +8,17 @@
 </template>
 
 <script>
-import vHeader from './pages/header'
-import Doughnut from '@/components/charts/Doughnut'
-import Point from '@/components/charts/Point'
-import LineChart from '@/components/charts/Line'
-// import Map from '@/components/charts/Map'
-import Bar from '@/components/charts/Bar'
-import Pie from '@/components/charts/Pie'
-import Gauge from '@/components/charts/Gauge'
-import DoubleLine from '@/components/charts/DoubleLine'
+import vHeader from './header'
+import Doughnut from '@/components/charts_demo/Doughnut'
+import Point from '@/components/charts_demo/Point'
+import LineChart from '@/components/charts_demo/Line'
+// import Map from '@/components/charts_demo/Map'
+import Bar from '@/components/charts_demo/Bar'
+import Pie from '@/components/charts_demo/Pie'
+import Gauge from '@/components/charts_demo/Gauge'
+import DoubleLine from '@/components/charts_demo/DoubleLine'
 
-import FirstMap from './pages/pie-bar-animation'
+import FirstMap from '../components/svgs/pie-bar-animation'
 
 export default {
     components: {

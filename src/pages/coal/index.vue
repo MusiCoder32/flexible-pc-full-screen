@@ -4,19 +4,19 @@
             <first-block></first-block>
         </div>
         <div class="two-block">
-
+            <two-block></two-block>
         </div>
         <div class="three-block">
             <three-block></three-block>
         </div>
         <div class="four-block">
-
+            <four-block></four-block>
         </div>
     </div>
 </template>
 
 <script>
-import FirstMap from '../pie-bar-animation'
+import FirstMap from '../../components/svgs/pie-bar-animation'
 import FirstBlock from './first-block'
 import TwoBlock from './two-block'
 import ThreeBlock from './three-block'
@@ -50,13 +50,11 @@ export default {
         }
         .two-block {
             height: 716px;
-            background: green;
         }
         .three-block {
             height: 286px;
         }
         .four-block {
-            background: orange;
             height: 286px;
         }
     }

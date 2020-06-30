@@ -104,3 +104,13 @@ body {
     align-items: flex-end;
 }
 
+.mb6 {
+    margin-bottom:6px;
+}
+.mb8 {
+    margin-bottom:8px;
+}
+.mr8 {
+    margin-right: 8px;
+}
+

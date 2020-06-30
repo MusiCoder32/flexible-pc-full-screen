@@ -1,11 +1,11 @@
 <template>
     <div class="content">
         <div class="slider" :class="{'slider-expand':isSliderExpand}">
-            <img src="../../../assets/img/侧栏bg_img.png"/>
-            <img src="../../../assets/img/正在检测企业icon_img.png"/>
+            <img src="../../assets/img/侧栏bg_img.png"/>
+            <img src="../../assets/img/正在检测企业icon_img.png"/>
             <img @click="sliderClick" :class="{'slider-icon-rotate':isSliderExpand}"
-                 src="../../../assets/img/left_icon_img.png"/>
-            <img src="../../../assets/img/覆盖人群icon_img.png"/>
+                 src="../../assets/img/left_icon_img.png"/>
+            <img src="../../assets/img/覆盖人群icon_img.png"/>
             <div>
                 <p>234969</p>
                 <p>正在监测企业</p>
@@ -51,8 +51,8 @@
 </template>
 
 <script>
-import SliderPie from '../../charts/slider-pie';
-import MapMarker from '../pie-bar-animation'
+import SliderPie from '../../components/charts/slider-pie';
+import MapMarker from '../../components/svgs/pie-bar-animation'
 
 export default {
     name: 'first-block',

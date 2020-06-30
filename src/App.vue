@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import DashBoard from './components/index.vue'
+import DashBoard from './pages/index.vue'
 
 export default {
     name: 'app',

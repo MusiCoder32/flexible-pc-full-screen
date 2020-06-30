@@ -2,35 +2,32 @@
     <div class="vBox vh_content_start">
         <div class="header font-size-medium">
             <div class="logo">
-                <img class="margin8" src="../../assets/img/logo.png"/>
+                <img class="margin8" src="../assets/img/logo.png"/>
             </div>
-            <div class="">
-                <a src='http://baidu.com' class=" hBox vh_items_center header-not-coal-icon">
-                    <img class="margin8" src="../../assets/img/web1x_非煤logo_img.png"/>
-                    金属非金属矿山安全生产风险智能监测系统
-                </a>
+            <div @click="goto('coal')" class="menu hBox vh_items_center header-not-coal-icon">
+                <img class="margin8" src="../assets/img/web1x_非煤logo_img.png"/>
+                金属非金属矿山安全生产风险智能监测系统
             </div>
-            <div class="">
-                <a src='http://baidu.com' class=" hBox vh_items_center header-chemical-icon">
-                    <img class="margin8" src="../../assets/img/web1x_化工logo_img.png"/>
-                    化工园区危险化学品应急监控及事故预警
-                </a>
+            <div @click="goto('chemical')" class="menu hBox vh_items_center header-chemical-icon">
+                <img class="margin8" src="../assets/img/web1x_化工logo_img.png"/>
+                化工园区危险化学品应急监控及事故预警
             </div>
-            <div class="hBox vh_content_between vh_items_center header-left">
+            <div class=" hBox vh_content_between vh_items_center header-left">
                 <div class="hBox vh_items_center header-left-date">
-                    <img class="margin8" src="../../assets/img/web1x_日期icon_img.png"/>
+                    <img class="margin8" src="../assets/img/web1x_日期icon_img.png"/>
                     2020年06月16日 星期二
                 </div>
-                <div class="hBox vh_items_center header-left-time">
-                    <img class="margin8" src="../../assets/img/web1x_时间icon_img.png" height="20" width="20"/>
+                <div class=" hBox vh_items_center header-left-time">
+                    <img class="margin8" src="../assets/img/web1x_时间icon_img.png" height="20" width="20"/>
                     22:50:40
                 </div>
                 <!-- 全屏显示 -->
-                <div class="header-left-full-screen" @click="handleFullScreen">
+                <div class="header-left-full-screen hBox vh_items_center" @click="handleFullScreen">
                     <el-tooltip effect="dark" :content="fullscreen?`取消全屏`:`全屏`" placement="bottom">
-                        <img v-if="fullscreen" src="../../assets/img/web1x_退出全屏icon_img.png"/>
-                        <img v-if="!fullscreen" src="../../assets/img/web1x_全屏展示icon_img.png"/>
+                        <img class="mr8" v-if="fullscreen" src="../assets/img/web1x_退出全屏icon_img.png"/>
+                        <img class="mr8" v-if="!fullscreen" src="../assets/img/web1x_全屏展示icon_img.png"/>
                     </el-tooltip>
+                    {{!fullscreen? '全屏展示':'取消全屏'}}
                 </div>
 
             </div>
@@ -46,55 +43,80 @@ import bus from '../common/bus';
 // import moment from 'moment';
 let _this;
 export default {
-    data() {
+    data () {
         return {
             fullscreen: false,
             name: 'admin'
         };
     },
     computed: {},
-    mounted() {
+    mounted () {
         _this = this;
-        window.addEventListener('resize', ()=>{
+        window.addEventListener('resize', () => {
             _this.fullscreen = document.isFullScreen || document.mozIsFullScreen || document.webkitIsFullScreen;
         })
     },
     methods: {
         // 全屏事件
-        handleFullScreen() {
+        handleFullScreen () {
             let element = document.documentElement;
 
             if (this.fullscreen) {
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
-                } else if (document.webkitCancelFullScreen) {
+                }
+                else if (document.webkitCancelFullScreen) {
                     document.webkitCancelFullScreen();
-                } else if (document.mozCancelFullScreen) {
+                }
+                else if (document.mozCancelFullScreen) {
                     document.mozCancelFullScreen();
-                } else if (document.msExitFullscreen) {
+                }
+                else if (document.msExitFullscreen) {
                     document.msExitFullscreen();
                 }
-            } else {
+            }
+            else {
                 if (element.requestFullscreen) {
                     element.requestFullscreen();
-                } else if (element.webkitRequestFullScreen) {
+                }
+                else if (element.webkitRequestFullScreen) {
                     element.webkitRequestFullScreen();
-                } else if (element.mozRequestFullScreen) {
+                }
+                else if (element.mozRequestFullScreen) {
                     element.mozRequestFullScreen();
-                } else if (element.msRequestFullscreen) {
+                }
+                else if (element.msRequestFullscreen) {
                     // IE11
                     element.msRequestFullscreen();
                 }
             }
             this.fullscreen = !this.fullscreen;
+        },
+        goto (type) {
+            if (type === 'coal') {
+                this.$router.push({ path: 'coal' })
+            }
+            else if (type === 'chemical') {
+                this.$router.push({ path: 'chemical' })
+            }
         }
     },
-    destroyed() {
+    destroyed () {
         bus.$off();
     }
 };
 </script>
 <style lang="scss" scoped>
+    .menu {
+        padding: 0 10px;
+        height: 100%;
+        opacity: 0.6;
+        &:hover {
+            /*background:rgb(0,25,64)*/
+            opacity: 1;
+        }
+    }
+
     .header-border {
         div:first-child {
             width: 313px;
@@ -117,13 +139,10 @@ export default {
         color: white;
         background-image: linear-gradient(180deg, #007BFF, #005EFF);
 
-        .margin8 {
-            margin-right: 8px;
-        }
-
         .header-left {
             width: 465px;
             margin-right: 39px;
+            opacity: 0.6;
             .header-left-date {
                 img {
                     height: 21px;
@@ -145,7 +164,8 @@ export default {
         }
 
         .logo {
-            margin-left: 26px;
+            padding-left: 26px;
+            padding-top:17px;
             img {
                 height: 42px;
                 width: 229px;
@@ -239,15 +259,4 @@ export default {
         text-align: center;
     }
 </style>
-<style>
 
-    ul.el-menu.el-menu--popup.el-menu--popup-right-start {
-        background: #303133 !important;
-    }
-
-    .el-submenu__title:hover, .el-menu-item:focus, .el-menu-item:hover {
-        background: #666 !important;
-    }
-
-
-</style>
