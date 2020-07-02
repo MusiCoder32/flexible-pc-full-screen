@@ -53,6 +53,15 @@ body {
 .font-size-base {
     font-size: 14px;
 }
+.font-size-small {
+    font-size: 12px;
+}
+.font-weight-medium {
+    font-weight: 400;
+}
+.font-weight-large {
+    font-weight: 600;
+}
 
 .echarts {
     width: 100% !important;

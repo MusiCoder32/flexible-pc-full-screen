@@ -13,13 +13,6 @@ export default {
     name: 'first-map',
     data () {
         return {
-            originWidth: 193,
-            originHeight: 115,
-            originRx: 40,
-            originRy: 18,
-            originRh: 4,
-            originStdDeviation: 3,
-            originInnerRadius: 0.4,
             stdDeviation: 3,
             width: 193,
             height: 125,
@@ -35,16 +28,12 @@ export default {
             ],
             animationInterval: null,
             svg: {},
-            feGaussianBlur: {},
-            shadow: {},
-            bars: {},
             id: 'mapPoint',
-            sizeRatio: 0
         };
     },
     mounted () {
         _this = this;
-        svgInit(this.pieCircleDraw, this.id, [this.salesData, this.width, this.height, this.rx, this.ry, this.h, 33, 40, 29, 8, 3]);
+        svgInit(this.pieCircleDraw, this.id, [this.width, this.height, this.rx, this.ry, this.h, 33, 40, 29, 8, 3]);
 
     },
     destroyed () {
@@ -74,7 +63,7 @@ export default {
                 i = i % 101;
             }, 100);
 
-            this.shadow = animation.append('ellipse')
+            animation.append('ellipse')
                                    .attr('cx', 0)
                                    .attr('cy', 3)
                                    .attr('rx', rx + 2)
@@ -137,11 +126,9 @@ export default {
                 .attr('height', function (d) {
                     return d;
                 })
-                .attr('fill', 'url(#g_bar_linerGradient)');
-            this.bars = bars.selectAll('.bar').data(fd);
+                .attr('fill', `url(#g_bar_linerGradient_${id})`);
         },
-        pieCircleDraw (svg, data, cw, ch, rx, ry, h, b1, b2, b3, bWidth, bPadding) {
-            let id = this.svgId;
+        pieCircleDraw (svg,id, cw, ch, rx, ry, h, b1, b2, b3, bWidth, bPadding) {
             let ir = this.innerRadius;
             let x, y;
             x = cw / 2;
@@ -155,8 +142,7 @@ export default {
                              .attr('id', 'pieShadow')
                              .attr('width', '200%')
                              .attr('height', '200%');
-            this.feGaussianBlur = filter.append('feGaussianBlur');
-            this.feGaussianBlur
+            filter.append('feGaussianBlur')
                 .attr('in', 'SourceGraphic')
                 .attr('result', 'blurOut')
                 .attr('stdDeviation', '3');
@@ -171,7 +157,7 @@ export default {
             //定义渐变
             let linearGradient = svg.append('defs')
                                     .append('linearGradient')
-                                    .attr('id', 'g_bar_linerGradient')
+                                    .attr('id', 'g_bar_linerGradient_'+id)
                                     .attr('x1', '0%')
                                     .attr('y1', '0%')
                                     .attr('x2', '0%')

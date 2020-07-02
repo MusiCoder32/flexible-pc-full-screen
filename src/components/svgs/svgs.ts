@@ -16,7 +16,7 @@ function draw(call: Function, id: string, allSize: Array<number>) {
     let newAllSize = allSize.map(item => {
         return sizeRatio * item;
     });
-    call(svg, ...newAllSize);
+    call(svg,id, ...newAllSize);
 }
 
 function svgInit(call: Function, id: string, allSize: Array<number>) {

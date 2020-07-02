@@ -23,7 +23,7 @@ function draw(call, id, allSize) {
     var newAllSize = allSize.map(function (item) {
         return sizeRatio * item;
     });
-    call.apply(void 0, __spreadArrays([svg], newAllSize));
+    call.apply(void 0, __spreadArrays([svg, id], newAllSize));
 }
 function svgInit(call, id, allSize) {
     draw(call, id, allSize);
