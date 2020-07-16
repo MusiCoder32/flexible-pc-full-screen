@@ -1,5 +1,10 @@
 <template>
     <div class="content two-block-box hBox">
+        <div class="navigation hBox vh_content_between font-size-medium">
+            <div class="navigation-item" @click="goTo('first')">返回首页</div>
+            <div class="navigation-item" @click="goTo('coal')">非煤矿山领域</div>
+            <div class="navigation-item navigation-active" >危化领域</div>
+        </div>
         <div class="two-block-1">
             <oblique-icon class="two-block-oblique-icon"></oblique-icon>
             <oblique-angle class="mb6" :borderWidth1="borderWidth1" :borderWidth2="borderWidth2"
@@ -58,11 +63,47 @@ export default {
             rectHeight34: 'two-block-rect-height34',
             rectContentHeight34: 'two-block-rect-content-height34'
         }
+    },
+    methods: {
+        goTo(type) {
+            if (type === 'coal') {
+                this.$router.push({ path: 'coal' });
+            }
+            else if (type === 'first') {
+                this.$router.push({ path: 'first' });
+            }
+        }
     }
 }
 </script>
 
 <style lang="scss">
+
+    .navigation {
+        width: 491px;
+        margin-bottom: 40px;
+        .navigation-item {
+            width: 150px;
+            height: 40px;
+            opacity: 0.5;
+            text-align: center;
+            line-height: 40px;
+            background: url("../../assets/img/navigation-button-bg.png") center center no-repeat;
+            background-size: cover;
+
+            &:hover {
+                background: url("../../assets/img/navigation-button-bg.png") center center no-repeat, url("../../assets/img/navigation-button-bg-active.png") center center no-repeat;
+                background-size: cover;
+                opacity: 1;
+            }
+        }
+        .navigation-active {
+            background: url("../../assets/img/navigation-button-bg.png") center center no-repeat, url("../../assets/img/navigation-button-bg-active.png") center center no-repeat;
+            background-size: cover;
+            opacity: 1;
+        }
+    }
+
     .two-block-oblique-icon {
         left:272px;
         top:8px;

@@ -1,7 +1,7 @@
 <template>
     <div :class=[rectHeight] class="rect">
         <div :class="[rectBorderTop]" class="sensor-right-border-1"></div>
-        <div :class="[rectContentHeight]" class="sensor-right-content">
+        <div  class="sensor-right-content" style="flex: 1">
             <slot></slot>
         </div>
         <div :class="[rectBorderBottom]" class="sensor-right-border-2"></div>
@@ -15,10 +15,6 @@ export default {
         rectHeight: {
             type:String,
             default:'rect-height'
-        },
-        rectContentHeight: {
-            type: String,
-            default: 'rect-content-height'
         },
         rectBorderTop: {
             type: String,
@@ -52,6 +48,8 @@ export default {
     .rect {
         position: relative;
         width:100%;
+        display: flex;
+        flex-direction: column;
 
         .sensor-right-content {
             background: rgba(0, 123, 255, 0.2);

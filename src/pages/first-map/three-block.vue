@@ -16,7 +16,8 @@
                 <oblique-angle-rect>
                     <div class="right-rect-content">
                         <div style="width:100%;" class="sensor-right-title font-size-medium font-weight-medium">传感器预警统计</div>
-                        <div style="width:100%" class="font-size-small">北斗位移预警</div>
+
+                        <div style="width:100%" class="font-size-small hBox vh_items_center">北斗位移预警<div class="title-right-border"></div></div>
                         <div style="width:100%" class="hBox vh_content_between vh_items_center beidou-warning-box">
                             <div class="beidou-warning-total">384</div>
                             <div class="beidou-warning-describe">累计预警次数</div>
@@ -43,6 +44,41 @@
                             ></pre-warning-statistics-svg>
                             <pre-warning-statistics-svg
                                     svg-id="preWarningStatisticsSvg3"
+                                    third-color="rgba(0,123,255,0.25)"
+                                    secondary-color="#0059BC"
+                                    primary-color="#007BFF"
+                                    fourth-color=" #007BFF"
+                            ></pre-warning-statistics-svg>
+                        </div>
+
+
+                        <div style="width:100%" class="font-size-small hBox vh_items_center">气体预警<div class="title-right-border"></div></div>
+                        <div style="width:100%" class="hBox vh_content_between vh_items_center beidou-warning-box">
+                            <div class="beidou-warning-total">384</div>
+                            <div class="beidou-warning-describe">累计预警次数</div>
+                            <pre-warning-statistics-svg
+                                    svg-id="gasPreWarningStatisticsSvg0"
+                                    third-color="rgba(255,94,84,0.25)"
+                                    secondary-color="#B34D53"
+                                    primary-color="#FF5E54"
+                                    fourth-color=" #FE4C40"
+                            ></pre-warning-statistics-svg>
+                            <pre-warning-statistics-svg
+                                    svg-id="gasPreWarningStatisticsSvg1"
+                                    third-color="rgba(255,115,46,0.25)"
+                                    secondary-color="#995239"
+                                    primary-color="#FF732E"
+                                    fourth-color=" #FF732E"
+                            ></pre-warning-statistics-svg>
+                            <pre-warning-statistics-svg
+                                    svg-id="gasPreWarningStatisticsSvg2"
+                                    third-color="rgba(255,214,0,0.25)"
+                                    secondary-color="#998F1E"
+                                    primary-color="#FFD600"
+                                    fourth-color=" #FFD600"
+                            ></pre-warning-statistics-svg>
+                            <pre-warning-statistics-svg
+                                    svg-id="gasPreWarningStatisticsSvg3"
                                     third-color="rgba(0,123,255,0.25)"
                                     secondary-color="#0059BC"
                                     primary-color="#007BFF"
@@ -127,6 +163,22 @@ export default {
                     padding-left: 16px;
                     padding-right:20px;
 
+                    .title-right-border {
+                        flex: 1;
+                        height:15px;
+                        border-bottom:1px solid rgba(0,94,255,0.37);
+                        margin-left:4px;
+                        border-left:5px solid rgba(0,94,255,0.5);
+                        position:relative;
+                        &::before {
+                            border-bottom:14px solid rgba(0,94,255,0.5);
+                            border-right:14px solid transparent;
+                            content: "";
+                            position:absolute;
+                            left: 0;
+                            bottom:0;
+                        }
+                    }
                     .sensor-right-title {
                         transform: translate(0,-3px);
                     }

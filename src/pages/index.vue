@@ -230,7 +230,7 @@ export default {
   background-size: contain;
   position: absolute;
   top: 19px;
-  left: 20px;
+  left: 0px;
   .county-box {
     height: 721px;
     width: 878px;
