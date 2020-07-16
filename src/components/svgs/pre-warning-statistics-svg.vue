@@ -7,7 +7,7 @@
 import {d3, svgInit} from './svgs';
 
 export default {
-    name: 'test-svgs',
+    name: 'pre-warning-svgs',
     props: {
         svgId: {
             require: true,

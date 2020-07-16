@@ -1,7 +1,7 @@
 <template>
     <div :id="id" class="map-point">
-        <div class="text-value">90</div>
-        <div class="text-name">凉山</div>
+        <div class="text-value">{{number}}</div>
+        <div class="text-name">{{name}}</div>
     </div>
 </template>
 <script>
@@ -11,6 +11,20 @@ let _this;
 
 export default {
     name: 'first-map',
+    props: {
+        number: {
+            required:true,
+            type:Number
+        },
+        name: {
+            required:true,
+            type:String
+        },
+        id: {
+            required:true,
+            type:String
+        }
+    },
     data () {
         return {
             stdDeviation: 3,
@@ -28,7 +42,6 @@ export default {
             ],
             animationInterval: null,
             svg: {},
-            id: 'mapPoint',
         };
     },
     mounted () {
@@ -42,22 +55,18 @@ export default {
     methods: {
 
         animationCircle (svg, id, rx, ry, x, y, h) {
-            let animationColor = '#007BFF';
+            let me = this
+            me._animationColor= '#007BFF';
             let animation = svg.append('g')
                                .attr('id', 'g_animation' + id).attr('transform', `translate(${x},${y})`)
-                               .on('mouseover', () => {
-                                   animationColor = '#00FFF3';
-                               })
-                               .on('mouseout', () => {
-                                   animationColor = '#007BFF';
-                               });
+
             let circleData = [0.80, 0.60, 0.40, 0.20];
-            this.updateCircle(animation.selectAll('ellipse').data(circleData).enter().append('ellipse'), animationColor, rx, ry, h);
+            this.updateCircle(animation.selectAll('ellipse').data(circleData).enter().append('ellipse'), me._animationColor, rx, ry, h);
 
             let i = 0;
             this.animationInterval = setInterval(() => {
                 let j = i / 25;
-                this.updateCircle(animation.selectAll('ellipse').data(circleData), animationColor, rx, ry, h, j)
+                this.updateCircle(animation.selectAll('ellipse').data(circleData), me._animationColor, rx, ry, h, j)
                 ;
                 i++;
                 i = i % 101;
@@ -66,16 +75,17 @@ export default {
             animation.append('ellipse')
                                    .attr('cx', 0)
                                    .attr('cy', 3)
-                                   .attr('rx', rx + 2)
-                                   .attr('ry', ry + 3)
-                                   .style('fill', '#082155')
+                                   .attr('rx', (rx + 2)*me.innerRadius)
+                                   .attr('ry', (ry + 3)*me.innerRadius)
+                                   .attr('stroke-width',(rx+2)*(1-me.innerRadius))
+                                   .style('stroke', '#082155')
+                                   .style('fill', 'none')
                                    .attr('filter', 'url(#pieShadow)');
         },
         pieDraw (svg, id, rx, ry, h, ir, x, y) {
             let _data = d3.pie().sort(null).value(function (d) {
                 return d.value;
             })(this.salesData);
-            console.log(d3.select(`#g_pie${id}`));
             d3.select(`#g_pie${id}`) && (d3.select(`#g_pie${id}`).remove());
             let slices = svg.append('g').attr('id', 'g_pie' + id).attr('transform', 'translate(' + x + ',' + y + ')')
                             .attr('class', 'slices');
@@ -129,23 +139,32 @@ export default {
                 .attr('fill', `url(#g_bar_linerGradient_${id})`);
         },
         pieCircleDraw (svg,id, cw, ch, rx, ry, h, b1, b2, b3, bWidth, bPadding) {
+            let me = this
             let ir = this.innerRadius;
             let x, y;
             x = cw / 2;
             y = ch / 2;
             this.svg = svg;
-            svg.attr('width', cw).attr('height', ch);
+            svg.attr('width', cw).attr('height', ch)
+            .on('mouseover', () => {
+                me._animationColor = '#00FFF3';
+            })
+            .on('mouseout', () => {
+                me._animationColor = '#007BFF';
+            });
             //定义过滤器生成阴影
             let defs = svg.append('defs');
 
             let filter = defs.append('filter')
                              .attr('id', 'pieShadow')
-                             .attr('width', '200%')
-                             .attr('height', '200%');
+                             .attr('width', rx*2)
+                             .attr('height', ry*2)
+                             .attr('x',-rx)
+                             .attr('y',-ry)
             filter.append('feGaussianBlur')
                 .attr('in', 'SourceGraphic')
                 .attr('result', 'blurOut')
-                .attr('stdDeviation', '3');
+                .attr('stdDeviation', '15');
             //绘制底部特效
             this.animationCircle(svg, id, rx, ry, x, y, h);
 
@@ -211,7 +230,6 @@ export default {
             var ret = [];
             // rx ry 两个半轴长度
             ret.push('M', sx, sy, 'A', ir * rx, ir * ry, '0 0 1', ex, ey, 'L', ex, h + ey, 'A', ir * rx, ir * ry, '0 0 0', sx, h + sy, 'z');
-            console.log(ret.join(' '));
             return ret.join(' ');
         },
 

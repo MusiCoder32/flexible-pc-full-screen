@@ -1,10 +1,24 @@
 <template>
-    <chart class='line-chart' :auto-resize='true' :options='options'>
+    <chart :auto-resize='true' :options='options'>
     </chart>
 </template>
 
 <script>
 export default {
+    props: {
+        value: {
+            type:Number,
+            default:0.25
+        },
+        backgroundColor:{
+            default:'#007BFF',
+            type:String
+        },
+        foregroundColor:{
+            default:'#00FFF3',
+            type:String
+        },
+    },
     data () {
         return {
             options: {
@@ -21,15 +35,15 @@ export default {
                         },
                         data: [
                             {
-                                value: 30,
+                                value: this.value,
                                 itemStyle: {
-                                    color: '#00FFF3'
+                                    color: this.foregroundColor
                                 }
                             },
                             {
-                                value: 70,
+                                value: 1-this.value,
                                 itemStyle: {
-                                    color: '#007BFF'
+                                    color: this.backgroundColor
                                 }
                             },
 
