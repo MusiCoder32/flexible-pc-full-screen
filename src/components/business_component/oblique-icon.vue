@@ -11,10 +11,10 @@ export default {
     name: 'oblique-icon',
     methods: {
         iconClick () {
-            this.$emit('icon-click')
+            this.$emit('icon-click');
         }
     }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -24,6 +24,18 @@ export default {
         display: flex;
         width: 106px;
         height: 36px;
+
+        &:hover {
+            .left-oblique {
+                border-top: 36px solid rgba(0, 123, 255, 0.4);
+            }
+            .right-oblique {
+                border-bottom: 36px solid rgba(0, 123, 255, 0.4);
+            }
+            .icon {
+                background: rgba(0, 123, 255, 0.4) url("../../assets/img/查看更多icon_img.png") center center no-repeat;
+            }
+        }
         .left-oblique {
             border-top: 36px solid rgba(0, 123, 255, 0.2);
             border-left: 36px solid transparent;

@@ -12,7 +12,7 @@
                 <div style="flex:2" class="hBox rect-box-content-left">
                     <oblique-angle-rect class="font-size-base mb8" style="min-width:40%;flex:1" :rectHeight="rectHeight"
                                         :rectBorderTop="rectBorderTop">
-                        {{obliqueTextLeft}}
+                        <p>{{obliqueTextLeft}}</p>
                     </oblique-angle-rect>
                     <oblique-angle-rect class="font-size-base ml8 mb8" style="min-width:40%;flex:1"
                                         :rectHeight="rectHeight">
@@ -56,7 +56,7 @@ export default {
             activeIndex:0,
             borderWidth1: 'two-block-title-width-1',
             borderWidth2: 'two-block-title-width-2',
-            obliqueTextLeft: '预警手段',
+            obliqueTextLeft: `ll`,
             obliqueTextRight: '预警手段',
             rectHeight: 'two-block-rect-height',
             rectHeight2: 'two-block-rect-height2',

@@ -87,6 +87,8 @@
                             class="company-table font-size-small"
                             :header-cell-style="{backgroundColor:'#0847A1 !important',color:'white'}"
                             :row-class-name="tableRowClassName"
+                            @cell-mouse-enter="enterTable"
+                            @cell-mouse-leave="leaveTable"
                     >
                         <el-table-column
                                 prop="companyName"
@@ -131,6 +133,7 @@ export default {
     data () {
         return {
             total: 1000,
+            isMouseEnter: false,
             pieList: [
                 {
                     value: 427,
@@ -259,7 +262,16 @@ export default {
             this.readyRoll();
         });
     },
+    destroyed () {
+        clearInterval(this._tableSetInterval);
+    },
     methods: {
+        enterTable () {
+            this.isMouseEnter = true;
+        },
+        leaveTable () {
+            this.isMouseEnter = false;
+        },
         readyRoll () {
             this._trHeight = document.querySelector('div.emphasis-attention-company table  thead  tr').offsetHeight;
             let bodyHeight = document.querySelector('div.emphasis-attention-company').offsetHeight;
@@ -274,29 +286,32 @@ export default {
             }
         },
         beginRolling () {
+            let me = this;
             this._tableSetInterval = setInterval(() => {
-                this._containBoxStyle.transition = 'all .5s';
-                this._containBoxStyle.paddingTop = this._trHeight + 'px';
 
-                setTimeout(() => {
+                if (!me.isMouseEnter) {
                     this._containBoxStyle.transition = 'all .5s';
-                    this._containBoxStyle.paddingTop = 0;
-                }, 2000);
+                    this._containBoxStyle.paddingTop = this._trHeight + 'px';
 
-                setTimeout(() => {
-                    this.tableData.shift();
-                    this.tableData.shift();
+                    setTimeout(() => {
+                        this._containBoxStyle.transition = 'all .5s';
+                        this._containBoxStyle.paddingTop = 0;
+                    }, 2000);
 
-                    this.tableData.push(this.tableData[0]);
-                    this.tableData.push(this.tableData[1]);
+                    setTimeout(() => {
+                        this.tableData.shift();
+                        this.tableData.shift();
 
-                    this._containBoxStyle.transition = 'all 0s ease 0s';
-                    this._containBoxStyle.paddingTop = this._trHeight * 2 + 'px';
-                }, 2500);
+                        this.tableData.push(this.tableData[0]);
+                        this.tableData.push(this.tableData[1]);
 
+                        this._containBoxStyle.transition = 'all 0s ease 0s';
+                        this._containBoxStyle.paddingTop = this._trHeight * 2 + 'px';
+                    }, 2500);
+                }
             }, 4000);
         },
-        tableRowClassName ({ row, rowIndex }) {
+        tableRowClassName ({ rowIndex }) {
             if ((rowIndex + 1) % 2 === 0) {
                 return 'row-double';
             }
@@ -408,7 +423,7 @@ export default {
                 }
 
                 .el-table__header-wrapper {
-                    position:relative;
+                    position: relative;
                     z-index: 100;
                 }
 

@@ -14,6 +14,7 @@ const assetsCDN = {
         vue: 'Vue',
         'vue-router': 'VueRouter',
         vuex: 'Vuex',
+        ECharts:'ECharts',
         axios: 'axios',
         AMap: 'AMap' // 高德地图配置
     },

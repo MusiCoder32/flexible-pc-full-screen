@@ -4,6 +4,7 @@
     <div class="child-content hBox vh_content_center vh_items_center">
       <router-view></router-view>
     </div>
+    <slider></slider>
     <div class="map">
       <div class="county-box">
         <div v-for="(item,index) in mapMarkers" :class="'map-'+item.class" :key="item.name+index">
@@ -16,15 +17,39 @@
           <img :src="item.src" alt />
         </div>
       </div>
+      <div class="legend">
+        <div class="top-corner"></div>
+        <div class="center-content">
+          <div class="title-icon">
+            <div class="icon left-top"></div>
+            <pre>低风险  </pre>
+          </div>
+          <div class="title-icon">
+            <div class="icon right-top"></div>
+            <div>一般风险</div>
+          </div>
+          <div class="title-icon">
+            <div class="icon left-bottom"></div>
+            <div>较大风险</div>
+          </div>
+          <div class="title-icon">
+            <div class="icon right-bottom"></div>
+            <pre>低风险  </pre>
+          </div>
+        </div>
+        <div class="bottom-corner"></div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import vHeader from "./header";
+import Slider from './slider'
 import Doughnut from "@/components/charts_demo/Doughnut";
 import Point from "@/components/charts_demo/Point";
 import LineChart from "@/components/charts_demo/Line";
+
 // import Map from '@/components/charts_demo/Map'
 import Bar from "@/components/charts_demo/Bar";
 import Pie from "@/components/charts_demo/Pie";
@@ -45,6 +70,7 @@ export default {
     Gauge,
     DoubleLine,
     vHeader,
+      Slider,
     mapMarker
   },
   data() {
@@ -382,6 +408,65 @@ export default {
       height: 128px;
       left: 218px;
       top: 585px;
+    }
+  }
+  .legend {
+    position: absolute;
+    bottom: 104px;
+    right: 106px;
+    height: 80px;
+    width: 200px;
+    box-shadow: 0px 0px 16px 0px rgba(8, 33, 85, 0.2);
+    .top-corner {
+      height: 0;
+      width: 200px;
+      border-bottom: 15px solid rgba(0, 123, 255, 0.2);
+      border-right: 15px solid transparent;
+      border-left: 15px solid transparent;
+    }
+    .center-content {
+      width: 200px;
+      height: 50px;
+      background: rgba(0, 123, 255, 0.2);
+      font-size: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      .title-icon {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .icon {
+          width: 10px;
+          height: 10px;
+          margin-right: 6px;
+          border-radius: 50%;
+          box-shadow: 0px 0px 8px 0px #007bff;
+        }
+        .left-top {
+          background: #007bff;
+          border: 1px solid #005eff;
+        }
+        .left-bottom {
+          background: #ff732e;
+          border: 1px solid #ff732e;
+        }
+        .right-top {
+          background: #ffd600;
+          border: 1px solid #ffd600;
+        }
+        .right-bottom {
+          background: #ff5e54;
+          border: 1px solid #ff5e54;
+        }
+      }
+    }
+    .bottom-corner {
+      width: 200px;
+      height: 0;
+      border-top: 15px solid rgba(0, 123, 255, 0.2);
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
     }
   }
 }
