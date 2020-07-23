@@ -13,7 +13,7 @@
     "postcss-selector-parser": "^6.0.2",
     "vue": "^2.6.11",
     "vue-cli": "^2.9.6",
-    "vue-echarts": "^5.0.0-beta.0",
+    "vue-echarts": "^3.0.9",
     "vue-router": "^3.3.4"
   },
   "devDependencies": {

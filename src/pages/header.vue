@@ -138,6 +138,8 @@ export default {
         justify-content: space-between;
         color: white;
         background-image: linear-gradient(180deg, #007BFF, #005EFF);
+        position:relative;
+        z-index: 1000;
 
         .header-left {
             width: 465px;

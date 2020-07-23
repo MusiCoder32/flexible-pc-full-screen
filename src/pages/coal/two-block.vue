@@ -29,7 +29,17 @@
                 </div>
                 <div style="flex:1" class="ml8">
                     <oblique-angle-rect class="font-size-base" :rectHeight="rectHeight2">
-                        {{obliqueTextLeft}}
+                        <div style="width: 100%;text-align: left" class="font-size-medium font-weight-medium pl20">证照情况</div>
+                        <div class="content vBox vh_content_center vh_items_center">
+                            <div class="first-total">
+                                <div>11590</div>
+                                <div>安证超期报警企业数</div>
+                            </div>
+                            <div class="first-total two-total-position">
+                                <div>11590</div>
+                                <div>安证到期提醒企业数</div>
+                            </div>
+                        </div>
                     </oblique-angle-rect>
                 </div>
             </div>
@@ -116,6 +126,26 @@ export default {
             .rect-box-content {
                 .rect-box-content-left {
                     flex-wrap: wrap;
+                }
+                .first-total {
+                    width: 176px;
+                    height: 108px;
+                    background: url("../../assets/img/空天地_img.png") center center no-repeat;
+                    background-size: cover;
+                    margin-bottom: 30px;
+                    >div:first-child {
+                        padding:20px 0 10px 0;
+                        width:100%;
+                        text-align: center;
+                        font-size: 44px;
+                        font-family: BebasNeue;
+                    }
+                    >div:last-child {
+                        width:100%;
+                        text-align: center;
+                        font-size: 12px;
+                        font-weight: 400;
+                    }
                 }
             }
         }

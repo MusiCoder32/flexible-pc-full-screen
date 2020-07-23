@@ -11,7 +11,6 @@
             <oblique-angle-rect
                     class="font-size-base"
                     :rectHeight="rectHeight"
-                    :rectContentHeight="rectContentHeight"
                     :rectBorderTop="rectBorderTop"
             >
                 <div class="two-rect-content">
@@ -46,7 +45,6 @@
             <oblique-angle-rect
                     class="font-size-base"
                     :rectHeight="rectHeight"
-                    :rectContentHeight="rectContentHeight"
                     :rectBorderTop="rectBorderTop"
             >
                 <div class="two-rect-content">
@@ -60,14 +58,41 @@
                 </div>
             </oblique-angle-rect>
         </div>
+
         <div class="two-block-3">
             <oblique-angle-rect
                     class="font-size-base"
                     :rectHeight="rectHeight34"
-                    :rectContentHeight="rectContentHeight34"
             >
                 <div class="two-rect-content">
                     <div class="two-block-rect-title font-size-medium font-weight-medium">重点关注企业</div>
+                </div>
+                <div class="hBox vh_content_center table-box emphasis-attention-company3">
+                    <el-table
+                            :data="tableData3"
+                            class="company-table font-size-small"
+                            :header-cell-style="{backgroundColor:'#0847A1 !important',color:'white'}"
+                            :row-class-name="tableRowClassName"
+                            @cell-mouse-enter="enterTable"
+                            @cell-mouse-leave="leaveTable"
+                    >
+                        <el-table-column
+                                prop="companyName"
+                                show-overflow-tooltip
+                                label="企业名称"
+                                min-width="2">
+                        </el-table-column>
+                        <el-table-column
+                                prop="name"
+                                label="姓名"
+                                min-width="2">
+                        </el-table-column>
+                        <el-table-column
+                                prop="telephone"
+                                min-width="2"
+                                label="联系电话">
+                        </el-table-column>
+                    </el-table>
 
                 </div>
             </oblique-angle-rect>
@@ -76,14 +101,13 @@
             <oblique-angle-rect
                     class="font-size-base"
                     :rectHeight="rectHeight34"
-                    :rectContentHeight="rectContentHeight34"
             >
                 <div class="two-rect-content">
                     <div class="two-block-rect-title font-size-medium font-weight-medium">重点关注企业</div>
                 </div>
-                <div class="hBox vh_content_center table-box emphasis-attention-company">
+                <div class="hBox vh_content_center table-box emphasis-attention-company4">
                     <el-table
-                            :data="tableData"
+                            :data="tableData4"
                             class="company-table font-size-small"
                             :header-cell-style="{backgroundColor:'#0847A1 !important',color:'white'}"
                             :row-class-name="tableRowClassName"
@@ -156,111 +180,32 @@ export default {
             obliqueTextLeft: '金属非金属矿山领域',
             obliqueTextRight: '化工园区危险化学品领域',
             rectHeight: 'two-block-rect-height',
-            rectContentHeight: 'two-block-rect-content-height',
             rectBorderTop: 'two-block-rect-border-top',
             rectHeight34: 'two-block-rect-height34',
-            rectContentHeight34: 'two-block-rect-content-height34',
-            tableData: [
-                {
-                    telephone: '13359322022',
-                    name: '王小虎0',
-                    companyName: '四川成伟矿业有限公司'
-                }, {
-                    telephone: '13359322022',
-                    name: '王小虎1',
-                    companyName: '四川成伟矿业有限公司'
-                }, {
-                    telephone: '13359322022',
-                    name: '王小虎2',
-                    companyName: '四川成伟矿业有限公司'
-                }, {
-                    telephone: '13359322022',
-                    name: '王小虎3',
-                    companyName: '四川成伟矿业有限公司'
-                }, {
-                    telephone: '13359322022',
-                    name: '王小虎4',
-                    companyName: '四川成伟矿业有限公司'
-                }, {
-                    telephone: '13359322022',
-                    name: '王小虎',
-                    companyName: '四川成伟矿业有限公司'
-                }, {
-                    telephone: '13359322022',
-                    name: '王小虎',
-                    companyName: '四川成伟矿业有限公司'
-                }, {
-                    telephone: '13359322022',
-                    name: '王小虎',
-                    companyName: '四川成伟矿业有限公司'
-                }, {
-                    telephone: '13359322022',
-                    name: '王小虎',
-                    companyName: '四川成伟矿业有限公司'
-                }, {
-                    telephone: '13359322022',
-                    name: '王小虎',
-                    companyName: '四川成伟矿业有限公司'
-                }, {
-                    telephone: '13359322022',
-                    name: '王小虎',
-                    companyName: '四川成伟矿业有限公司'
-                }, {
-                    telephone: '13359322022',
-                    name: '王小虎',
-                    companyName: '四川成伟矿业有限公司'
-                }, {
-                    telephone: '13359322022',
-                    name: '王小虎',
-                    companyName: '四川成伟矿业有限公司'
-                }, {
-                    telephone: '13359322022',
-                    name: '王小虎',
-                    companyName: '四川成伟矿业有限公司'
-                }, {
-                    telephone: '13359322022',
-                    name: '王小虎',
-                    companyName: '四川成伟矿业有限公司'
-                }, {
-                    telephone: '13359322022',
-                    name: '王小虎',
-                    companyName: '四川成伟矿业有限公司'
-                }, {
-                    telephone: '13359322022',
-                    name: '王小虎',
-                    companyName: '四川成伟矿业有限公司'
-                }, {
-                    telephone: '13359322022',
-                    name: '王小虎',
-                    companyName: '四川成伟矿业有限公司'
-                }, {
-                    telephone: '13359322022',
-                    name: '王小虎',
-                    companyName: '四川成伟矿业有限公司'
-                }, {
-                    telephone: '13359322022',
-                    name: '王小虎',
-                    companyName: '四川成伟矿业有限公司'
-                }, {
-                    telephone: '13359322022',
-                    name: '王小虎',
-                    companyName: '四川成伟矿业有限公司'
-                }, {
-                    telephone: '13359322022',
-                    name: '王小虎',
-                    companyName: '四川成伟矿业有限公司'
-                }, {
-                    telephone: '13359322022',
-                    name: '王小虎',
-                    companyName: '四川成伟矿业有限公司'
-                }
-            ]
+            tableData3: [],
+            tableData4: [],
+            tableData: []
         };
     },
     mounted () {
+        let me = this
         this.$nextTick(() => {
             this.readyRoll();
         });
+        window.addEventListener('resize', () => {
+            clearInterval(me._tableSetInterval);
+            setTimeout(()=>{
+                    me.readyRoll();
+            },2000)
+        });
+        for (let i = 0; i < 19; i++) {
+            let obj = {
+                telephone: '13359322022',
+                name: '王小虎' + i,
+                companyName: '四川成伟矿业有限公司'
+            };
+            this.tableData.push(obj);
+        }
     },
     destroyed () {
         clearInterval(this._tableSetInterval);
@@ -273,15 +218,22 @@ export default {
             this.isMouseEnter = false;
         },
         readyRoll () {
-            this._trHeight = document.querySelector('div.emphasis-attention-company table  thead  tr').offsetHeight;
-            let bodyHeight = document.querySelector('div.emphasis-attention-company').offsetHeight;
-            this._containBoxStyle = document.querySelector('div.emphasis-attention-company div.el-table__body-wrapper.is-scrolling-none').style;
-            this._containBoxStyle.transform = `translate(0,-${this._trHeight * 2 + 'px'})`;
-            this._containBoxStyle.paddingTop = this._trHeight * 2 + 'px';
+            this._trHeight = document.querySelector('div.emphasis-attention-company3 table  thead  tr').offsetHeight;
+            let bodyHeight = document.querySelector('div.emphasis-attention-company3').offsetHeight;
 
-            if (bodyHeight < this._trHeight * this.tableData.length) {
-                this.tableData.push(this.tableData[0]);
-                this.tableData.push(this.tableData[1]);
+            let len = Math.floor(bodyHeight / this._trHeight);
+            this.tableData3 = this.tableData.slice(0, len + 2);
+            this.tableData4 = this.tableData.slice(len, this.tableData.length);
+            this._containBoxStyle3 = document.querySelector('div.emphasis-attention-company3 div.el-table__body-wrapper.is-scrolling-none').style;
+            this._containBoxStyle4 = document.querySelector('div.emphasis-attention-company4 div.el-table__body-wrapper.is-scrolling-none').style;
+
+            if (len < this.tableData4.length) {
+                this._containBoxStyle3.transform = `translate(0,-${this._trHeight * 2 + 'px'})`;
+                this._containBoxStyle3.paddingTop = this._trHeight * 2 + 'px';
+                this._containBoxStyle4.transform = `translate(0,-${this._trHeight * 2 + 'px'})`;
+                this._containBoxStyle4.paddingTop = this._trHeight * 2 + 'px';
+                this.tableData4.push(this.tableData[0]);
+                this.tableData4.push(this.tableData[1]);
                 this.beginRolling();
             }
         },
@@ -290,23 +242,35 @@ export default {
             this._tableSetInterval = setInterval(() => {
 
                 if (!me.isMouseEnter) {
-                    this._containBoxStyle.transition = 'all .5s';
-                    this._containBoxStyle.paddingTop = this._trHeight + 'px';
+                    this._containBoxStyle3.transition = 'all .5s';
+                    this._containBoxStyle3.paddingTop = this._trHeight + 'px';
+                    this._containBoxStyle4.transition = 'all .5s';
+                    this._containBoxStyle4.paddingTop = this._trHeight + 'px';
 
                     setTimeout(() => {
-                        this._containBoxStyle.transition = 'all .5s';
-                        this._containBoxStyle.paddingTop = 0;
+                        this._containBoxStyle3.transition = 'all .5s';
+                        this._containBoxStyle3.paddingTop = 0;
+                        this._containBoxStyle4.transition = 'all .5s';
+                        this._containBoxStyle4.paddingTop = 0;
                     }, 2000);
 
                     setTimeout(() => {
-                        this.tableData.shift();
-                        this.tableData.shift();
+                        this.tableData3.shift();
+                        this.tableData3.shift();
 
-                        this.tableData.push(this.tableData[0]);
-                        this.tableData.push(this.tableData[1]);
+                        this.tableData4.shift();
+                        this.tableData4.shift();
 
-                        this._containBoxStyle.transition = 'all 0s ease 0s';
-                        this._containBoxStyle.paddingTop = this._trHeight * 2 + 'px';
+                        this.tableData3.push(this.tableData4[0]);
+                        this.tableData3.push(this.tableData4[1]);
+
+                        this.tableData4.push(this.tableData3[0]);
+                        this.tableData4.push(this.tableData3[1]);
+
+                        this._containBoxStyle3.transition = 'all 0s ease 0s';
+                        this._containBoxStyle3.paddingTop = this._trHeight * 2 + 'px';
+                        this._containBoxStyle4.transition = 'all 0s ease 0s';
+                        this._containBoxStyle4.paddingTop = this._trHeight * 2 + 'px';
                     }, 2500);
                 }
             }, 4000);
@@ -346,11 +310,7 @@ export default {
     }
 
     .two-block-rect-height {
-        height: 180px;
-    }
-
-    .two-block-rect-content-height {
-        height: 150px;
+        height: 242px;
     }
 
     .two-block-rect-border-top {
@@ -359,11 +319,7 @@ export default {
     }
 
     .two-block-rect-height34 {
-        height: 426px;
-    }
-
-    .two-block-rect-content-height34 {
-        height: 396px;
+        height: 366px;
     }
 
     .two-block-box {
@@ -403,7 +359,7 @@ export default {
 
             .table-box {
                 width: 100%;
-                height: 330px;
+                height: 290px;
                 padding: 0 20px;
                 overflow: hidden;
 
