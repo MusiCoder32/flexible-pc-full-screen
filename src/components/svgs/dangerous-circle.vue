@@ -11,45 +11,51 @@ export default {
         return {
             id: 'DangerousCircle',
             width: 220,
-            height: 120,
+            height: 150,
             lineWidth: 15, // 进度条宽
             radius: 90, // 圆形进度条中心线的半径
             spaceBetween: 20, // 圆形进度条中心线的半径
             circleBackground: 'rgba(0,123,255,0.2)',
+            tickSize:7,
+            tickTitlePadding:-25,
+            tickStrokeWidth:1,
+            tickFontSize:14,
+            backgroundCirclePadding:42,
+            tickPadding:21,
             startAngle: -Math.PI // 起始角度，0为3点钟方向
         };
     },
     mounted () {
-        svgInit(this.drawSvg, this.id, [this.width, this.height, this.radius, this.lineWidth, this.spaceBetween]);
+        svgInit(this.drawSvg, this.id, [this.width, this.height, this.radius, this.lineWidth, this.spaceBetween,this.tickSize,this.tickTitlePadding,this.tickStrokeWidth,this.tickFontSize,this.backgroundCirclePadding,this.tickPadding]);
     },
     methods: {
-        drawSvg (svg, id, width, height, r, lineWidth, spaceBetween) {
-            svg.attr('width',width)
-            svg.attr('height',height)
-            let rx = width/2
-            let ry = height-12
+        drawSvg (svg, id, width, height, r, lineWidth, spaceBetween,tickSize,tickTitlePadding,tickStrokeWidth,tickFontSize,backgroundCirclePadding,tickPadding) {
+            svg.attr('width', width);
+            svg.attr('height', height);
+            let rx = width / 2;
+            let ry = height - backgroundCirclePadding;
             let me = this;
             var data = [
                 {
                     process: 10, // 进度 100为满
                     fill: '#007BFF', // 进度条颜色
                     stroke: 'none', // 进度条边框颜色
-                    strokeWidth: 2, // 进度条边框宽度
+                    strokeWidth: 2 // 进度条边框宽度
                 }, {
                     process: 20, // 进度 100为满
                     fill: '#FFD600', // 进度条颜色
                     stroke: 'none', // 进度条边框颜色
-                    strokeWidth: 2, // 进度条边框宽度
+                    strokeWidth: 2 // 进度条边框宽度
                 }, {
                     process: 40, // 进度 100为满
                     fill: '#FF732E', // 进度条颜色
                     stroke: 'none', // 进度条边框颜色
-                    strokeWidth: 0, // 进度条边框宽度
+                    strokeWidth: 0 // 进度条边框宽度
                 }, {
                     process: 30, // 进度 100为满
                     fill: '#FF5E54', // 进度条颜色
                     stroke: 'none', // 进度条边框颜色
-                    strokeWidth: 0, // 进度条边框宽度
+                    strokeWidth: 0 // 进度条边框宽度
                 }
             ];
 
@@ -58,11 +64,79 @@ export default {
                             .enter()
                             .append('g');
 
+            // 画圆环背景
             grounp.append('path')
                   .attr('fill', me.circleBackground)
                   .attr('stroke', 'none')
                   .attr('d', drawBackground);
 
+            // 画底部坐标
+
+            const xScale = d3.scaleLinear().domain([0, 6]).range([0, 3*spaceBetween])
+                             .nice();
+            const xAxios = d3.axisTop(xScale).ticks(3).tickSize(tickSize).tickPadding(tickTitlePadding).tickFormat((d, i) => {
+                let value = '蓝';
+                switch (i) {
+                    case 0:
+                        value = '蓝';
+                        break;
+                    case 1:
+                        value = '黄';
+
+                        break;
+                    case 2:
+                        value = '橙';
+                        break;
+                    case 3:
+                        value = '红';
+                        break;
+                }
+                return value;
+            });
+
+            let xAxiosLeft = grounp.append('g').call(xAxios)
+                  .attr('transform', `translate(${width / 2 - r - lineWidth / 2},${height-tickPadding})`);
+
+            const xAxios2 = d3.axisTop(xScale).ticks(3).tickSize(tickSize).tickPadding(tickTitlePadding).tickFormat((d, i) => {
+                let value = '';
+                switch (i) {
+                    case 0:
+                        value = '红';
+                        break;
+                    case 1:
+                        value = '橙';
+
+                        break;
+                    case 2:
+                        value = '黄';
+                        break;
+                    case 3:
+                        value = '蓝';
+                        break;
+                }
+                return value;
+            });
+
+            let xAxiosRight = grounp.append('g').call(xAxios2)
+                  .attr('transform', `translate(${width / 2 + r -3*spaceBetween+ lineWidth / 2},${height-tickPadding})`);
+
+            xAxiosRight.selectAll('line').attr('stroke', 'rgba(0,123,255,1)').attr('stroke-width', tickStrokeWidth).attr('fill', 'rgba(0,123,255,1)');
+            xAxiosRight.selectAll('text')
+                       .attr('style',`fill:rgba(255,255,255,0.2);font-family:PingFang;font-size:${tickFontSize}px;font-weight:400`)
+            xAxiosRight.select('path').remove()
+            xAxiosLeft.selectAll('line').attr('stroke', 'rgba(0,123,255,1)').attr('stroke-width', tickStrokeWidth).attr('fill', 'rgba(0,123,255,1)');
+            xAxiosLeft.selectAll('text')
+                       .attr('style',`fill:rgba(255,255,255,0.2);font-family:PingFang;font-size:${tickFontSize}px;font-weight:400`)
+            xAxiosLeft.select('path').remove()
+
+            grounp.append('g')
+                  .attr('transform', `translate(${width / 2},${height-tickPadding})`)
+                  .append('path')
+                  .attr('d',`m-${r+lineWidth/2},0 l${r*2+lineWidth},0`)
+                  .attr('stroke', 'rgba(0,123,255,1)')
+                  .attr('stroke-width', tickStrokeWidth)
+
+            //画圆环内
             grounp.append('path')
                   .attr('class', (d, i) => me.id + '_inner-circle_' + i)
                   .attr('fill', function (d) {
@@ -76,11 +150,12 @@ export default {
                   })
                   .attr('d', (d, i) => draw(d, i, 0));
 
+            //更新圆环内，产生动画效果
             data.forEach((item, index) => {
                 let process = 0;
                 let t = setInterval(function () {
                     process += 0.5;
-                    let path = svg.select('.'+me.id + '_inner-circle_' + index);
+                    let path = svg.select('.' + me.id + '_inner-circle_' + index);
                     path.attr('d', (d) => draw(d, index, process));
                     if (process >= data[index].process) {
                         clearInterval(t);
@@ -95,7 +170,7 @@ export default {
                 let endAngle = Math.PI;
                 var start_point = {
                     x: rx + Math.cos(startAngle) * (radius),
-                    y: ry+ Math.sin(startAngle) * (radius)
+                    y: ry + Math.sin(startAngle) * (radius)
                 };
                 var end_point = {
                     x: rx + Math.cos(endAngle + startAngle) * (radius),

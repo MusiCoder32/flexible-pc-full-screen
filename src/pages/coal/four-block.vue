@@ -2,7 +2,7 @@
     <div class="content four-block-box">
             <oblique-angle class="mb8" :borderWidth1="borderWidth1" :borderWidth2="borderWidth2"
                            :title="obliqueTextLeft"></oblique-angle>
-            <oblique-angle-rect class="font-size-base" :rectHeight="rectHeight" :rectContentHeight="rectContentHeight"
+            <oblique-angle-rect class="font-size-base" :rectHeight="rectHeight"
                                 :rectBorderTop="rectBorderTop">
                 4
             </oblique-angle-rect>
@@ -27,7 +27,6 @@ export default {
             borderWidth2: 'four-block-title-width-2',
             obliqueTextLeft: '空天地一体化技术',
             rectHeight: 'four-block-rect-height',
-            rectContentHeight: 'four-block-rect-content-height',
             rectBorderTop: 'four-block-rect-border-top',
         }
     }
@@ -45,12 +44,9 @@ export default {
     }
 
     .four-block-rect-height {
-        height: 204px;
+        height: 274px;
     }
 
-    .four-block-rect-content-height {
-        height: 184px;
-    }
 
     .four-block-rect-border-top {
         border-right-color: transparent !important;

@@ -256,7 +256,7 @@ export default {
   background-size: contain;
   position: absolute;
   top: 19px;
-  left: 0px;
+  left: -20px;
   .county-box {
     height: 721px;
     width: 878px;
@@ -413,7 +413,7 @@ export default {
   .legend {
     position: absolute;
     bottom: 104px;
-    right: 106px;
+    right: 126px;
     height: 80px;
     width: 200px;
     box-shadow: 0px 0px 16px 0px rgba(8, 33, 85, 0.2);

@@ -5,7 +5,7 @@
             <div class="sensor-left">
                 <div class="sensor-left-border-1"></div>
                 <div class="sensor-left-content">
-                    <div class="sensor-left-title font-size-medium">传感器布设数量统计</div>
+                    <div class="sensor-left-title font-size-medium">固态风险</div>
                     <div class="sensor-chart hBox vh_content_around vh_items_center">
                         <dangerous-circle></dangerous-circle>
                         <div>

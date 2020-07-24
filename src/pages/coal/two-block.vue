@@ -12,7 +12,9 @@
                 <div style="flex:2" class="hBox rect-box-content-left">
                     <oblique-angle-rect class="font-size-base mb8" style="min-width:40%;flex:1" :rectHeight="rectHeight"
                                         :rectBorderTop="rectBorderTop">
-                        <p>{{obliqueTextLeft}}</p>
+                        <div class="content">
+                            <bei-dou-pie></bei-dou-pie>
+                        </div>
                     </oblique-angle-rect>
                     <oblique-angle-rect class="font-size-base ml8 mb8" style="min-width:40%;flex:1"
                                         :rectHeight="rectHeight">
@@ -27,24 +29,8 @@
                         {{obliqueTextLeft}}
                     </oblique-angle-rect>
                 </div>
-                <div style="flex:1" class="ml8">
-                    <oblique-angle-rect class="font-size-base" :rectHeight="rectHeight2">
-                        <div style="width: 100%;text-align: left" class="font-size-medium font-weight-medium pl20">证照情况</div>
-                        <div class="content vBox vh_content_center vh_items_center">
-                            <div class="first-total">
-                                <div>11590</div>
-                                <div>安证超期报警企业数</div>
-                            </div>
-                            <div class="first-total two-total-position">
-                                <div>11590</div>
-                                <div>安证到期提醒企业数</div>
-                            </div>
-                        </div>
-                    </oblique-angle-rect>
-                </div>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -52,6 +38,7 @@
 import ObliqueAngle from '../../components/business_component/oblique-angle';
 import ObliqueIcon from '../../components/business_component/oblique-icon';
 import ObliqueAngleRect from '../../components/business_component/oblique-angle-rect';
+import BeiDouPie from '../../components/svgs/bei-dou-pie'
 
 
 export default {
@@ -59,7 +46,8 @@ export default {
     components: {
         ObliqueAngle,
         ObliqueAngleRect,
-        ObliqueIcon
+        ObliqueIcon,
+        BeiDouPie
     },
     data () {
         return {
@@ -69,9 +57,7 @@ export default {
             obliqueTextLeft: `ll`,
             obliqueTextRight: '预警手段',
             rectHeight: 'two-block-rect-height',
-            rectHeight2: 'two-block-rect-height2',
             rectBorderTop: 'two-block-rect-border-top',
-            rectHeight34: 'two-block-rect-height34'
         };
     },
     methods: {
@@ -165,21 +151,15 @@ export default {
     }
 
     .two-block-rect-height {
-        height: 180px;
+        height: 216px;
     }
 
-    .two-block-rect-height2 {
-        height: 368px;
-    }
 
     .two-block-rect-border-top {
         border-right-color: transparent !important;
         border-left: none !important;
     }
 
-    .two-block-rect-content-height34 {
-        height: 396px;
-    }
 
 
 </style>
