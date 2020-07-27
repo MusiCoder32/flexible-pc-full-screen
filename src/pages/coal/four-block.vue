@@ -23,11 +23,11 @@ export default {
     },
     data () {
         return {
-            borderWidth1: 'four-block-title-width-1',
-            borderWidth2: 'four-block-title-width-2',
+            borderWidth1: 'coal-four-block-title-width-1',
+            borderWidth2: 'coal-four-block-title-width-2',
             obliqueTextLeft: '空天地一体化技术',
-            rectHeight: 'four-block-rect-height',
-            rectBorderTop: 'four-block-rect-border-top',
+            rectHeight: 'coal-four-block-rect-height',
+            rectBorderTop: 'coal-four-block-rect-border-top',
         }
     }
 }
@@ -35,27 +35,22 @@ export default {
 
 <style lang="scss">
 
-    .four-block-title-width-2 {
+    .coal-four-block-title-width-2 {
         width: 696px;
     }
 
-    .four-block-title-width-1 {
+    .coal-four-block-title-width-1 {
         width: 667px;
     }
 
-    .four-block-rect-height {
+    .coal-four-block-rect-height {
         height: 274px;
     }
 
 
-    .four-block-rect-border-top {
+    .coal-four-block-rect-border-top {
         border-right-color: transparent !important;
         border-left: none !important;
-    }
-
-    .four-block-box {
-        padding-right: 30px;
-
     }
 
 </style>

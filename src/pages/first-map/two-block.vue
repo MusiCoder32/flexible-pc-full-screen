@@ -14,23 +14,60 @@
                     :rectBorderTop="rectBorderTop"
             >
                 <div class="two-rect-content">
+
                     <div class="two-block-rect-title font-size-medium font-weight-medium">覆盖企业</div>
-                    <rect-border :total="1000" title="覆盖企业"></rect-border>
-                    <div class="pie-container">
-                        <div v-for="(item,key) in pieList" class="pie-box" :key="item.name+key">
-                            <div class="two-block-pie">
-                                <slider-pie
-                                        :value="item.value/total"
-                                        backgroundColor="#979797"
-                                        :foregroundColor="item.foregroundColor"
-                                ></slider-pie>
+                    <div class="company-statistics-box">
+                        <div class="total-box">
+                            <div class="total-number">
+                                <img src="../../assets/img/index/13.png"/>
+                                <img src="../../assets/img/index/12.png"/>
+                                <div class="icon-box">
+                                    <img src="../../assets/img/index/9.png"/>
+                                    <img src="../../assets/img/index/8.png"/>
+                                    <img src="../../assets/img/index/11.png"/>
+                                    <img src="../../assets/img/index/10.png"/>
+                                </div>
+                                <div class="number">242</div>
                             </div>
-                            <div class="pie-box-left">
-                                <div class="font-size-x2 font-weight-medium font-family-bebas">{{item.value}}</div>
-                                <div class="font-weight-medium font-size-extra-small">{{item.name}}</div>
+                            <div class="total-title">
+                                企业总数
+                            </div>
+                        </div>
+                        <div class="item-box">
+                            <div>
+                                <div>
+                                    <div>412</div>
+                                    <div>尾矿库</div>
+                                </div>
+                                <div>
+                                    <div>524</div>
+                                    <div>排土场</div>
+                                </div>
+                            </div>
+                            <div>
+                                <div>露天广场</div>
+                                <div>54</div>
                             </div>
                         </div>
                     </div>
+
+
+                    <!--<rect-border :total="1000" title="覆盖企业"></rect-border>-->
+                    <!--<div class="pie-container">-->
+                    <!--<div v-for="(item,key) in pieList" class="pie-box" :key="item.name+key">-->
+                    <!--<div class="two-block-pie">-->
+                    <!--<slider-pie-->
+                    <!--:value="item.value/total"-->
+                    <!--backgroundColor="#979797"-->
+                    <!--:foregroundColor="item.foregroundColor"-->
+                    <!--&gt;</slider-pie>-->
+                    <!--</div>-->
+                    <!--<div class="pie-box-left">-->
+                    <!--<div class="font-size-x2 font-weight-medium font-family-bebas">{{item.value}}</div>-->
+                    <!--<div class="font-weight-medium font-size-extra-small">{{item.name}}</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
                 </div>
             </oblique-angle-rect>
         </div>
@@ -50,10 +87,17 @@
                 <div class="two-rect-content">
                     <div class="two-block-rect-title font-size-medium font-weight-medium">传感器布设数量统计</div>
                     <div class="hBox vh_content_around" style="width: 100%;flex-wrap:wrap">
-                        <rect-border class="mb20" :total="100" title="生产企业(家)"></rect-border>
-                        <rect-border class="mb20" :total="100" title="使用企业(家)"></rect-border>
-                        <rect-border :total="100" title="经营企业(家)"></rect-border>
-                        <rect-border :total="100" title="安委会企业(家)"></rect-border>
+                        <!--<rect-border class="mb20" :total="100" title="生产企业(家)"></rect-border>-->
+                        <!--<rect-border class="mb20" :total="100" title="使用企业(家)"></rect-border>-->
+                        <!--<rect-border :total="100" title="经营企业(家)"></rect-border>-->
+                        <!--<rect-border :total="100" title="安委会企业(家)"></rect-border>-->
+                        <div v-for="(item,index) in chemicalCompanyArr" :key="item.name + index"
+                             class="chemical-company-item">
+                            <div>
+                                <div>{{item.value}}</div>
+                                <div>{{item.name}}</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </oblique-angle-rect>
@@ -158,6 +202,21 @@ export default {
         return {
             total: 1000,
             isMouseEnter: false,
+            chemicalCompanyArr: [
+                {
+                    name: '危险化学品企业数量',
+                    value: 98
+                }, {
+                    name: '重大危险源数量',
+                    value: 98
+                }, {
+                    name: '化工园区数量',
+                    value: 98
+                }, {
+                    name: '重点监管工艺数量',
+                    value: 98
+                }
+            ],
             pieList: [
                 {
                     value: 427,
@@ -188,15 +247,15 @@ export default {
         };
     },
     mounted () {
-        let me = this
+        let me = this;
         this.$nextTick(() => {
             this.readyRoll();
         });
         window.addEventListener('resize', () => {
             clearInterval(me._tableSetInterval);
-            setTimeout(()=>{
-                    me.readyRoll();
-            },2000)
+            setTimeout(() => {
+                me.readyRoll();
+            }, 2000);
         });
         for (let i = 0; i < 19; i++) {
             let obj = {
@@ -296,6 +355,32 @@ export default {
 </script>
 
 <style lang="scss">
+    @keyframes scanRotate {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes iconDebounce {
+
+        0% {
+            transform: translateY(0px);
+        }          25% {
+            transform: translateY(2px);
+        }          50% {
+            transform: translateY(0px);
+        }          75% {
+            transform: translateY(-2px);
+        }          100% {
+            transform: translateY(0px);
+        }
+
+    }
+
+
     .two-block-oblique-icon {
         left: 272px;
         top: 8px;
@@ -340,18 +425,192 @@ export default {
                     line-height: 36px;
                     transform: translate(0, -7.5px);
                 }
-                .pie-container {
+
+                .company-statistics-box {
                     display: flex;
-                    justify-content: space-between;
-                    .pie-box {
-                        height: 70px;
-                        flex: 1;
+                    width: 100%;
+                    height: 166px;
+                    justify-content: space-around;
+                    .total-box {
+                        width: 127px;
+                        height: 100%;
                         display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
                         align-items: center;
-                        .two-block-pie {
-                            width: 52px;
-                            height: 52px;
-                            margin-right: 7px;
+                        .total-number {
+                            width: 127px;
+                            height: 130px;
+                            position: relative;
+                            margin-bottom: 9px;
+                            > img {
+                                position: absolute;
+                                &:first-child {
+                                    width: 127px;
+                                    height: 130px;
+                                }
+                                &:nth-child(2) {
+                                    width: 120px;
+                                    height: 120px;
+                                    top: 7.5px;
+                                    left: 2px;
+                                    animation: scanRotate 5s infinite linear;
+                                }
+                            }
+                            > div.icon-box {
+                                width: 100%;
+                                height: 100%;
+                                position: relative;
+                                > img {
+                                    position: absolute;
+                                    width: 13px;
+                                    height: 14px;
+                                    animation: iconDebounce 2s infinite linear;
+
+                                    &:nth-child(1) {
+                                        right: 0;
+                                        top: 0;
+
+                                    }
+                                    &:nth-child(2) {
+                                        left: 0;
+                                        top: 0;
+                                    }
+                                    &:nth-child(3) {
+                                        left: 0;
+                                        bottom: 0;
+                                    }
+                                    &:nth-child(4) {
+                                        right: 0;
+                                        bottom: 0;
+                                    }
+                                }
+
+                            }
+
+                            > div.number {
+                                width: 100%;
+                                height: 100%;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                position: absolute;
+                                top: 3px;
+                                left: -2px;
+                                z-index: 1000;
+                                font-size: 36px;
+                                font-family: BebasNeue;
+                            }
+                        }
+                        .total-title {
+                            width: 80px;
+                            height: 30px;
+                            background: url("../../assets/img/index/7.png") center no-repeat;
+                            background-size: contain;
+                            line-height: 30px;
+                            text-align: center;
+                            font-size: 12px;
+                            font-family: PingFangSC, PingFangSC-Regular;
+                            font-weight: 400
+                        }
+                    }
+                    .item-box {
+                        width: 214px;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        align-items: center;
+                        > div:first-child {
+                            width: 100%;
+                            display: flex;
+                            justify-content: space-between;
+                            > div {
+                                background: url("../../assets/img/index/5.png") no-repeat;
+                                background-size: contain;
+                                width: 98px;
+                                height: 102px;
+                                position: relative;
+                                &:hover {
+                                    background: url("../../assets/img/index/4.png") no-repeat;
+                                    background-size: contain;
+                                }
+                                > div:first-child {
+                                    width: 100%;
+                                    text-align: center;
+                                    position: absolute;
+                                    top: 15px;
+                                    font-size: 36px;
+                                    font-family: BebasNeue;
+                                }
+                                > div:last-child {
+                                    width: 100%;
+                                    text-align: center;
+                                    position: absolute;
+                                    top: 64px;
+                                    font-size: 12px;
+                                    font-weight: 400;
+                                }
+                            }
+                        }
+                        > div:last-child {
+                            background: url("../../assets/img/index/6.png") no-repeat;
+                            background-size: contain;
+                            width: 214px;
+                            height: 58px;
+                            position: relative;
+                            > div:last-child {
+                                height: 58px;
+                                line-height: 60px;
+                                position: absolute;
+                                left: 130px;
+                                font-size: 36px;
+                                font-family: BebasNeue;
+                            }
+                            > div:first-child {
+                                height: 100%;
+                                line-height: 60px;
+                                text-align: center;
+                                position: absolute;
+                                left: 59px;
+                                font-size: 12px;
+                                font-weight: 400;
+                            }
+                        }
+                    }
+                }
+
+                .chemical-company-item {
+                    width: 50%;
+                    height: 90px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    > div {
+                        width: 190px;
+                        height: 67px;
+                        background: url("../../assets/img/index/2.png") center no-repeat;
+                        background-size: contain;
+                        position: relative;
+                        display: flex;
+                        justify-content: center;
+                        &:hover {
+                            background: url("../../assets/img/index/1.png") center no-repeat;
+                            background-size: contain;
+                        }
+                        > div {
+                            width: 100%;
+                            position: absolute;
+                            text-align: center;
+                        }
+                        > div:first-child {
+                            top: 2px;
+                            font-size: 36px;
+                            font-family: BebasNeue;
+                        }
+                        > div:last-child {
+                            top: 45px;
+                            font-size: 12px;
                         }
                     }
                 }

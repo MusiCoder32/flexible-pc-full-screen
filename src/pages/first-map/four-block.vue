@@ -11,7 +11,10 @@
                         <div>{{item.name}}</div>
                     </div>
                 </div>
-                <div class="problem-statistics"></div>
+                <div class="problem-statistics">
+                    <div>8604</div>
+                    <div>发现问题统计</div>
+                </div>
             </div>
 
         </oblique-angle-rect>
@@ -83,9 +86,29 @@ export default {
     }
 
     .problem-statistics {
-        width:108px;
-        height:159px;
-        background: rebeccapurple;
+        width:116px;
+        height:167px;
+        background: url("../../assets/img/index/14.png") center no-repeat;
+        background-size: contain;
+        position: relative;
+        > div {
+            width: 100%;
+            position: absolute;
+            text-align: center;
+        }
+        > div:first-child {
+            top: 55px;
+            font-size: 36px;
+            font-family: BebasNeue;
+        }
+        > div:last-child {
+            height: 30px;
+            line-height: 30px;
+            background: url("../../assets/img/index/15.png") center no-repeat;
+            background-size: contain;
+            top: 110px;
+            font-size:12px;
+        }
     }
     .two-total-position {
         top: 111px !important;
