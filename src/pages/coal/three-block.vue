@@ -1,6 +1,6 @@
 <template>
     <div class="content three-block">
-        <oblique-angle></oblique-angle>
+        <oblique-angle title="企业监测情况统计"></oblique-angle>
         <div class="sensor">
             <div class="sensor-left">
                 <div class="sensor-left-border-1"></div>

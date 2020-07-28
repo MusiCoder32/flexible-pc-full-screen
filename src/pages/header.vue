@@ -2,23 +2,23 @@
     <div class="vBox vh_content_start">
         <div class="header font-size-medium">
             <div class="logo">
-                <img class="margin8" src="../assets/img/logo.png"/>
+                <img class="mr8" src="../assets/img/logo.png"/>
             </div>
             <div @click="goto('coal')" class="menu hBox vh_items_center header-not-coal-icon">
-                <img class="margin8" src="../assets/img/web1x_非煤logo_img.png"/>
+                <img class="mr8" src="../assets/img/web1x_非煤logo_img.png"/>
                 金属非金属矿山安全生产风险智能监测系统
             </div>
             <div @click="goto('chemical')" class="menu hBox vh_items_center header-chemical-icon">
-                <img class="margin8" src="../assets/img/web1x_化工logo_img.png"/>
+                <img class="mr8" src="../assets/img/web1x_化工logo_img.png"/>
                 化工园区危险化学品应急监控及事故预警
             </div>
             <div class=" hBox vh_content_between vh_items_center header-left">
                 <div class="hBox vh_items_center header-left-date">
-                    <img class="margin8" src="../assets/img/web1x_日期icon_img.png"/>
+                    <img class="mr8" src="../assets/img/web1x_日期icon_img.png"/>
                     2020年06月16日 星期二
                 </div>
                 <div class=" hBox vh_items_center header-left-time">
-                    <img class="margin8" src="../assets/img/web1x_时间icon_img.png" height="20" width="20"/>
+                    <img class="mr8" src="../assets/img/web1x_时间icon_img.png" height="20" width="20"/>
                     22:50:40
                 </div>
                 <!-- 全屏显示 -->

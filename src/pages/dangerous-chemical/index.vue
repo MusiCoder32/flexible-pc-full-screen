@@ -40,7 +40,7 @@ export default {
 <style lang="scss" scoped>
     .first-map {
         flex-wrap: wrap;
-        align-items: center;
+        align-items: flex-start;
         > div {
             width: 50%;
         }
@@ -49,13 +49,14 @@ export default {
             position: relative;
         }
         .two-block {
-            height: 716px;
+            height: 646px;
         }
         .three-block {
             height: 286px;
         }
         .four-block {
-            height: 286px;
+            transform: translateY(-70px);
+            height: 356px;
         }
     }
 </style>
