@@ -253,7 +253,8 @@ export default {
         });
         window.addEventListener('resize', () => {
             clearInterval(me._tableSetInterval);
-            setTimeout(() => {
+            me._rollSetTime && clearTimeout(me._rollSetTime)
+            me._rollSetTime = setTimeout(() => {
                 me.readyRoll();
             }, 2000);
         });
