@@ -19,7 +19,7 @@
             </div>
             <div class="sensor-right">
                 <oblique-angle-rect>
-                    <div class="content ml20 vBox">
+                    <div class="content ml20 vBox bigger-dangerous-box">
                         <div class="two-block-rect-title font-size-medium font-weight-medium">重大风险源总量</div>
                         <div class="hBox vh_items_center vh_content_around ktd-content" style="flex-grow: 1">
                             <div>
@@ -109,6 +109,10 @@ export default {
         to {
             transform: rotate(360deg);
         }
+    }
+
+    .bigger-dangerous-box {
+        height: 174px;
     }
 
     .three-block {
