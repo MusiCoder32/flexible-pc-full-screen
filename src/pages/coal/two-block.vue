@@ -294,7 +294,6 @@ export default {
                                 font-family: BebasNeue;
                             }
                             > div:last-child {
-                                width: 100%;
                                 text-align: left;
                                 top: 12px;
                                 left:14px;

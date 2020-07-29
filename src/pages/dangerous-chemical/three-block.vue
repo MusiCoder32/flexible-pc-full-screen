@@ -5,32 +5,12 @@
             <div class="sensor-left">
                 <div class="sensor-left-border-1"></div>
                 <div class="sensor-left-content">
-                    <div class="sensor-left-title font-size-medium">固态风险</div>
+                    <div class="sensor-left-title font-size-medium">危险化学品企业数量</div>
                     <div class="sensor-chart hBox vh_content_around vh_items_center">
-                        <dangerous-circle></dangerous-circle>
-                        <div>
-                            <div>
-                                <p class="font-size-x6 font-family-bebas ">4326</p>
-                                <p class="font-weight-medium">重点关注企业</p>
-                            </div>
-                            <div class="center-content">
-                                <div class="title-icon">
-                                    <div class="icon left-top"></div>
-                                    <pre>低风险  </pre>
-                                </div>
-                                <div class="title-icon">
-                                    <div class="icon right-top"></div>
-                                    <div>一般风险</div>
-                                </div>
-                                <div class="title-icon">
-                                    <div class="icon left-bottom"></div>
-                                    <div>较大风险</div>
-                                </div>
-                                <div class="title-icon">
-                                    <div class="icon right-bottom"></div>
-                                    <pre>低风险  </pre>
-                                </div>
-                            </div>
+                        <div v-for="(item,index) in chemicalCompany" :key="item.name + index"
+                             class="vBox vh_content_between vh_items_center">
+                            <div>{{item.value}}</div>
+                            <div>{{item.name}}</div>
                         </div>
                     </div>
                 </div>
@@ -39,8 +19,24 @@
             </div>
             <div class="sensor-right">
                 <oblique-angle-rect>
-                    <div style="width: 100%;height: 100%">
-                        <pre-warning-bar></pre-warning-bar>
+                    <div class="content ml20 vBox">
+                        <div class="two-block-rect-title font-size-medium font-weight-medium">重大风险源总量</div>
+                        <div class="hBox vh_items_center vh_content_around ktd-content" style="flex-grow: 1">
+                            <div>
+                                <div>3288</div>
+                                <div>累计总数</div>
+                            </div>
+                            <div class="vBox vh_content_between mr20" style="height: 100%">
+                                <div v-for="(item,index) in dangerousTotal" :key="item.name + index"
+                                     class="dangerous-class-box">
+                                    <div>{{item.name}}</div>
+                                    <div>
+                                        <div :style="{background:item.bgColor,width:`${item.value/dangerousTotalNumber*200}px`}"></div>
+                                        {{item.value}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </oblique-angle-rect>
             </div>
@@ -49,22 +45,72 @@
 </template>
 
 <script>
-    import PreWarningBar from '../../components/charts/pre-warning-bar'
-    import ObliqueAngle from '../../components/business_component/oblique-angle'
-    import ObliqueAngleRect from '../../components/business_component/oblique-angle-rect'
-    import DangerousCircle from '../../components/svgs/dangerous-circle'
-    export default {
-        name: 'three-block',
-        components: {
-            PreWarningBar,
-            ObliqueAngle,
-            ObliqueAngleRect,
-            DangerousCircle
-        }
-    };
+import PreWarningBar from '../../components/charts/pre-warning-bar';
+import ObliqueAngle from '../../components/business_component/oblique-angle';
+import ObliqueAngleRect from '../../components/business_component/oblique-angle-rect';
+import DangerousCircle from '../../components/svgs/dangerous-circle';
+
+export default {
+    name: 'three-block',
+    components: {
+        PreWarningBar,
+        ObliqueAngle,
+        ObliqueAngleRect,
+        DangerousCircle
+    },
+    data () {
+        return {
+            chemicalCompany: [
+                {
+                    value: 288,
+                    name: '生产企业（家）'
+                }, {
+                    value: 288,
+                    name: '使用企业（家）'
+                }, {
+                    value: 288,
+                    name: '经营企业（家）'
+                }, {
+                    value: 288,
+                    name: '安委会企业（家）'
+                }
+            ],
+            dangerousTotalNumber: 400,
+            dangerousTotal: [
+                {
+                    value: 88,
+                    name: '一级',
+                    bgColor: 'rgba(255,94,84,1)'
+                },
+                {
+                    value: 112,
+                    name: '二级',
+                    bgColor: 'rgba(255,115,46,1)'
+                }, {
+                    value: 88,
+                    name: '三级',
+                    bgColor: 'rgba(255,214,0,1)'
+                }, {
+                    value: 112,
+                    name: '四级',
+                    bgColor: 'rgba(0,123,255,1)'
+                }
+            ]
+        };
+    }
+};
 </script>
 
 <style lang="scss" scoped>
+    @keyframes chemical-rotate {
+        from {
+            transform: rotate(0);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
     .three-block {
         padding-left: 30px;
         padding-right: 15px;
@@ -87,47 +133,45 @@
                         width: 144px;
                         height: 22px;
                         font-weight: 400;
-                        margin-left:15px;
+                        margin-left: 15px;
                         line-height: 22px;
                     }
                     .sensor-chart {
                         height: 152px;
                         width: 100%;
-                        .center-content {
-                            margin-top:17px;
-                            width: 200px;
-                            height: 50px;
-                            font-size: 10px;
-                            display: flex;
-                            flex-wrap: wrap;
-                            .title-icon {
-                                width: 50%;
-                                display: flex;
-                                justify-content: flex-start;
-                                align-items: center;
-                                .icon {
-                                    width: 10px;
-                                    height: 10px;
-                                    margin-right: 6px;
-                                    border-radius: 50%;
-                                    box-shadow: 0px 0px 8px 0px #007bff;
+                        > div {
+                            > div:first-child {
+                                width: 94px;
+                                height: 82px;
+                                line-height: 82px;
+                                font-size: 42px;
+                                font-family: BebasNeue;
+                                text-align: center;
+                                background: url("../../assets/img/chemical/17.png") center no-repeat;
+                                background-size: contain;
+                                margin-bottom: 19px;
+                                position: relative;
+
+                                &:before {
+                                    content: "";
+                                    width: 76px;
+                                    height: 76px;
+                                    left: 9.5px;
+                                    top: 2.5px;
+                                    position: absolute;
+                                    background: url("../../assets/img/chemical/9.png") center no-repeat;
+                                    background-size: contain;
+                                    animation: chemical-rotate 20s infinite linear;
                                 }
-                                .left-top {
-                                    background: #007bff;
-                                    border: 1px solid #005eff;
-                                }
-                                .left-bottom {
-                                    background: #ff732e;
-                                    border: 1px solid #ff732e;
-                                }
-                                .right-top {
-                                    background: #ffd600;
-                                    border: 1px solid #ffd600;
-                                }
-                                .right-bottom {
-                                    background: #ff5e54;
-                                    border: 1px solid #ff5e54;
-                                }
+
+                            }
+                            > div:last-child {
+                                width: 111px;
+                                text-align: center;
+                                height: 17px;
+                                line-height: 17px;
+                                opacity: 0.7;
+                                font-size: 12px;
                             }
                         }
                     }
@@ -147,7 +191,82 @@
             }
 
             .sensor-right {
-                width:49%;
+                width: 49%;
+                .ktd-content {
+                    > div:first-child {
+                        width: 110px;
+                        height: 132px;
+                        background: url("../../assets/img/chemical/2.png") center center no-repeat;
+                        background-size: contain;
+                        position: relative;
+
+                        > div {
+                            width: 100%;
+                            position: absolute;
+                            text-align: center;
+                        }
+                        > div:first-child {
+                            top: 40px;
+                            font-size: 36px;
+                            font-family: BebasNeue;
+                        }
+                        > div:last-child {
+                            width: 100%;
+                            height: 36px;
+                            line-height: 36px;
+                            text-align: center;
+                            bottom: 20px;
+                            font-size: 12px;
+
+                        }
+                    }
+                    > div:last-child {
+                        > div.dangerous-class-box {
+                            width: 305px;
+                            height: 40px;
+                            background: url("../../assets/img/chemical/15.png") center center no-repeat;
+                            background-size: contain;
+                            position: relative;
+                            &:hover {
+                                background: url("../../assets/img/chemical/16.png") center center no-repeat;
+                                background-size: contain;
+                            }
+                            > div {
+                                width: 100%;
+                                position: absolute;
+                                text-align: center;
+                            }
+                            > div:first-child {
+                                font-size: 12px;
+                                height: 40px;
+                                line-height: 40px;
+                                text-align: left;
+                                left: 40px;
+                                top: 2px;
+                                font-family: BebasNeue;
+                            }
+                            > div:last-child {
+                                width: 100%;
+                                height: 40px;
+                                text-align: left;
+                                top: 1px;
+                                left: 80px;
+                                font-size: 14px;
+                                display: flex;
+                                justify-content: flex-start;
+                                align-items: center;
+                                > div {
+                                    width: 200px;
+                                    height: 14px;
+                                    background: red;
+                                    border-radius: 3px;
+                                    margin-right: 5px;
+                                }
+                            }
+                        }
+
+                    }
+                }
             }
         }
     }

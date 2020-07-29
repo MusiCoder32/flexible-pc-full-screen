@@ -1,5 +1,5 @@
 <template>
-    <div class="content four-block-box">
+    <div class="content pr30">
         <oblique-angle class="mb8" :borderWidth1="borderWidth1" :borderWidth2="borderWidth2"
                        :title="obliqueTextLeft"></oblique-angle>
         <oblique-angle-rect class="font-size-base" :rectHeight="rectHeight" :rectContentHeight="rectContentHeight"
@@ -144,11 +144,6 @@ export default {
     .four-block-rect-border-top {
         border-right-color: transparent !important;
         border-left: none !important;
-    }
-
-    .four-block-box {
-        padding-right: 30px;
-
     }
 
 </style>

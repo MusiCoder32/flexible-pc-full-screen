@@ -84,9 +84,9 @@
                     :rectHeight="rectHeight"
                     :rectBorderTop="rectBorderTop"
             >
-                <div class="two-rect-content">
+                <div class="two-rect-content vBox" style="height: 100%;">
                     <div class="two-block-rect-title font-size-medium font-weight-medium">传感器布设数量统计</div>
-                    <div class="hBox vh_content_around" style="width: 100%;flex-wrap:wrap">
+                    <div class="hBox vh_content_around " style="width: 100%;flex-wrap:wrap;flex-grow: 1">
                         <!--<rect-border class="mb20" :total="100" title="生产企业(家)"></rect-border>-->
                         <!--<rect-border class="mb20" :total="100" title="使用企业(家)"></rect-border>-->
                         <!--<rect-border :total="100" title="经营企业(家)"></rect-border>-->
@@ -454,7 +454,7 @@ export default {
                                     height: 120px;
                                     top: 7.5px;
                                     left: 2px;
-                                    animation: scanRotate 5s infinite linear;
+                                    animation: scanRotate 10s infinite linear;
                                 }
                             }
                             > div.icon-box {
@@ -582,10 +582,12 @@ export default {
 
                 .chemical-company-item {
                     width: 50%;
-                    height: 90px;
                     display: flex;
                     justify-content: center;
                     align-items: center;
+                    &:nth-child(n + 3) {
+                        align-items: flex-end;
+                    }
                     > div {
                         width: 190px;
                         height: 67px;
