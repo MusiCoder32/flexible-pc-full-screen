@@ -29,8 +29,31 @@ export default new Router({
                     component: () => import('../pages/coal/index.vue'),
                     meta: {title: '非煤一张图'}
                 },
+                {
+                    path: '/404',
+                    component: () => import( '../pages/404.vue'),
+                    meta: { title: '404' }
+                },
 
             ]
+        },
+        {
+            path: '/login',
+            component: () => import( '../pages/Login.vue'),
+            name: 'login',
+            meta: { title: '登录' }
+        },
+
+                {
+            path: '/beidou',
+            component: () => import( '../pages/beidou/Map.vue'),
+            name: 'beidou',
+            meta: { title: '北斗+' }
+        },
+
+        {
+            path: '*',
+            redirect: '/404'
         }
     ]
 });

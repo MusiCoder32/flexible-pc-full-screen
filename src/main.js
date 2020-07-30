@@ -9,7 +9,12 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css'; // 默认主题
 import '@/assets/element-variables.scss'
 
+import Request from './utils/request';
+import UrlConfig from './common/url-config';
+
 Vue.config.productionTip = false
+Vue.prototype.$req = Request;
+Vue.prototype.$url = UrlConfig;
 
 ECharts.registerMap('sichuan', sichuanMap)
 
@@ -22,7 +27,12 @@ Vue.use(ElementUI, {
 //使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {
     document.title = `${to.meta.title} | 安信科创`;
-    next()
+    const isLogin = localStorage.getItem('isLogin');
+    if (!isLogin && to.path !== '/login') {
+        next('/login');
+    } else {
+        next()
+    }
 });
 
 new Vue({

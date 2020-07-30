@@ -1,12 +1,27 @@
 <template>
     <div class="content">
+        <div class="chemical-nav">
+            <div @mouseover="RightActive=false" class="nav-left vh_content_end">
+                <div  :class="{'pr':!RightActive}">
+                    <img class="bg1" v-if="RightActive" src="../../assets/img/chemical/3.png"/>
+                    <img class="bg2" v-else style="transform: rotate(180deg)" src="../../assets/img/chemical/5.png"/>
+                </div>
+            </div>
+            <div  @mouseover="RightActive=true" class="nav-right vh_content_start">
+                <div :class="{'pl':RightActive}">
+                    <img class="bg1" style="transform: rotate(180deg)" v-if="!RightActive"
+                         src="../../assets/img/chemical/3.png"/>
+                    <img class="bg2" v-else src="../../assets/img/chemical/5.png"/>
+                </div>
+            </div>
 
+        </div>
     </div>
 </template>
 
 <script>
 import SliderPie from '../../components/charts/slider-pie';
-import MapMarker from '../../components/svgs/pie-bar-animation'
+import MapMarker from '../../components/svgs/pie-bar-animation';
 
 export default {
     name: 'first-block',
@@ -16,7 +31,8 @@ export default {
     },
     data () {
         return {
-            isSliderExpand: false
+            isSliderExpand: false,
+            RightActive: true
         };
     },
     methods: {
@@ -30,4 +46,74 @@ export default {
 
 <style lang="scss" scoped>
 
+    .pr {
+        transform: translateX(15px);
+    }
+
+    .pl {
+        transform: translateX(-15px);
+    }
+
+    .chemical-nav {
+        position: absolute;
+        top: 32px;
+        right: -60px;
+        display: flex;
+        align-items: center;
+        z-index: 1000;
+        > div {
+            width: 200px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            .bg1 {
+                width: 102px;
+                height: 34px;
+            }
+            .bg2 {
+                width: 132px;
+                height: 64px;
+            }
+        }
+        .nav-left {
+            color:rgba(255,255,255,0.5);
+            &:before {
+                position: absolute;
+                width: 200px;
+                height: 68px;
+                content: '企业分布';
+                line-height: 64px;
+                text-align: right;
+                font-size: 14px;
+                font-weight: 400;
+                padding-right:20px;
+                z-index: 1000;
+
+            }
+            :hover {
+                color:rgba(255,255,255,1);
+            }
+        }
+        .nav-right {
+            color:rgba(255,255,255,0.5);
+            &:before {
+                position: absolute;
+                width: 200px;
+                height: 64px;
+                content: '园区分布';
+                padding-left:20px;
+                line-height: 60px;
+                text-align: left;
+                opacity: 0.5;
+                font-size: 14px;
+                font-weight: 400;
+                z-index: 1000;
+
+            }
+            :hover {
+                color:rgba(255,255,255,1);
+            }
+        }
+    }
 </style>
