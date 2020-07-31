@@ -52,7 +52,7 @@ export default {
         return {
             borderWidth1: 'coal-four-block-title-width-1',
             borderWidth2: 'coal-four-block-title-width-2',
-            obliqueTextLeft: '空天地一体化技术',
+            obliqueTextLeft: '重点关注企业',
             rectHeight: 'coal-four-block-rect-height',
             rectBorderTop: 'coal-four-block-rect-border-top',
             tableData: [],

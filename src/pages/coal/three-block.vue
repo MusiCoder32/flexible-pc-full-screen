@@ -11,7 +11,7 @@
                         <div>
                             <div>
                                 <p class="font-size-x6 font-family-bebas ">4326</p>
-                                <p class="font-weight-medium">重点关注企业</p>
+                                <p class="font-weight-medium">试点企业</p>
                             </div>
                             <div class="center-content">
                                 <div class="title-icon">

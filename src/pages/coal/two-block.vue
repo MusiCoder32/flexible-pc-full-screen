@@ -79,7 +79,7 @@
                     </oblique-angle-rect>
                     <oblique-angle-rect class="font-size-base ml8" style="min-width:40%;flex:1"
                                         :rectHeight="rectHeight">
-                        <div class="two-block-rect-title font-size-medium font-weight-medium">证照情况</div>
+                        <div class=" ml20 mb6 two-block-rect-title font-size-medium font-weight-medium">证照情况</div>
                         <div class="hBox vh_items_center vh_content_around zz-content" style="flex-grow: 1">
                             <div>
                                 <div>88</div>
@@ -157,6 +157,7 @@ export default {
             width: 491px;
             margin-bottom: 40px;
             .navigation-item {
+                cursor:pointer;
                 width: 150px;
                 height: 40px;
                 opacity: 0.5;

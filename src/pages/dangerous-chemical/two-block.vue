@@ -40,10 +40,11 @@
                             <div class="hBox vh_items_center vh_content_around ktd-content" style="flex-grow: 1">
                                 <div>
                                     <div>3288</div>
-                                    <div>覆盖企业数量</div>
-                                </div>                                <div>
+                                    <div>覆盖园区数量</div>
+                                </div>
+                                <div>
                                     <div>3288</div>
-                                    <div>覆盖企业数量</div>
+                                    <div>当前预警数量</div>
                                 </div>
                             </div>
                         </div>
@@ -74,7 +75,7 @@
                         <div class="hBox vh_items_center vh_content_around tszy-content" style="flex-grow: 1">
                             <div>
                                 <div>3288</div>
-                                <div>隐患整改数量</div>
+                                <div>覆盖企业数量</div>
                             </div>
                             <div class="vBox vh_content_between mr20" style="height: 100%">
                                 <div>
@@ -113,13 +114,13 @@ export default {
         return {
             beiDouData: [
                 {
-                    name: '排土场(家）',
+                    name: '投入装置数量',
                     value: 98
                 }, {
-                    name: '露天矿场(家）',
+                    name: '当前预警数量',
                     value: 98
                 }, {
-                    name: '尾矿库(家）',
+                    name: '历史预警数量',
                     value: 98
                 }
             ],
@@ -167,6 +168,7 @@ export default {
             width: 491px;
             margin-bottom: 40px;
             .navigation-item {
+                cursor:pointer;
                 width: 150px;
                 height: 40px;
                 opacity: 0.5;
@@ -305,7 +307,7 @@ export default {
                         width: 91px;
                         height: 57px;
                         line-height: 57px;
-                        right: 10px;
+                        right: 16px;
                         text-align: left;
                         font-size: 12px;
                     }

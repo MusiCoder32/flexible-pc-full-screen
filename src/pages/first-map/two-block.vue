@@ -292,8 +292,6 @@ export default {
                 this._containBoxStyle3.paddingTop = this._trHeight * 2 + 'px';
                 this._containBoxStyle4.transform = `translate(0,-${this._trHeight * 2 + 'px'})`;
                 this._containBoxStyle4.paddingTop = this._trHeight * 2 + 'px';
-                this.tableData4.push(this.tableData[0]);
-                this.tableData4.push(this.tableData[1]);
                 this.beginRolling();
             }
         },
@@ -302,6 +300,7 @@ export default {
             this._tableSetInterval = setInterval(() => {
 
                 if (!me.isMouseEnter) {
+                    this.tableData4.push(this.tableData3[0],this.tableData3[1]);
                     this._containBoxStyle3.transition = 'all .5s';
                     this._containBoxStyle3.paddingTop = this._trHeight + 'px';
                     this._containBoxStyle4.transition = 'all .5s';
@@ -315,17 +314,10 @@ export default {
                     }, 2000);
 
                     setTimeout(() => {
-                        this.tableData3.shift();
-                        this.tableData3.shift();
+                        this.tableData3.splice(0,2);
+                        this.tableData4.splice(0,2);
 
-                        this.tableData4.shift();
-                        this.tableData4.shift();
-
-                        this.tableData3.push(this.tableData4[0]);
-                        this.tableData3.push(this.tableData4[1]);
-
-                        this.tableData4.push(this.tableData3[0]);
-                        this.tableData4.push(this.tableData3[1]);
+                        this.tableData3.push(this.tableData4[0],this.tableData4[1]);
 
                         this._containBoxStyle3.transition = 'all 0s ease 0s';
                         this._containBoxStyle3.paddingTop = this._trHeight * 2 + 'px';

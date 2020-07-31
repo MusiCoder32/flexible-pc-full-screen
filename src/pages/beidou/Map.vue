@@ -1,27 +1,28 @@
 <template>
     <div class="bei-dou-box">
-        <div class="bei-dou-nav-bg">
-            <div>
-            </div>
-            <div>
-            </div>
-        </div>
-        <div class="bei-dou-nav">
-            <div>
-                <div>企业分布</div>
-            </div>
-            <div>
-                <div>预警态势</div>
-            </div>
+        <div class="bei-dou-nav" style="top: 20px;">
+            <div @click="navClick('left')" :class="{'nav-opacity':rightActive}" style="padding-right:20px;text-align:right;width: 180px;height:40px;line-height: 40px;font-size: 16px">企业分布</div>
+            <div @click="navClick('right')" :class="{'nav-opacity':!rightActive}" style="padding-left:20px;text-align:left;width: 180px;height:40px;line-height: 40px;font-size: 16px">预警态势</div>
         </div>
         <div class="bei-dou-container" id="beidouMapContainer"></div>
+        <el-dialog title="传感器：W川AJH104R0009F4" :visible.sync="dialogTableVisible" :close-on-click-modal=false>
+            <!--<router-view></router-view>-->
+            <sensor></sensor>
+        </el-dialog>
     </div>
 </template>
 
 <script>
+import Sensor from './sensor'
 export default {
+    components: { Sensor },
+    comments: {
+      Sensor
+    },
     data () {
         return {
+            rightActive:false,
+            dialogTableVisible:false,
             path: [
                 [116.397428, 39.90923],
                 [116.398428, 39.90923],
@@ -52,6 +53,14 @@ export default {
         });
     },
     methods: {
+        navClick(type) {
+          if(type==='left') {
+              this.rightActive = false
+          }
+          else {
+              this.rightActive = true
+          }
+        },
         drawMap () {
             let me = this;
             let box = document.querySelector('.bei-dou-box');
@@ -135,7 +144,8 @@ export default {
                             position: item,
                             offset: new AMap.Pixel(-width / 2, -height / 2)
                         });
-                        marker.on('mouseover', (e) => me._markerClick(e, i));
+                        marker.on('mouseover', (e) => me._markerOver(e, i));
+                        marker.on('click', (e) => me._markerClick(e, i));
                         // marker.on('mouseout', (e) => me._markerLeave());
                         marker.emit('mouseover', { target: marker });
                     });
@@ -143,10 +153,15 @@ export default {
             });
         },
 
-        _markerClick (e, i) {
+        _markerOver (e, i) {
             let me = this;
             me._infoWindow.setContent(me._infoContent);
             me._infoWindow.open(me._beiDouMap, e.target.getPosition());
+        } ,
+        _markerClick (e, i) {
+            console.log(e)
+            console.log(i)
+            this.dialogTableVisible = true;
         }
         // _markerLeave () {
         //     let me = this;
@@ -159,6 +174,9 @@ export default {
 };
 </script>
 <style lang="scss">
+    .nav-opacity {
+        opacity: 0.5;
+    }
     .bei-dou-box {
         display: flex;
         justify-content: center;
@@ -168,53 +186,30 @@ export default {
         background: #ffffff;
         box-shadow: 0px 0px 8px 0px rgba(8, 33, 85, 0.1);
         position: relative;
-        .bei-dou-nav-bg {
-            position: absolute;
-            z-index: 1000;
-            top: 20px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: center;
-            >div {
-                width: 180px;
-                box-sizing: border-box;
-            }
-
-            > div:first-child {
-                border-left: 55px solid transparent;
-                border-top: 39px solid #1E407F;
-                position: relative;
-            }
-            > div:last-child {
-
-                border-right: 55px solid transparent;
-                border-top: 39px solid #1E407F;
-                position: relative;
-            }
-        }
         .bei-dou-nav {
             position: absolute;
             z-index: 1000;
-            top: 22px;
             margin: 0 auto;
             display: flex;
             justify-content: center;
 
-            >div {
-                width: 174px;
-                box-sizing: border-box;
+            > div {
+                font-weight: 400;
+                color: #007bff;
+                &:hover {
+                    opacity: 1;
+                }
             }
 
             > div:first-child {
-                border-left: 47px solid transparent;
-                border-top: 33px solid white;
-                position: relative;
+                background: url("../../assets/img/beidou/1.png") center no-repeat;
+                background-size: contain;
 
             }
             > div:last-child {
-                border-right: 47px solid transparent;
-                border-top: 33px solid white;
-                position: relative;
+                background: url("../../assets/img/beidou/2.png") center no-repeat;
+                background-size: contain;
+
             }
         }
 
@@ -282,6 +277,20 @@ export default {
                     height: 18px;
                     margin-right: 10px;
                 }
+            }
+        }
+
+        .el-dialog {
+            border-radius: 10px;
+            .el-dialog__header {
+                border-bottom: 1px solid #979797;
+                .el-dialog__title {
+                    font-weight: 600;
+                    color: #082155;
+                }
+            }
+            .el-dialog__body {
+                padding-top:10px;
             }
         }
     }

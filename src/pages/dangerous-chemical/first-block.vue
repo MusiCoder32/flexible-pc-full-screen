@@ -56,6 +56,7 @@ export default {
 
     .chemical-nav {
         position: absolute;
+        cursor:pointer;
         top: 32px;
         right: -60px;
         display: flex;

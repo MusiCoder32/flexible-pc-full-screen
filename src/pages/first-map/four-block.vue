@@ -46,19 +46,19 @@ export default {
                 {
                     bgUrl: require('../../assets/img/radar-bg.png'),
                     iconUrl:require('../../assets/img/ic_ktd_pc_ld.png'),
-                    name:'雷达',
+                    name:'遥感',
                     url: 'http://baidu.com'
                 },
                 {
                     bgUrl: require('../../assets/img/radar-bg.png'),
                     iconUrl:require('../../assets/img/ic_ktd_xc_xy.png'),
-                    name:'旋翼',
+                    name:'无人机',
                     url: 'http://baidu.com'
                 },
                 {
                     bgUrl: require('../../assets/img/radar-bg.png'),
                     iconUrl:require('../../assets/img/ic_ktd_hc_dj.png'),
-                    name:'短焦',
+                    name:'三维激光',
                     url: 'http://baidu.com'
                 },
 
@@ -77,11 +77,12 @@ export default {
             font-size: 12px;
             font-weight: 500;
             position:absolute;
-            left:168px;
+            right:15px;
             top:107px;
             display: flex;
             justify-content: flex-start;
             align-items: center;
+
         }
     }
 

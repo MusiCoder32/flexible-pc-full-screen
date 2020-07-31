@@ -158,6 +158,7 @@ export default {
                 }
             }
             .header-left-full-screen {
+                cursor: pointer;
                 img {
                     height: 18px;
                     width: 18px;
@@ -174,6 +175,7 @@ export default {
             }
         }
         .header-not-coal-icon {
+            cursor: pointer;
             img {
                 height: 22px;
                 width: 24px;
@@ -181,6 +183,7 @@ export default {
             }
         }
         .header-chemical-icon {
+            cursor: pointer;
             img {
                 height: 24px;
                 width: 15px;

@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import {setCookie, getCookie} from '../utils/function-list';
 
 export default {
     data: function () {

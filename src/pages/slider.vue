@@ -4,6 +4,7 @@
       <img src="../assets/img/正在检测企业icon_img.png" />
       <img
         @click="sliderClick"
+        style="cursor: pointer"
         :class="{'slider-icon-rotate':isSliderExpand}"
         src="../assets/img/left_icon_img.png"
       />
