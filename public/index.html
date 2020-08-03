@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <link rel="icon" href="./logo_icon.ico">
     <title>full-screen-dashboard</title>
     <script inline src='node_modules/lib-flexible-for-dashboard/dist/index.js'></script>
     <script src="//webapi.amap.com/maps?v=1.4.15&plugin=AMap.DistrictSearch,AMap.DistrictLayer,AMap.Geocoder,AMap.ToolBar,AMap.PolyEditor,AMap.Scale,AMap.PlaceSearch&key=4dfddc04130e4b233ec9e6e3e8a631f3"></script>
@@ -21,6 +21,9 @@
     </noscript>
     <div id="app" style="width: 100%;height:100%;background: rgba(0,0,0,0.4)"></div>
     <!-- built files will be auto injected -->
+    <% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.js) { %>
+    <script type="text/javascript" src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"></script>
+    <% } %>
 </body>
 
 </html>

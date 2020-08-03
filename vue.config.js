@@ -1,8 +1,5 @@
 const HtmlWebpackInlinePlugin = require('html-webpack-inline-plugin');
 
-module.exports = {
-    publicPath: '8000',
-}
 const moment = require('moment');
 process.env.VUE_APP_TIME = moment().format('YYYY.MM.DD hh:mm:ss a');
 
@@ -16,7 +13,6 @@ const assetsCDN = {
         vuex: 'Vuex',
         ECharts:'ECharts',
         axios: 'axios',
-        AMap: 'AMap' // 高德地图配置
     },
     css: [],
     // https://unpkg.com/browse/vue@2.6.10/
@@ -35,7 +31,7 @@ module.exports = {
     lintOnSave: false,
     productionSourceMap: false,
     devServer: {
-        port: 8000,
+        port: 9000,
         before(app) {
             // app.get("/api/test", (req, res) => {
             //     console.log(req.route.path);
@@ -62,7 +58,7 @@ module.exports = {
             })
         ],
         // if prod, add externals
-        externals: isProd ? assetsCDN.externals : { AMap: 'AMap' }
+        externals: isProd ? assetsCDN.externals : {}
     },
     chainWebpack: config => {
         config.plugin('html')
@@ -72,6 +68,12 @@ module.exports = {
                 }
                 return args;
             });
+        if (isProd) {
+            config.plugin('html').tap(args => {
+                args[0].cdn = assetsCDN
+                return args
+            })
+        }
     }
 };
 //导出webpack配置

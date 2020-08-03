@@ -5,7 +5,7 @@
             <div @click="navClick('right')" :class="{'nav-opacity':!rightActive}" style="padding-left:20px;text-align:left;width: 180px;height:40px;line-height: 40px;font-size: 16px">预警态势</div>
         </div>
         <div class="bei-dou-container" id="beidouMapContainer"></div>
-        <el-dialog title="传感器：W川AJH104R0009F4" :visible.sync="dialogTableVisible" :close-on-click-modal=false>
+        <el-dialog width="65.62%" title="传感器：W川AJH104R0009F4" :visible.sync="dialogTableVisible" :close-on-click-modal=false>
             <!--<router-view></router-view>-->
             <sensor></sensor>
         </el-dialog>

@@ -1,16 +1,17 @@
 <template>
     <div class="login-wrap">
+        <img src="../assets/img/login/title.png"/>
         <div class="ms-login">
             <h1 class="ms-title font-size-x2 font-weight-medium">欢迎登录！</h1>
             <el-form :model="param" :rules="rules" ref="login" label-width="0px" class="ms-content">
-                <el-form-item prop="username">
-                    <el-input v-model="param.UserName" placeholder="username">
+                <el-form-item prop="UserName">
+                    <el-input v-model="param.UserName" placeholder="用户名">
                     </el-input>
                 </el-form-item>
-                <el-form-item prop="password" :error="errorMsg">
+                <el-form-item prop="Password" :error="errorMsg">
                     <el-input
                             type="password"
-                            placeholder="password"
+                            placeholder="密码"
                             v-model="param.Password"
                             @keyup.enter.native="submitForm()"
                     >
@@ -41,8 +42,8 @@ export default {
             errorMsg: '',
             loginLoading: void 0,
             param: {
-                UserName: '',
-                Password: ''
+                UserName: 'admin',
+                Password: '123456'
             },
             loginDisabled: false,
             rules: {
@@ -72,6 +73,15 @@ export default {
                     //判断是否需要保存密码
                     me._setLogin();
 
+                    //调试代码
+                    if (this.param.UserName == 'admin' && this.param.Password == '123456') {
+                        localStorage.setItem('isLogin', true);
+                        this.$router.push('/');
+                    } else {
+                        return me.$message({type:'error',message:'密码错误'})
+                    }
+                    //调试代码
+
                     var reqData = {
                         UserName: this.param.UserName,
                         Password: this.param.Password
@@ -82,6 +92,8 @@ export default {
                         spinner: 'el-icon-loading',
                         background: 'rgba(0, 0, 0, 0.7)'
                     });
+
+
                     this.loginDisabled = true;
                     this.$req.post(this.$url.host.login, reqData).then((res) => {
                         console.log(res);
@@ -129,6 +141,15 @@ export default {
         height: 100%;
         background: url(../assets/img/login/login-bg.png) center no-repeat;
         background-size: cover;
+        display: flex;
+        justify-content: center;
+        >img {
+            width: 395px;
+            height: 82px;
+            position: absolute;
+            top: 100px;
+            margin: 0 auto;
+        }
     }
 
     .ms-title {

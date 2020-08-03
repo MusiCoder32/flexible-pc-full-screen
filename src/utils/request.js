@@ -10,7 +10,7 @@ if (process.env.NODE_ENV !== 'development') {
 }
 var params;
 let notice;
-let hostNotUsed = true; //因为是在请求失败后，才将请求转发到mock，而请求超时时间为60s,故为节约调试时间，在第一次检测到主机不可用时，便将所有请求转发到mock,
+let hostNotUsed = false; //因为是在请求失败后，才将请求转发到mock，而请求超时时间为60s,故为节约调试时间，在第一次检测到主机不可用时，便将所有请求转发到mock,
 
 if (process.env.NODE_ENV !== 'development') {
     hostNotUsed = false;
@@ -80,6 +80,29 @@ service.interceptors.response.use(
 function whenErr(url, resolve, reject, error = '') {
     if (process.env.NODE_ENV === 'development' || hostNotUsed) {
         hostNotUsed = true;
+        let errorString = error.toLocaleString();
+        let message = '请重试或联系主机管理员';
+        if (errorString.indexOf('500') > -1) {
+            router.push({ name: 'login' });
+            Notification({
+                message: `服务器错误，${message}`,
+                type: 'error',
+                duration: 5000
+            });
+        } else if (errorString.indexOf('timeout') > -1) {
+            router.push({ name: 'login' });
+            Notification({
+                message: `连接超时`,
+                type: 'error',
+                duration: 5000
+            });
+        } else {
+            Notification({
+                message: `连接主机失败，报错接口：${url}`,
+                type: 'error',
+                duration: 5000
+            });
+        }
         if (!notice) {
             notice = Notification({
                 message: `连接主机失败，将使用模拟数据`,
@@ -92,29 +115,6 @@ function whenErr(url, resolve, reject, error = '') {
         return resolve(mock(url, params));
     }
     else {
-        let errorString = error.toLocaleString();
-        let message = '请重试或联系主机管理员';
-        if (errorString.indexOf('500') > -1) {
-            router.push({ name: 'login' });
-            Notification({
-                message: `连接主机失败，${message}`,
-                type: 'error',
-                duration: 5000
-            });
-        } else if (errorString.indexOf('timeout') > -1) {
-            router.push({ name: 'login' });
-            Notification({
-                message: `连接主机失败，${message}`,
-                type: 'error',
-                duration: 5000
-            });
-        } else {
-            Notification({
-                message: `连接主机失败，报错接口：${url}`,
-                type: 'error',
-                duration: 5000
-            });
-        }
         return reject(error);
     }
 }
