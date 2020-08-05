@@ -1,24 +1,24 @@
-import Vue from 'vue'
-import App from './App.vue'
-import '@/assets/main.css'
-import ECharts from 'vue-echarts'
-import sichuanMap from '@/assets/sichuan.json'
+import Vue from 'vue';
+import App from './App.vue';
+import '@/assets/main.css';
+import ECharts from 'vue-echarts';
+import sichuanMap from '@/assets/sichuan.json';
 
-import router from './router/router'
+import router from './router/router';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css'; // 默认主题
-import '@/assets/element-variables.scss'
+import '@/assets/element-variables.scss';
 
 import Request from './utils/request';
 import UrlConfig from './common/url-config';
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 Vue.prototype.$req = Request;
 Vue.prototype.$url = UrlConfig;
 
-ECharts.registerMap('sichuan', sichuanMap)
+ECharts.registerMap('sichuan', sichuanMap);
 
-Vue.component('chart', ECharts)
+Vue.component('chart', ECharts);
 Vue.use(ElementUI, {
     size: 'small'
 });
@@ -29,13 +29,19 @@ router.beforeEach((to, from, next) => {
     document.title = `${to.meta.title} | 安信科创`;
     const isLogin = localStorage.getItem('isLogin');
     if (!isLogin && to.path !== '/login') {
-        next('/login');
-    } else {
-        next()
+        if (to.path === '/beidou') {
+            next();
+        }
+        else {
+            next('/login');
+        }
+    }
+    else {
+        next();
     }
 });
 
 new Vue({
     router,
     render: h => h(App)
-}).$mount('#app')
+}).$mount('#app');

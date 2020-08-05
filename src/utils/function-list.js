@@ -171,9 +171,12 @@ export const getCookie = (cname) => {
 };
 export const shuffle = (array)=> {
     let len = array.length;
+    let arr = []
     for (let i = len - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
+
     }
-    return array
+    arr.push(...array)
+    return arr
 }

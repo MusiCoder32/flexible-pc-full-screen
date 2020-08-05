@@ -76,7 +76,7 @@ export default {
                     //调试代码
                     if (this.param.UserName == 'admin' && this.param.Password == '123456') {
                         localStorage.setItem('isLogin', true);
-                        this.$router.push('/');
+                      return  this.$router.push('/');
                     } else {
                         return me.$message({type:'error',message:'密码错误'})
                     }

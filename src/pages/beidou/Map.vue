@@ -1,26 +1,26 @@
 <template>
     <div class="bei-dou-box">
-        <div class="bei-dou-nav" style="top: 20px;">
+        <div v-if="type==='chemical'" class="bei-dou-nav" style="top: 20px;">
             <div @click="navClick('left')" :class="{'nav-opacity':rightActive}" style="padding-right:20px;text-align:right;width: 180px;height:40px;line-height: 40px;font-size: 16px">企业分布</div>
             <div @click="navClick('right')" :class="{'nav-opacity':!rightActive}" style="padding-left:20px;text-align:left;width: 180px;height:40px;line-height: 40px;font-size: 16px">预警态势</div>
         </div>
         <div class="bei-dou-container" id="beidouMapContainer"></div>
         <el-dialog width="65.62%" title="传感器：W川AJH104R0009F4" :visible.sync="dialogTableVisible" :close-on-click-modal=false>
             <!--<router-view></router-view>-->
-            <sensor></sensor>
+            <chemical-chart v-if="type==='chemical'"></chemical-chart>
+            <coal-chart v-else></coal-chart>
         </el-dialog>
     </div>
 </template>
 
 <script>
-import Sensor from './sensor'
+import ChemicalChart from './chemical-chart'
+import CoalChart from './coal-chart'
 export default {
-    components: { Sensor },
-    comments: {
-      Sensor
-    },
+    components: { ChemicalChart ,CoalChart},
     data () {
         return {
+            type:'coal',
             rightActive:false,
             dialogTableVisible:false,
             path: [
@@ -48,6 +48,7 @@ export default {
     },
     mounted () {
         this.drawMap();
+        this.type = this.$route.query.type
         window.addEventListener('resize', () => {
             this.drawMap();
         });

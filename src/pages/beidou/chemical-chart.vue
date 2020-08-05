@@ -1,9 +1,8 @@
 <template>
     <div class="content bei-dou-sensor-dialog">
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-            <el-menu-item index="petroleum">液化石油气</el-menu-item>
-            <el-menu-item index="temperature"> 温度</el-menu-item>
-            <el-menu-item index="humidity"> 湿度</el-menu-item>
+            <el-menu-item v-for="(item,i) in sensorArr" :index="item.type" :key="item.name + i">{{item.name}}
+            </el-menu-item>
         </el-menu>
         <div class="bei-dou-sensor-chart-box">
             <div v-show="activeIndex === 'petroleum'" class="chart-box-head hBox vh_content_start">
@@ -81,8 +80,9 @@
 
 
             <div class="chart-container">
-                <chart :auto-resize='true' :options='options'>
-                </chart>
+                <chart v-show="activeIndex==='petroleum'" :auto-resize='true' :options='options'></chart>
+                <chart v-show="activeIndex==='temperature'" :auto-resize='true' :options='options'></chart>
+                <chart v-show="activeIndex==='humidity'" :auto-resize='true' :options='options'></chart>
             </div>
         </div>
     </div>
@@ -105,10 +105,21 @@ for (let i = 0; i < 30; i++) {
     datadd.push(Math.floor(Math.random() * 30));
 }
 export default {
-    name: 'sensor',
     components: {},
     data () {
         return {
+            sensorArr: [
+                {
+                    type: 'petroleum',
+                    name: '液化石油气'
+                }, {
+                    type: 'temperature',
+                    name: '温度'
+                }, {
+                    type: 'humidity',
+                    name: '湿度'
+                }
+            ],
             activeIndex: 'petroleum',
             pickerOptions: {
                 shortcuts: [
@@ -273,7 +284,6 @@ export default {
                             align: 'left',
                             inside: false,
                             formatter: function (value, index) {
-                                console.log(value, index);
                                 // 格式化成月/日，只在第一个刻度显示年份
                                 return value;
                             }
@@ -351,7 +361,7 @@ export default {
                     console.log(value, index);
                     // 格式化成月/日，只在第一个刻度显示年份
                     return value + '%';
-                }
+                };
             }
             else if (type === 'temperature') {
                 this.options.title[0].text = '';
@@ -359,7 +369,7 @@ export default {
                     console.log(value, index);
                     // 格式化成月/日，只在第一个刻度显示年份
                     return value + '℃';
-                }
+                };
             }
             else {
                 this.options.title[0].text = '浓度%LEL';
