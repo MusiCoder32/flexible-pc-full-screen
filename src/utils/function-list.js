@@ -34,6 +34,9 @@ export const noValue = (ele) => {
     else if (ele === '') {
         return true;
     }
+    else if (ele === 'undefined') {
+        return true;
+    }
     else if (ele == null) {
         return true;
     }

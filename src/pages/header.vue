@@ -41,7 +41,8 @@
 <script>
 import bus from '../common/bus';
 // import moment from 'moment';
-let _this;
+import {mapMutations} from 'vuex';
+
 export default {
     data () {
         return {
@@ -49,14 +50,20 @@ export default {
             name: 'admin'
         };
     },
-    computed: {},
+    computed: {
+    },
     mounted () {
-        _this = this;
+        let me = this;
         window.addEventListener('resize', () => {
             _this.fullscreen = document.isFullScreen || document.mozIsFullScreen || document.webkitIsFullScreen;
-        })
+        });
+        this.init();
+        me.initInterval = setInterval(() => {
+            this.init();
+        }, 1000 * 60 * 2);
     },
     methods: {
+        ...mapMutations(['setFirstData']),
         // 全屏事件
         handleFullScreen () {
             let element = document.documentElement;
@@ -93,11 +100,32 @@ export default {
             this.fullscreen = !this.fullscreen;
         },
         goto (type) {
+            let token = localStorage.getItem('Authorization');
             if (type === 'coal') {
-                this.$router.push({ path: 'coal' })
+                window.open('http://fm.yzt.scdem.cn?Authorization=' + token);
             }
             else if (type === 'chemical') {
-                this.$router.push({ path: 'chemical' })
+                window.open('http://wh.yzt.scdem.cn/auth-redirect?Authorization=' + token);
+            }
+        },
+        init () {
+            this.getFirstData();
+        },
+        async getFirstData () {
+            let me = this;
+            let res;
+            try {
+                res = await this.$req.get(this.$url.first);
+                console.log(res);
+                if (res.code == 200) {
+                    me.setFirstData({ data: res.data });
+                }
+                else {
+                    console.log(res);
+                }
+            }
+            catch (err) {
+                console.log(err);
             }
         }
     },
@@ -138,7 +166,7 @@ export default {
         justify-content: space-between;
         color: white;
         background-image: linear-gradient(180deg, #007BFF, #005EFF);
-        position:relative;
+        position: relative;
         z-index: 1000;
 
         .header-left {
@@ -168,7 +196,7 @@ export default {
 
         .logo {
             padding-left: 26px;
-            padding-top:17px;
+            padding-top: 17px;
             img {
                 height: 42px;
                 width: 229px;

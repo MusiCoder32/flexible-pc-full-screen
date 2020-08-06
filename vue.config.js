@@ -41,12 +41,8 @@ module.exports = {
             // });
         },
         proxy: {
-            '/web': {
-                // target:'http://192.168.9.236/',
-                // target: 'http://192.168.9.122/',
-                // target: 'http://192.168.9.219/',
-                target: 'http://192.168.9.108/',
-                // target: 'http://192.168.9.249/',
+            '/api': {
+                target: 'http://api.yzt.scdem.cn',
                 changeOrigin: true
             }
         }

@@ -24,9 +24,9 @@
                 <div class="login-btn">
                     <el-button type="primary" :disabled="loginDisabled" @click="submitForm()">登录</el-button>
                 </div>
-                <div style="width: 100%;color:#6b97d2;text-align: center" class="font-weight-medium font-size-large">
-                    账号注册
-                </div>
+                <!--<div style="width: 100%;color:#6b97d2;text-align: center" class="font-weight-medium font-size-large">-->
+                    <!--账号注册-->
+                <!--</div>-->
             </el-form>
         </div>
     </div>
@@ -42,8 +42,8 @@ export default {
             errorMsg: '',
             loginLoading: void 0,
             param: {
-                UserName: 'admin',
-                Password: '123456'
+                UserName: '',
+                Password: ''
             },
             loginDisabled: false,
             rules: {
@@ -74,17 +74,18 @@ export default {
                     me._setLogin();
 
                     //调试代码
-                    if (this.param.UserName == 'admin' && this.param.Password == '123456') {
-                        localStorage.setItem('isLogin', true);
-                      return  this.$router.push('/');
-                    } else {
-                        return me.$message({type:'error',message:'密码错误'})
-                    }
+                    // if (this.param.UserName == 'admin' && this.param.Password == '123456') {
+                    //     localStorage.setItem('isLogin', true);
+                    //   return  this.$router.push('/');
+                    // } else {
+                    //     return me.$message({type:'error',message:'密码错误'})
+                    // }
                     //调试代码
 
                     var reqData = {
-                        UserName: this.param.UserName,
-                        Password: this.param.Password
+                        account: this.param.UserName,
+                        password: this.param.Password,
+                        "remember": true
                     };
                     this.loginLoading = this.$loading({
                         lock: true,
@@ -95,16 +96,18 @@ export default {
 
 
                     this.loginDisabled = true;
-                    this.$req.post(this.$url.host.login, reqData).then((res) => {
+                    this.$req.post(this.$url.login, reqData).then((res) => {
                         console.log(res);
                         if (res.code === 200) {
                             localStorage.setItem('isLogin', true);
                             localStorage.setItem('role', this.param.UserName);
-                            localStorage.setItem('Authorization', res.SessionId);
+                            localStorage.setItem('Authorization', res.data);
                             this.$router.push('/');
                         }
                         else {
                             this.errorMsg = '密码错误';
+
+
                         }
                     }).catch(err => {
                         console.log(err);

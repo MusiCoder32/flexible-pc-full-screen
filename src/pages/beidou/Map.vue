@@ -48,6 +48,7 @@ export default {
     },
     mounted () {
         this.drawMap();
+        console.log(this.$route.query)
         this.type = this.$route.query.type
         window.addEventListener('resize', () => {
             this.drawMap();

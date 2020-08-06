@@ -1,5 +1,4 @@
 module.exports = {
-    form: {
-        test: 'form/test'
-    },
+    login:'api/Auth/Login',
+    first:'api/Home/GetHomeStatistics'
 };

@@ -98,6 +98,7 @@ import SensorPie from '../../components/charts/sensor-pie';
 import ObliqueAngle from '../../components/business_component/oblique-angle';
 import ObliqueAngleRect from '../../components/business_component/oblique-angle-rect';
 import PreWarningStatisticsSvg from '../../components/svgs/pre-warning-statistics-svg';
+import {mapState} from 'vuex'
 
 export default {
     name: 'three-block',
@@ -106,6 +107,9 @@ export default {
         ObliqueAngle,
         ObliqueAngleRect,
         PreWarningStatisticsSvg
+    },
+    computed: {
+        ...mapState(['firstData'])
     }
 };
 </script>

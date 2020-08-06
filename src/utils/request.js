@@ -5,7 +5,7 @@ import { Notification } from 'element-ui';
 var baseUrl = '';
 let timeout = 60 * 1000;
 if (process.env.NODE_ENV !== 'development') {
-    baseUrl = './';
+    baseUrl = 'http://118.123.247.242:8010/';
     timeout = 60 * 1000;
 }
 var params;
@@ -41,21 +41,14 @@ service.interceptors.request.use(
         }
         // config.withCredentials = true // 允许携带token ,这个是解决跨域产生的相关问题
         // config.url = url;
+        config.headers = {
+            'content-type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded'
+        };
         let token = localStorage.getItem('Authorization');
         if (token) {
-            config.headers = {
-                'Authorization': '7cec62b447217573ca992dfb6543ca9b',
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-Requested-with': 'XMLHttpRequest'
-                // 'Content-Type': 'application/json'
-            };
-        } else {
-            config.headers = {
-                // 'content-type': 'application/json'
-                'Content-Type': 'application/x-www-form-urlencoded'
-            };
+            config.headers.Authorization = token
         }
-
         return config;
     },
     error => {
@@ -78,8 +71,9 @@ service.interceptors.response.use(
 );
 
 function whenErr(url, resolve, reject, error = '') {
+    console.log(url)
     if (process.env.NODE_ENV === 'development' || hostNotUsed) {
-        hostNotUsed = true;
+        // hostNotUsed = true;
         let errorString = error.toLocaleString();
         let message = '请重试或联系主机管理员';
         if (errorString.indexOf('500') > -1) {

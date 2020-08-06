@@ -5,6 +5,7 @@ import ECharts from 'vue-echarts';
 import sichuanMap from '@/assets/sichuan.json';
 
 import router from './router/router';
+import store from './store';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css'; // 默认主题
 import '@/assets/element-variables.scss';
@@ -43,5 +44,6 @@ router.beforeEach((to, from, next) => {
 
 new Vue({
     router,
+    store,
     render: h => h(App)
 }).$mount('#app');
