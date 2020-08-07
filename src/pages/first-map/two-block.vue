@@ -27,7 +27,7 @@
                                     <img src="../../assets/img/index/11.png"/>
                                     <img src="../../assets/img/index/10.png"/>
                                 </div>
-                                <div class="number">242</div>
+                                <div class="number">{{coalStatistics.companyCount||0}}</div>
                             </div>
                             <div class="total-title">
                                 企业总数
@@ -36,38 +36,20 @@
                         <div class="item-box">
                             <div>
                                 <div>
-                                    <div>412</div>
+                                    <div>{{coalStatistics.tailingPondCount||0}}</div>
                                     <div>尾矿库</div>
                                 </div>
                                 <div>
-                                    <div>524</div>
+                                    <div>{{coalStatistics.dumpCount||0}}</div>
                                     <div>排土场</div>
                                 </div>
                             </div>
                             <div>
                                 <div>露天广场</div>
-                                <div>54</div>
+                                <div>{{coalStatistics.openPitMineCount||0}}</div>
                             </div>
                         </div>
                     </div>
-
-
-                    <!--<rect-border :total="1000" title="覆盖企业"></rect-border>-->
-                    <!--<div class="pie-container">-->
-                    <!--<div v-for="(item,key) in pieList" class="pie-box" :key="item.name+key">-->
-                    <!--<div class="two-block-pie">-->
-                    <!--<slider-pie-->
-                    <!--:value="item.value/total"-->
-                    <!--backgroundColor="#979797"-->
-                    <!--:foregroundColor="item.foregroundColor"-->
-                    <!--&gt;</slider-pie>-->
-                    <!--</div>-->
-                    <!--<div class="pie-box-left">-->
-                    <!--<div class="font-size-x2 font-weight-medium font-family-bebas">{{item.value}}</div>-->
-                    <!--<div class="font-weight-medium font-size-extra-small">{{item.name}}</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
                 </div>
             </oblique-angle-rect>
         </div>
@@ -87,10 +69,6 @@
                 <div class="two-rect-content vBox" style="height: 100%;">
                     <div class="two-block-rect-title font-size-medium font-weight-medium">传感器布设数量统计</div>
                     <div class="hBox vh_content_around " style="width: 100%;flex-wrap:wrap;flex-grow: 1">
-                        <!--<rect-border class="mb20" :total="100" title="生产企业(家)"></rect-border>-->
-                        <!--<rect-border class="mb20" :total="100" title="使用企业(家)"></rect-border>-->
-                        <!--<rect-border :total="100" title="经营企业(家)"></rect-border>-->
-                        <!--<rect-border :total="100" title="安委会企业(家)"></rect-border>-->
                         <div v-for="(item,index) in chemicalCompanyArr" :key="item.name + index"
                              class="chemical-company-item">
                             <div>
@@ -121,18 +99,18 @@
                             @cell-mouse-leave="leaveTable"
                     >
                         <el-table-column
-                                prop="companyName"
+                                prop="name"
                                 show-overflow-tooltip
                                 label="企业名称"
                                 min-width="2">
                         </el-table-column>
                         <el-table-column
-                                prop="name"
+                                prop="personName"
                                 label="姓名"
                                 min-width="2">
                         </el-table-column>
                         <el-table-column
-                                prop="telephone"
+                                prop="tel"
                                 min-width="2"
                                 label="联系电话">
                         </el-table-column>
@@ -159,18 +137,18 @@
                             @cell-mouse-leave="leaveTable"
                     >
                         <el-table-column
-                                prop="companyName"
+                                prop="name"
                                 show-overflow-tooltip
                                 label="企业名称"
                                 min-width="2">
                         </el-table-column>
                         <el-table-column
-                                prop="name"
+                                prop="personName"
                                 label="姓名"
                                 min-width="2">
                         </el-table-column>
                         <el-table-column
-                                prop="telephone"
+                                prop="tel"
                                 min-width="2"
                                 label="联系电话">
                         </el-table-column>
@@ -200,21 +178,21 @@ export default {
     },
     data () {
         return {
-            total: 1000,
+            coalStatistics: {},
             isMouseEnter: false,
             chemicalCompanyArr: [
                 {
                     name: '危险化学品企业数量',
-                    value: 98
+                    value: 0
                 }, {
                     name: '重大危险源数量',
-                    value: 98
+                    value: 0
                 }, {
                     name: '化工园区数量',
-                    value: 98
+                    value: 0
                 }, {
                     name: '重点监管工艺数量',
-                    value: 98
+                    value: 0
                 }
             ],
             pieList: [
@@ -248,24 +226,26 @@ export default {
     },
     mounted () {
         let me = this;
+
+        this.coalStatistics = this.$store.state.firstData.mineCover || {};
+        let chemicalStatistics = this.$store.state.firstData.hazardChemicalCover || {};
+        this.chemicalCompanyArr[0].value = chemicalStatistics.companyCount || 0;
+        this.chemicalCompanyArr[1].value = chemicalStatistics.majorHazardCount || 0;
+        this.chemicalCompanyArr[2].value = chemicalStatistics.chemicalIndustryParkCount || 0;
+        this.chemicalCompanyArr[3].value = chemicalStatistics.keySupervisionProcessCount || 0;
+        let coalCompanyList = this.$store.state.firstData.mineCompanyList || [];
+        let chemicalCompanyList = this.$store.state.firstData.hazardChemicalCompanyList || [];
+        this.tableData.push(...coalCompanyList,...chemicalCompanyList)
         this.$nextTick(() => {
             this.readyRoll();
         });
         window.addEventListener('resize', () => {
             clearInterval(me._tableSetInterval);
-            me._rollSetTime && clearTimeout(me._rollSetTime)
+            me._rollSetTime && clearTimeout(me._rollSetTime);
             me._rollSetTime = setTimeout(() => {
                 me.readyRoll();
             }, 2000);
         });
-        for (let i = 0; i < 19; i++) {
-            let obj = {
-                telephone: '13359322022',
-                name: '王小虎' + i,
-                companyName: '四川成伟矿业有限公司'
-            };
-            this.tableData.push(obj);
-        }
     },
     destroyed () {
         clearInterval(this._tableSetInterval);
@@ -300,7 +280,7 @@ export default {
             this._tableSetInterval = setInterval(() => {
 
                 if (!me.isMouseEnter) {
-                    this.tableData4.push(this.tableData3[0],this.tableData3[1]);
+                    this.tableData4.push(this.tableData3[0], this.tableData3[1]);
                     this._containBoxStyle3.transition = 'all .5s';
                     this._containBoxStyle3.paddingTop = this._trHeight + 'px';
                     this._containBoxStyle4.transition = 'all .5s';
@@ -314,10 +294,10 @@ export default {
                     }, 2000);
 
                     setTimeout(() => {
-                        this.tableData3.splice(0,2);
-                        this.tableData4.splice(0,2);
+                        this.tableData3.splice(0, 2);
+                        this.tableData4.splice(0, 2);
 
-                        this.tableData3.push(this.tableData4[0],this.tableData4[1]);
+                        this.tableData3.push(this.tableData4[0], this.tableData4[1]);
 
                         this._containBoxStyle3.transition = 'all 0s ease 0s';
                         this._containBoxStyle3.paddingTop = this._trHeight * 2 + 'px';
@@ -361,18 +341,21 @@ export default {
 
         0% {
             transform: translateY(0px);
-        }          25% {
+        }
+        25% {
             transform: translateY(2px);
-        }          50% {
+        }
+        50% {
             transform: translateY(0px);
-        }          75% {
+        }
+        75% {
             transform: translateY(-2px);
-        }          100% {
+        }
+        100% {
             transform: translateY(0px);
         }
 
     }
-
 
     .two-block-oblique-icon {
         left: 272px;

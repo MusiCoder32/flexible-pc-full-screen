@@ -6,13 +6,14 @@
                             :rectBorderTop="rectBorderTop">
             <div class="content hBox vh_content_around vh_items_center">
                 <div class="links-box" style="background-size: contain" v-for="(item,index) in thirdpartLinks" :key="item.url + index" :style="{background:`url(${item.bgUrl})`,backgroundSize:'contain'}" >
+                    <div class="thumbnails" :style="{background:`url(${item.thumbnails}) 0% 0% / contain`}"></div>
                     <div class="icon-title">
                         <img :src="item.iconUrl" alt="">
                         <div>{{item.name}}</div>
                     </div>
                 </div>
                 <div class="problem-statistics">
-                    <div>8604</div>
+                    <div>{{airSpaceGround.problemCount}}</div>
                     <div>发现问题统计</div>
                 </div>
             </div>
@@ -36,6 +37,7 @@ export default {
     },
     data () {
         return {
+            airSpaceGround:{},
             borderWidth1: 'four-block-title-width-1',
             borderWidth2: 'four-block-title-width-2',
             obliqueTextLeft: '空天地一体化技术',
@@ -47,23 +49,32 @@ export default {
                     bgUrl: require('../../assets/img/radar-bg.png'),
                     iconUrl:require('../../assets/img/ic_ktd_pc_ld.png'),
                     name:'遥感',
+                    thumbnails:'',
                     url: 'http://baidu.com'
                 },
                 {
                     bgUrl: require('../../assets/img/radar-bg.png'),
                     iconUrl:require('../../assets/img/ic_ktd_xc_xy.png'),
                     name:'无人机',
+                    thumbnails:'',
                     url: 'http://baidu.com'
                 },
                 {
                     bgUrl: require('../../assets/img/radar-bg.png'),
                     iconUrl:require('../../assets/img/ic_ktd_hc_dj.png'),
                     name:'三维激光',
+                    thumbnails:'',
                     url: 'http://baidu.com'
                 },
 
             ]
         };
+    },
+    mounted() {
+        this.airSpaceGround = this.$store.state.firstData.airSpaceGround||{}
+        this.thirdpartLinks[0].thumbnails = this.airSpaceGround.remoteSensingImg
+        this.thirdpartLinks[1].thumbnails = this.airSpaceGround.uavImg
+        this.thirdpartLinks[2].thumbnails = this.airSpaceGround.threeDImg
     }
 };
 </script>
@@ -73,6 +84,13 @@ export default {
         width:232px;
         height:167px;
         position:relative;
+        .thumbnails {
+            width:210px;
+            height:118px;
+            position:absolute;
+            right:11px;
+            top:11px;
+        }
         .icon-title {
             font-size: 12px;
             font-weight: 500;

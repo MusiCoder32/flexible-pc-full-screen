@@ -19,7 +19,7 @@
 
                         <div style="width:100%" class="font-size-small hBox vh_items_center">北斗位移预警<div class="title-right-border"></div></div>
                         <div style="width:100%" class="hBox vh_content_between vh_items_center beidou-warning-box">
-                            <div class="beidou-warning-total">384</div>
+                            <div class="beidou-warning-total">{{warningCount.disCount}}</div>
                             <div class="beidou-warning-describe">累计预警次数</div>
                             <pre-warning-statistics-svg
                                     svg-id="preWarningStatisticsSvg0"
@@ -27,6 +27,7 @@
                                     secondary-color="#B34D53"
                                     primary-color="#FF5E54"
                                     fourth-color=" #FE4C40"
+                                    :value="warningCount.disRed"
                             ></pre-warning-statistics-svg>
                             <pre-warning-statistics-svg
                                     svg-id="preWarningStatisticsSvg1"
@@ -34,6 +35,7 @@
                                     secondary-color="#995239"
                                     primary-color="#FF732E"
                                     fourth-color=" #FF732E"
+                                    :value="warningCount.disOrange"
                             ></pre-warning-statistics-svg>
                             <pre-warning-statistics-svg
                                     svg-id="preWarningStatisticsSvg2"
@@ -41,6 +43,7 @@
                                     secondary-color="#998F1E"
                                     primary-color="#FFD600"
                                     fourth-color=" #FFD600"
+                                    :value="warningCount.disYellow"
                             ></pre-warning-statistics-svg>
                             <pre-warning-statistics-svg
                                     svg-id="preWarningStatisticsSvg3"
@@ -48,13 +51,14 @@
                                     secondary-color="#0059BC"
                                     primary-color="#007BFF"
                                     fourth-color=" #007BFF"
+                                    :value="warningCount.disBlue"
                             ></pre-warning-statistics-svg>
                         </div>
 
 
                         <div style="width:100%" class="font-size-small hBox vh_items_center">气体预警<div class="title-right-border"></div></div>
                         <div style="width:100%" class="hBox vh_content_between vh_items_center beidou-warning-box">
-                            <div class="beidou-warning-total">384</div>
+                            <div class="beidou-warning-total">{{warningCount.gasCount}}</div>
                             <div class="beidou-warning-describe">累计预警次数</div>
                             <pre-warning-statistics-svg
                                     svg-id="gasPreWarningStatisticsSvg0"
@@ -62,13 +66,15 @@
                                     secondary-color="#B34D53"
                                     primary-color="#FF5E54"
                                     fourth-color=" #FE4C40"
+                                    :value="warningCount.gasRed"
                             ></pre-warning-statistics-svg>
-                            <pre-warning-statistics-svg
+                                <pre-warning-statistics-svg
                                     svg-id="gasPreWarningStatisticsSvg1"
                                     third-color="rgba(255,115,46,0.25)"
                                     secondary-color="#995239"
                                     primary-color="#FF732E"
                                     fourth-color=" #FF732E"
+                                    :value="warningCount.gasOrange"
                             ></pre-warning-statistics-svg>
                             <pre-warning-statistics-svg
                                     svg-id="gasPreWarningStatisticsSvg2"
@@ -76,6 +82,7 @@
                                     secondary-color="#998F1E"
                                     primary-color="#FFD600"
                                     fourth-color=" #FFD600"
+                                    :value="warningCount.gasYellow"
                             ></pre-warning-statistics-svg>
                             <pre-warning-statistics-svg
                                     svg-id="gasPreWarningStatisticsSvg3"
@@ -83,6 +90,7 @@
                                     secondary-color="#0059BC"
                                     primary-color="#007BFF"
                                     fourth-color=" #007BFF"
+                                    :value="warningCount.gasBlue"
                             ></pre-warning-statistics-svg>
                         </div>
 
@@ -108,9 +116,18 @@ export default {
         ObliqueAngleRect,
         PreWarningStatisticsSvg
     },
+    data() {
+      return   {
+          warningCount:{}
+      }
+    },
     computed: {
         ...mapState(['firstData'])
+    },
+    mounted() {
+        this.warningCount = this.firstData.warningCount || {}
     }
+
 };
 </script>
 

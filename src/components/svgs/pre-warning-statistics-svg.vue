@@ -1,6 +1,6 @@
 <template>
     <div class="svg-content" :id="svgId">
-        <div class="title">78</div>
+        <div class="title">{{value || 0}}</div>
     </div>
 </template>
 <script>
@@ -28,6 +28,10 @@ export default {
         fourthColor: {
             require:true,
             type:String
+        },
+        value: {
+            require:true,
+            type:Number
         }
     },
     data () {
@@ -147,7 +151,7 @@ export default {
         height: 19px;
         font-size: 16px;
         font-family: BebasNeue;
-        text-align: left;
+        text-align: center;
         color: #ffffff;
         line-height: 19px;
         letter-spacing: 1px;

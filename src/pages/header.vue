@@ -15,11 +15,11 @@
             <div class=" hBox vh_content_between vh_items_center header-left">
                 <div class="hBox vh_items_center header-left-date">
                     <img class="mr8" src="../assets/img/web1x_日期icon_img.png"/>
-                    2020年06月16日 星期二
+                    {{date}}
                 </div>
                 <div class=" hBox vh_items_center header-left-time">
                     <img class="mr8" src="../assets/img/web1x_时间icon_img.png" height="20" width="20"/>
-                    22:50:40
+                    {{time}}
                 </div>
                 <!-- 全屏显示 -->
                 <div class="header-left-full-screen hBox vh_items_center" @click="handleFullScreen">
@@ -40,30 +40,66 @@
 </template>
 <script>
 import bus from '../common/bus';
-// import moment from 'moment';
+import moment from 'moment';
 import {mapMutations} from 'vuex';
 
 export default {
     data () {
         return {
             fullscreen: false,
-            name: 'admin'
+            name: 'admin',
+            time: '',
+            date: ''
         };
     },
-    computed: {
-    },
+    computed: {},
     mounted () {
         let me = this;
         window.addEventListener('resize', () => {
-            _this.fullscreen = document.isFullScreen || document.mozIsFullScreen || document.webkitIsFullScreen;
+            me.fullscreen = document.isFullScreen || document.mozIsFullScreen || document.webkitIsFullScreen;
         });
         this.init();
         me.initInterval = setInterval(() => {
             this.init();
         }, 1000 * 60 * 2);
+
+        this.setTime()
+        me._timeInterval = setInterval(() => {
+            this.setTime()
+        }, 1000);
     },
     methods: {
         ...mapMutations(['setFirstData']),
+        setTime () {
+            let time = new Date();
+            this.date = moment(time).format('YYYY年MM月DD日');
+            this.time = moment(time).format('HH:MM:SS');
+            let week = moment(time).day();
+            switch (week) {
+                case 1:
+                    week = '星期一';
+                    break;
+                case 2:
+                    week = '星期二';
+                    break;
+                case 3:
+                    week = '星期三';
+                    break;
+                case 4:
+                    week = '星期四';
+                    break;
+                case 5:
+                    week = '星期五';
+                    break;
+                case 6:
+                    week = '星期六';
+                    break;
+                case 0:
+                    week = '星期日';
+                    break;
+            }
+            this.date+='  '+ week
+        },
         // 全屏事件
         handleFullScreen () {
             let element = document.documentElement;
@@ -130,7 +166,9 @@ export default {
         }
     },
     destroyed () {
+        let me = this
         bus.$off();
+        clearInterval(me._timeInterval)
     }
 };
 </script>
