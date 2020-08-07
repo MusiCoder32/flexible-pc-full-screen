@@ -430,7 +430,7 @@ export default {
                                     height: 120px;
                                     top: 7.5px;
                                     left: 2px;
-                                    animation: scanRotate 10s infinite linear;
+                                    animation: scanRotate 20s infinite linear;
                                 }
                             }
                             > div.icon-box {
@@ -441,7 +441,7 @@ export default {
                                     position: absolute;
                                     width: 13px;
                                     height: 14px;
-                                    animation: iconDebounce 2s infinite linear;
+                                    animation: iconDebounce 3s infinite linear;
 
                                     &:nth-child(1) {
                                         right: 0;
@@ -497,11 +497,11 @@ export default {
                         flex-direction: column;
                         justify-content: space-between;
                         align-items: center;
-                        > div:first-child {
+                        &> div:first-child {
                             width: 100%;
                             display: flex;
                             justify-content: space-between;
-                            > div {
+                            &> div {
                                 background: url("../../assets/img/index/5.png") no-repeat;
                                 background-size: contain;
                                 width: 98px;
@@ -511,7 +511,7 @@ export default {
                                     background: url("../../assets/img/index/4.png") no-repeat;
                                     background-size: contain;
                                 }
-                                > div:first-child {
+                               & > div:first-child {
                                     width: 100%;
                                     text-align: center;
                                     position: absolute;
@@ -519,11 +519,11 @@ export default {
                                     font-size: 36px;
                                     font-family: BebasNeue;
                                 }
-                                > div:last-child {
+                                &> div:last-child {
                                     width: 100%;
                                     text-align: center;
                                     position: absolute;
-                                    top: 64px;
+                                    top: 63px;
                                     font-size: 12px;
                                     font-weight: 400;
                                 }
@@ -545,10 +545,10 @@ export default {
                             }
                             > div:first-child {
                                 height: 100%;
-                                line-height: 60px;
+                                line-height: 58px;
                                 text-align: center;
                                 position: absolute;
-                                left: 59px;
+                                left: 57px;
                                 font-size: 12px;
                                 font-weight: 400;
                             }
@@ -564,7 +564,7 @@ export default {
                     &:nth-child(n + 3) {
                         align-items: flex-end;
                     }
-                    > div {
+                    &> div {
                         width: 190px;
                         height: 67px;
                         background: url("../../assets/img/index/2.png") center no-repeat;
@@ -576,18 +576,18 @@ export default {
                             background: url("../../assets/img/index/1.png") center no-repeat;
                             background-size: contain;
                         }
-                        > div {
+                       & > div {
                             width: 100%;
                             position: absolute;
                             text-align: center;
                         }
-                        > div:first-child {
+                        &> div:first-child {
                             top: 2px;
                             font-size: 36px;
                             font-family: BebasNeue;
                         }
-                        > div:last-child {
-                            top: 45px;
+                        &> div:last-child {
+                            bottom: 7px;
                             font-size: 12px;
                         }
                     }

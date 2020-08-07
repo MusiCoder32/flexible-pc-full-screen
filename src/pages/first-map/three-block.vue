@@ -1,7 +1,7 @@
 <template>
     <div class="content three-block">
         <oblique-angle></oblique-angle>
-        <div class="sensor">
+        <div v-if="firstData.warningCount && firstData.bdSensorStatistics" class="sensor">
             <div class="sensor-left">
                 <div class="sensor-left-border-1"></div>
                 <div class="sensor-left-content">

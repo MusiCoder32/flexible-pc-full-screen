@@ -5,7 +5,7 @@ import { Notification } from 'element-ui';
 var baseUrl = '';
 let timeout = 60 * 1000;
 if (process.env.NODE_ENV !== 'development') {
-    baseUrl = 'http://118.123.247.242:8010/';
+    baseUrl = 'http://api.yzt.scdem.cn/';
     timeout = 60 * 1000;
 }
 var params;

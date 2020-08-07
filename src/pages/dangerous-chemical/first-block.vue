@@ -1,13 +1,13 @@
 <template>
     <div class="content">
         <div class="chemical-nav">
-            <div @mouseover="RightActive=false" class="nav-left vh_content_end">
+            <div @click="RightActive=false" class="nav-left vh_content_end">
                 <div  :class="{'pr':!RightActive}">
                     <img class="bg1" v-if="RightActive" src="../../assets/img/chemical/3.png"/>
                     <img class="bg2" v-else style="transform: rotate(180deg)" src="../../assets/img/chemical/5.png"/>
                 </div>
             </div>
-            <div  @mouseover="RightActive=true" class="nav-right vh_content_start">
+            <div  @click="RightActive=true" class="nav-right vh_content_start">
                 <div :class="{'pl':RightActive}">
                     <img class="bg1" style="transform: rotate(180deg)" v-if="!RightActive"
                          src="../../assets/img/chemical/3.png"/>
@@ -32,7 +32,7 @@ export default {
     data () {
         return {
             isSliderExpand: false,
-            RightActive: true
+            RightActive: false
         };
     },
     methods: {
