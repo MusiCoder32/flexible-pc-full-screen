@@ -224,25 +224,6 @@ export default {
         }
     },
     mounted () {
-        window.addEventListener('load', () => {
-            let height = document.body.offsetHeight;
-            let width = document.body.offsetWidth;
-            let screenWidth = window.screen.availWidth;
-            let screenHeight = window.screen.availHeight;
-            console.log(height, width);
-            console.log(screenHeight, screenWidth);
-
-            //在放大缩小的情况下，bodyOffsetHeight、width与screenHeight、width不相等，全屏且100%时相等
-            if (screenHeight < 1080 || screenWidth < 1920) {
-                document.body.style.width = '1920px';
-                document.body.style.height = '1080px';
-                // document.body.style.overflow = 'hidden'
-            }
-            else {
-                document.body.style.width = '100%';
-                document.body.style.height = '100%';
-            }
-        });
     },
     methods: {
         toggleFullscreen () {

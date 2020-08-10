@@ -97,7 +97,6 @@ export default {
 
                     this.loginDisabled = true;
                     this.$req.post(this.$url.login, reqData).then((res) => {
-                        console.log(res);
                         if (res.code === 200) {
                             localStorage.setItem('isLogin', true);
                             localStorage.setItem('role', this.param.UserName);

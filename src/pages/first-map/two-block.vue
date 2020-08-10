@@ -529,7 +529,7 @@ export default {
                                 }
                             }
                         }
-                        > div:last-child {
+                        &> div:last-child {
                             background: url("../../assets/img/index/6.png") no-repeat;
                             background-size: contain;
                             width: 214px;

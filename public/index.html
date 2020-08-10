@@ -8,10 +8,34 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="./logo_icon.ico">
     <title>full-screen-dashboard</title>
-    <script inline src='node_modules/lib-flexible-for-dashboard/dist/index.js'></script>
     <script src="//webapi.amap.com/maps?v=1.4.15&plugin=AMap.DistrictSearch,AMap.DistrictLayer,AMap.Geocoder,AMap.ToolBar,AMap.PolyEditor,AMap.Scale,AMap.PlaceSearch&key=4dfddc04130e4b233ec9e6e3e8a631f3"></script>
+    <!--<script inline src='node_modules/lib-flexible-for-dashboard/dist/index.js'></script>-->
     <script>
-        dashboardFlexible.init(16 / 9);
+
+    function setRem(screenRatioByDesign) {
+        if (screenRatioByDesign === void 0) { screenRatioByDesign = 16 / 9; }
+        var docEle = document.documentElement;
+        function setHtmlFontSize() {
+            let screenWidth = window.screen.width;
+            let screenHeight = window.screen.height;
+            //在放大缩小的情况下，bodyOffsetHeight、width与screenHeight、width不相等，全屏且100%时相等
+            if (screenHeight < 1080 || screenWidth < 1920) {
+                document.documentElement.style.width = '1920px';
+                document.documentElement.style.height = '1080px';
+            }
+            let  offsetWidth = docEle.offsetWidth || docEle.clientWidth;
+            let  offsetHeight = docEle.offsetHeight || docEle.clientHeight;
+            let screenRatio = offsetWidth / offsetHeight;
+            let fontSize = (screenRatio > screenRatioByDesign
+                ? (screenRatioByDesign / screenRatio)
+                : 1) * docEle.offsetWidth / 10;
+            docEle.style.fontSize = fontSize.toFixed(3) + "px";
+            console.log(fontSize)
+        }
+        setHtmlFontSize();
+        window.addEventListener('resize', setHtmlFontSize);
+    }
+    setRem(16 / 9)
     </script>
 </head>
 

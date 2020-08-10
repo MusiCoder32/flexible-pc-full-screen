@@ -2,6 +2,7 @@ import axios from 'axios';
 import router from '../router/router';
 import { Notification } from 'element-ui';
 
+axios.defaults.withCredentials = true
 var baseUrl = '';
 let timeout = 60 * 1000;
 if (process.env.NODE_ENV !== 'development') {
