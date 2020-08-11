@@ -53,6 +53,19 @@ body {
     background: rgba(0,123,255,0.2);
 }
 
+.high-risk {
+    background: #ff5e54;
+}
+.medium-risk {
+    background: #FF732E;
+}
+.general-risk {
+    background: #C3A300;
+}
+.low-risk {
+    background: #005EFF;
+}
+
 .content {
     width: 100%;
     height: 100%;

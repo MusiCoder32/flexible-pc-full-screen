@@ -10,7 +10,7 @@
                         <dangerous-circle></dangerous-circle>
                         <div>
                             <div>
-                                <p class="font-size-x6 font-family-bebas ">4326</p>
+                                <p class="font-size-x6 font-family-bebas ">{{total}}</p>
                                 <p class="font-weight-medium">试点企业</p>
                             </div>
                             <div class="center-content">
@@ -39,7 +39,7 @@
             </div>
             <div class="sensor-right">
                 <oblique-angle-rect>
-                    <div style="width: 100%;height: 100%">
+                    <div v-if="coalData.companyRiskCount" style="width: 100%;height: 100%">
                         <pre-warning-bar></pre-warning-bar>
                     </div>
                 </oblique-angle-rect>
@@ -49,19 +49,29 @@
 </template>
 
 <script>
-    import PreWarningBar from '../../components/charts/pre-warning-bar'
-    import ObliqueAngle from '../../components/business_component/oblique-angle'
-    import ObliqueAngleRect from '../../components/business_component/oblique-angle-rect'
-    import DangerousCircle from '../../components/svgs/dangerous-circle'
-    export default {
-        name: 'three-block',
-        components: {
-            PreWarningBar,
-            ObliqueAngle,
-            ObliqueAngleRect,
-            DangerousCircle
+import PreWarningBar from '../../components/charts/pre-warning-bar';
+import ObliqueAngle from '../../components/business_component/oblique-angle';
+import ObliqueAngleRect from '../../components/business_component/oblique-angle-rect';
+import DangerousCircle from '../../components/svgs/dangerous-circle';
+import {mapState} from 'vuex';
+
+export default {
+    name: 'three-block',
+    components: {
+        PreWarningBar,
+        ObliqueAngle,
+        ObliqueAngleRect,
+        DangerousCircle
+    },
+    computed: {
+        ...mapState(['coalData']),
+        total () {
+            let value = this.coalData.companyRiskCount || {};
+            value = value.total || 0;
+            return value;
         }
-    };
+    }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -87,14 +97,14 @@
                         width: 144px;
                         height: 22px;
                         font-weight: 400;
-                        margin-left:15px;
+                        margin-left: 15px;
                         line-height: 22px;
                     }
                     .sensor-chart {
                         height: 152px;
                         width: 100%;
                         .center-content {
-                            margin-top:17px;
+                            margin-top: 17px;
                             width: 200px;
                             height: 50px;
                             font-size: 10px;
@@ -147,7 +157,7 @@
             }
 
             .sensor-right {
-                width:49%;
+                width: 49%;
             }
         }
     }

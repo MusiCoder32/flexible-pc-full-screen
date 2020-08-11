@@ -46,21 +46,21 @@ export default {
             rectBorderTop: 'four-block-rect-border-top',
             thirdpartLinks: [
                 {
-                    bgUrl: require('../../assets/img/radar-bg.png'),
+                    bgUrl: require('../../assets/img/radar-bg0.png'),
                     iconUrl:require('../../assets/img/ic_ktd_pc_ld.png'),
                     name:'遥感',
                     thumbnails:'',
                     url: 'http://baidu.com'
                 },
                 {
-                    bgUrl: require('../../assets/img/radar-bg.png'),
+                    bgUrl: require('../../assets/img/radar-bg1.png'),
                     iconUrl:require('../../assets/img/ic_ktd_xc_xy.png'),
                     name:'无人机',
                     thumbnails:'',
                     url: 'http://baidu.com'
                 },
                 {
-                    bgUrl: require('../../assets/img/radar-bg.png'),
+                    bgUrl: require('../../assets/img/radar-bg2.png'),
                     iconUrl:require('../../assets/img/ic_ktd_hc_dj.png'),
                     name:'三维激光',
                     thumbnails:'',

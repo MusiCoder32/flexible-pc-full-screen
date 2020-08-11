@@ -65,15 +65,15 @@ export default {
 
         this.setTime()
         me._timeInterval = setInterval(() => {
-            this.setTime()
+            me.setTime()
         }, 1000);
     },
     methods: {
-        ...mapMutations(['setFirstData']),
+        ...mapMutations(['setFirstData','setCoalData','setChemicalData']),
         setTime () {
             let time = new Date();
             this.date = moment(time).format('YYYY年MM月DD日');
-            this.time = moment(time).format('HH:MM:SS');
+            this.time = moment(time).format('HH:mm:ss');
             let week = moment(time).day();
             switch (week) {
                 case 1:
@@ -96,6 +96,8 @@ export default {
                     break;
                 case 0:
                     week = '星期日';
+                    break;
+                default:
                     break;
             }
             this.date+='  '+ week
@@ -146,6 +148,8 @@ export default {
         },
         init () {
             this.getFirstData();
+            this.getCoalData();
+            this.getChemicalData();
         },
         async getFirstData () {
             let me = this;
@@ -163,7 +167,41 @@ export default {
             catch (err) {
                 console.log(err);
             }
-        }
+        } ,
+        async getCoalData () {
+            let me = this;
+            let res;
+            try {
+                res = await this.$req.get(this.$url.coal);
+                console.log(res);
+                if (res.code == 200) {
+                    me.setCoalData({ data: res.data });
+                }
+                else {
+                    console.log(res);
+                }
+            }
+            catch (err) {
+                console.log(err);
+            }
+        },
+        async getChemicalData () {
+            let me = this;
+            let res;
+            try {
+                res = await this.$req.get(this.$url.chemical);
+                console.log(res);
+                if (res.code == 200) {
+                    me.setChemicalData({ data: res.data });
+                }
+                else {
+                    console.log(res);
+                }
+            }
+            catch (err) {
+                console.log(err);
+            }
+        },
     },
     destroyed () {
         let me = this

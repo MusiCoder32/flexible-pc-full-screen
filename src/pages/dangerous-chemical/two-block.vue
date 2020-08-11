@@ -19,7 +19,7 @@
                             <div class="ml20 two-block-rect-title font-size-medium font-weight-medium">北斗+</div>
                             <div class="hBox vh_items_center vh_content_around">
                                 <div class="chemical-bei-dou" style="height:100%">
-                                    <div>626</div>
+                                    <div>{{total}}</div>
                                     <div>覆盖企业数</div>
                                     <div></div>
                                     <div></div>
@@ -39,11 +39,11 @@
                             <div class="ml20 two-block-rect-title font-size-medium font-weight-medium">空天地</div>
                             <div class="hBox vh_items_center vh_content_around ktd-content" style="flex-grow: 1">
                                 <div>
-                                    <div>3288</div>
+                                    <div>{{skyGround.coveredCount}}</div>
                                     <div>覆盖园区数量</div>
                                 </div>
                                 <div>
-                                    <div>3288</div>
+                                    <div>{{skyGround.currentWarnCount}}</div>
                                     <div>当前预警数量</div>
                                 </div>
                             </div>
@@ -55,15 +55,15 @@
                             <div class=" ml20 two-block-rect-title font-size-medium font-weight-medium">安全检查</div>
                             <div class="hBox vh_items_center vh_content_around safe-check" style="flex-grow: 1">
                                 <div>
-                                    <div>3288</div>
+                                    <div>{{checkSelf.checkCount}}</div>
                                     <div>检查次数</div>
                                 </div>
                                 <div>
-                                    <div>3288</div>
+                                    <div>{{checkSelf.hiddenDangerCount}}</div>
                                     <div>隐患个数</div>
                                 </div>
                                 <div>
-                                    <div>3288</div>
+                                    <div>{{checkSelf.doneCount}}</div>
                                     <div>闭环个数</div>
                                 </div>
                             </div>
@@ -74,16 +74,16 @@
                         <div class="ml20 two-block-rect-title font-size-medium font-weight-medium">特殊作业</div>
                         <div class="hBox vh_items_center vh_content_around tszy-content" style="flex-grow: 1">
                             <div>
-                                <div>3288</div>
+                                <div>{{special.coveredCount}}</div>
                                 <div>覆盖企业数量</div>
                             </div>
                             <div class="vBox vh_content_between mr20" style="height: 100%">
                                 <div>
-                                    <div>88</div>
+                                    <div>{{special.currentWarnCount}}</div>
                                     <div>当前预警数量</div>
                                 </div>
                                 <div>
-                                    <div>88</div>
+                                    <div>{{special.historyWarnCount}}</div>
                                     <div>历史预警数量</div>
                                 </div>
                             </div>
@@ -112,18 +112,6 @@ export default {
     },
     data () {
         return {
-            beiDouData: [
-                {
-                    name: '投入装置数量',
-                    value: 98
-                }, {
-                    name: '当前预警数量',
-                    value: 98
-                }, {
-                    name: '历史预警数量',
-                    value: 98
-                }
-            ],
             activeIndex: 0,
             borderWidth1: 'chemical-two-block-title-width-1',
             borderWidth2: 'chemical-two-block-title-width-2',
@@ -131,6 +119,38 @@ export default {
             rectHeight: 'chemical-two-block-rect-height',
             rectBorderTop: 'chemical-two-block-rect-border-top'
         };
+    },
+    computed: {
+        skyGround: function () {
+            return this.$store.state.chemicalData.hazardAirSpaceGround || {};
+        },
+        checkSelf() {
+            return this.$store.state.chemicalData.safetyCheck || {};
+        },
+        special() {
+            return this.$store.state.chemicalData.specialWork || {};
+
+        },
+        total() {
+            let obj = this.$store.state.chemicalData.hazardBDStatistics || {};
+            return obj.coveredCount || 0
+        },
+        beiDouData () {
+            let obj = this.$store.state.chemicalData.hazardBDStatistics || {};
+
+            return [
+                {
+                    name: '投入装置数量',
+                    value: obj.equipmentCount || 0,
+                }, {
+                    name: '当前预警数量',
+                    value: obj.currentWarnCount || 0,
+                }, {
+                    name: '历史预警数量',
+                    value: obj.historyWarnCount || 0,
+                }
+            ];
+        }
     },
     methods: {
         goTo (type) {

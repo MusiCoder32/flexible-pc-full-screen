@@ -16,6 +16,9 @@ import {d3, svgInit} from './svgs';
 
 export default {
     name: 'BeiDouPie',
+    props: {
+      total:Number
+    },
     data () {
         return {
             id: 'BeiDouPie',
@@ -92,7 +95,7 @@ export default {
                   .attr('stroke-width', me.strokeWidth)
                   .attr('d', arcGenerator2);
 
-            svg.append('text').text('426')
+            svg.append('text').text(me.total)
                .attr('style', `font-size:${f1}px;font-family:BebasNeue;fill:white;text-anchor: middle;dominant-baseline: middle`)
                .attr('transform', `translate(${rx},${ry*0.9})`);
             svg.append('text').text('总量')

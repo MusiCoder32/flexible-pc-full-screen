@@ -1,13 +1,13 @@
 <template>
     <div class="content">
         <div class="chemical-nav">
-            <div @click="RightActive=false" class="nav-left vh_content_end">
+            <div @click="click(0)" class="nav-left vh_content_end">
                 <div  :class="{'pr':!RightActive}">
                     <img class="bg1" v-if="RightActive" src="../../assets/img/chemical/3.png"/>
                     <img class="bg2" v-else style="transform: rotate(180deg)" src="../../assets/img/chemical/5.png"/>
                 </div>
             </div>
-            <div  @click="RightActive=true" class="nav-right vh_content_start">
+            <div  @click="click(1)" class="nav-right vh_content_start">
                 <div :class="{'pl':RightActive}">
                     <img class="bg1" style="transform: rotate(180deg)" v-if="!RightActive"
                          src="../../assets/img/chemical/3.png"/>
@@ -22,6 +22,7 @@
 <script>
 import SliderPie from '../../components/charts/slider-pie';
 import MapMarker from '../../components/svgs/pie-bar-animation';
+import bus from '../../common/bus'
 
 export default {
     name: 'first-block',
@@ -36,9 +37,9 @@ export default {
         };
     },
     methods: {
-        sliderClick () {
-            this.isSliderExpand = !this.isSliderExpand;
-
+        click (type) {
+            this.RightActive = type !== 0;
+            bus.$emit('chemicalChangeMap',type)
         }
     }
 };
@@ -58,12 +59,12 @@ export default {
         position: absolute;
         cursor:pointer;
         top: 32px;
-        right: -60px;
+        right: 40px;
         display: flex;
         align-items: center;
         z-index: 1000;
         > div {
-            width: 200px;
+            width: 100px;
             height: 64px;
             display: flex;
             align-items: center;
@@ -81,7 +82,7 @@ export default {
             color:rgba(255,255,255,0.5);
             &:before {
                 position: absolute;
-                width: 200px;
+                width: 100px;
                 height: 68px;
                 content: '企业分布';
                 line-height: 64px;
@@ -100,7 +101,7 @@ export default {
             color:rgba(255,255,255,0.5);
             &:before {
                 position: absolute;
-                width: 200px;
+                width: 100px;
                 height: 64px;
                 content: '园区分布';
                 padding-left:20px;

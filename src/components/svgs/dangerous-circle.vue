@@ -16,43 +16,64 @@ export default {
             radius: 90, // 圆形进度条中心线的半径
             spaceBetween: 20, // 圆形进度条中心线的半径
             circleBackground: 'rgba(0,123,255,0.2)',
-            tickSize:7,
-            tickTitlePadding:-25,
-            tickStrokeWidth:1,
-            tickFontSize:14,
-            backgroundCirclePadding:42,
-            tickPadding:21,
+            tickSize: 7,
+            tickTitlePadding: -25,
+            tickStrokeWidth: 1,
+            tickFontSize: 14,
+            backgroundCirclePadding: 42,
+            tickPadding: 21,
             startAngle: -Math.PI // 起始角度，0为3点钟方向
         };
     },
     mounted () {
-        svgInit(this.drawSvg, this.id, [this.width, this.height, this.radius, this.lineWidth, this.spaceBetween,this.tickSize,this.tickTitlePadding,this.tickStrokeWidth,this.tickFontSize,this.backgroundCirclePadding,this.tickPadding]);
+        svgInit(this.drawSvg, this.id, [this.width, this.height, this.radius, this.lineWidth, this.spaceBetween, this.tickSize, this.tickTitlePadding, this.tickStrokeWidth, this.tickFontSize, this.backgroundCirclePadding, this.tickPadding]);
+    },
+    computed: {
+        percent() {
+            let obj = this.$store.state.coalData.companyRiskCount || {};
+            let total = obj.total||0
+            let lowRiskCount = obj.lowRiskCount||0
+            let generalRiskCount = obj.generalRiskCount||0
+            let highRiskCount = obj.highRiskCount||0
+            let significantRisk = obj.significantRisk||0
+            lowRiskCount = lowRiskCount/total*100
+            generalRiskCount = generalRiskCount/total*100
+            highRiskCount = highRiskCount/total*100
+            significantRisk = significantRisk/total*100
+            return {
+                lowRiskCount,
+                generalRiskCount,
+                highRiskCount,
+                significantRisk,
+            }
+        }
     },
     methods: {
-        drawSvg (svg, id, width, height, r, lineWidth, spaceBetween,tickSize,tickTitlePadding,tickStrokeWidth,tickFontSize,backgroundCirclePadding,tickPadding) {
+        drawSvg (svg, id, width, height, r, lineWidth, spaceBetween, tickSize, tickTitlePadding, tickStrokeWidth, tickFontSize, backgroundCirclePadding, tickPadding) {
+            let me = this;
             svg.attr('width', width);
             svg.attr('height', height);
             let rx = width / 2;
             let ry = height - backgroundCirclePadding;
-            let me = this;
-            var data = [
+
+            let data = [
                 {
-                    process: 10, // 进度 100为满
+                    process: me.percent.lowRiskCount, // 进度 100为满
                     fill: '#007BFF', // 进度条颜色
                     stroke: 'none', // 进度条边框颜色
                     strokeWidth: 2 // 进度条边框宽度
                 }, {
-                    process: 20, // 进度 100为满
+                    process: me.percent.generalRiskCount, // 进度 100为满
                     fill: '#FFD600', // 进度条颜色
                     stroke: 'none', // 进度条边框颜色
                     strokeWidth: 2 // 进度条边框宽度
                 }, {
-                    process: 40, // 进度 100为满
+                    process: me.percent.highRiskCount, // 进度 100为满
                     fill: '#FF732E', // 进度条颜色
                     stroke: 'none', // 进度条边框颜色
                     strokeWidth: 0 // 进度条边框宽度
                 }, {
-                    process: 30, // 进度 100为满
+                    process: me.percent.significantRisk, // 进度 100为满
                     fill: '#FF5E54', // 进度条颜色
                     stroke: 'none', // 进度条边框颜色
                     strokeWidth: 0 // 进度条边框宽度
@@ -72,7 +93,7 @@ export default {
 
             // 画底部坐标
 
-            const xScale = d3.scaleLinear().domain([0, 6]).range([0, 3*spaceBetween])
+            const xScale = d3.scaleLinear().domain([0, 6]).range([0, 3 * spaceBetween])
                              .nice();
             const xAxios = d3.axisTop(xScale).ticks(3).tickSize(tickSize).tickPadding(tickTitlePadding).tickFormat((d, i) => {
                 let value = '蓝';
@@ -95,7 +116,7 @@ export default {
             });
 
             let xAxiosLeft = grounp.append('g').call(xAxios)
-                  .attr('transform', `translate(${width / 2 - r - lineWidth / 2},${height-tickPadding})`);
+                                   .attr('transform', `translate(${width / 2 - r - lineWidth / 2},${height - tickPadding})`);
 
             const xAxios2 = d3.axisTop(xScale).ticks(3).tickSize(tickSize).tickPadding(tickTitlePadding).tickFormat((d, i) => {
                 let value = '';
@@ -118,23 +139,23 @@ export default {
             });
 
             let xAxiosRight = grounp.append('g').call(xAxios2)
-                  .attr('transform', `translate(${width / 2 + r -3*spaceBetween+ lineWidth / 2},${height-tickPadding})`);
+                                    .attr('transform', `translate(${width / 2 + r - 3 * spaceBetween + lineWidth / 2},${height - tickPadding})`);
 
             xAxiosRight.selectAll('line').attr('stroke', 'rgba(0,123,255,1)').attr('stroke-width', tickStrokeWidth).attr('fill', 'rgba(0,123,255,1)');
             xAxiosRight.selectAll('text')
-                       .attr('style',`fill:rgba(255,255,255,0.2);font-family:PingFang;font-size:${tickFontSize}px;font-weight:400`)
-            xAxiosRight.select('path').remove()
+                       .attr('style', `fill:rgba(255,255,255,0.2);font-family:PingFang;font-size:${tickFontSize}px;font-weight:400`);
+            xAxiosRight.select('path').remove();
             xAxiosLeft.selectAll('line').attr('stroke', 'rgba(0,123,255,1)').attr('stroke-width', tickStrokeWidth).attr('fill', 'rgba(0,123,255,1)');
             xAxiosLeft.selectAll('text')
-                       .attr('style',`fill:rgba(255,255,255,0.2);font-family:PingFang;font-size:${tickFontSize}px;font-weight:400`)
-            xAxiosLeft.select('path').remove()
+                      .attr('style', `fill:rgba(255,255,255,0.2);font-family:PingFang;font-size:${tickFontSize}px;font-weight:400`);
+            xAxiosLeft.select('path').remove();
 
             grounp.append('g')
-                  .attr('transform', `translate(${width / 2},${height-tickPadding})`)
+                  .attr('transform', `translate(${width / 2},${height - tickPadding})`)
                   .append('path')
-                  .attr('d',`m-${r+lineWidth/2},0 l${r*2+lineWidth},0`)
+                  .attr('d', `m-${r + lineWidth / 2},0 l${r * 2 + lineWidth},0`)
                   .attr('stroke', 'rgba(0,123,255,1)')
-                  .attr('stroke-width', tickStrokeWidth)
+                  .attr('stroke-width', tickStrokeWidth);
 
             //画圆环内
             grounp.append('path')

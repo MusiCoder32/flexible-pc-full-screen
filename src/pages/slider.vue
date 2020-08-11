@@ -10,15 +10,15 @@
         />
         <img src="../assets/img/覆盖人群icon_img.png"/>
         <div>
-            <p>{{firstData.monitorCount.monitoringCount}}</p>
+            <p>{{sliderData.monitoringCount}}</p>
             <p>正在监测企业</p>
         </div>
         <div>
-            <p>{{firstData.monitorCount.foucusCount}}</p>
+            <p>{{sliderData.foucusCount}}</p>
             <p>重点关注企业</p>
         </div>
         <div>
-            <p>{{firstData.monitorCount.coverPeopleCount}}</p>
+            <p>{{sliderData.coverPeopleCount}}</p>
             <p>覆盖人群数（万）</p>
         </div>
         <div>
@@ -40,11 +40,23 @@ export default {
     },
     data () {
         return {
-            isSliderExpand: false
+            isSliderExpand: false,
         };
     },
     computed: {
-        ...mapState(['firstData'])
+        ...mapState(['firstData']),
+        sliderData() {
+            let path = this.$route.path
+            if (path.indexOf('first') > -1) {
+                return this.$store.state.firstData.monitorCount || {};
+            }
+            else if (path.indexOf('coal') > -1) {
+                return this.$store.state.coalData.monitorCount || {};
+            }
+            else if (path.indexOf('chemical') > -1) {
+                return this.$store.state.chemicalData.monitorCount || {};
+            }
+        }
     },
     methods: {
         sliderClick () {
@@ -57,12 +69,13 @@ export default {
 <style lang="scss" scoped>
 
     .slider-expand {
-        left: -166px !important;
+        left: -188px !important;
         transition: left 2s;
     }
 
     .slider-icon-rotate {
-        transform: rotate(180deg);
+        transform: translateX(21px) rotate(180deg);
+        transition: transform 0s linear 2s;
     }
 
     .slider {

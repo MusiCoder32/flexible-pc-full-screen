@@ -63,6 +63,8 @@ import DoubleLine from '@/components/charts_demo/DoubleLine';
 import FirstMap from '../components/svgs/pie-bar-animation';
 import mapMarker from '../components/svgs/pie-bar-animation';
 
+import bus from '../common/bus'
+
 export default {
     components: {
         Doughnut,
@@ -79,8 +81,8 @@ export default {
     },
     data () {
         return {
-            isFullScreen: false
-
+            isFullScreen: false,
+            chemicalType:0
         };
     },
     computed: {
@@ -211,8 +213,19 @@ export default {
             ];
             let path = this.$route.path;
             let data = [];
+
             if (path.indexOf('first') > -1) {
                 data = this.$store.state.firstData.mapStatistics || [];
+            }
+            else if (path.indexOf('coal') > -1) {
+                data = this.$store.state.coalData.mapStatistics || [];
+            }
+            else if (path.indexOf('chemical') > -1) {
+                if(this.chemicalType===0) {
+                    data = this.$store.state.chemicalData.mapStatistics || [];
+                } else {
+                    data = this.$store.state.chemicalData.mapParkStatistics || [];
+                }
             }
             let al = data.map(item => {
                 let obj = all.filter(AItem => {
@@ -224,6 +237,9 @@ export default {
         }
     },
     mounted () {
+        bus.$on('chemicalChangeMap',(type)=>{
+            this.chemicalType = type
+        })
     },
     methods: {
         toggleFullscreen () {

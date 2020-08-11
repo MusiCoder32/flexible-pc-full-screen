@@ -18,8 +18,8 @@
                         <div class="content ml20 vBox">
                             <div class="two-block-rect-title font-size-medium font-weight-medium">北斗+</div>
                             <div class="hBox vh_items_center vh_content_around" style="flex-grow: 1">
-                                <div>
-                                    <bei-dou-pie></bei-dou-pie>
+                                <div v-if="total">
+                                    <bei-dou-pie :total="total"></bei-dou-pie>
                                 </div>
                                 <div class="mr20 vBox vh_content_between vh_items_center" style="height:100%">
                                     <div v-for="(item,index) in beiDouData" :key="item.name+index" class="bei-dou-item">
@@ -39,16 +39,16 @@
                             <div class="two-block-rect-title font-size-medium font-weight-medium">空天地</div>
                             <div class="hBox vh_items_center vh_content_around ktd-content" style="flex-grow: 1">
                                 <div>
-                                    <div>3288</div>
+                                    <div>{{skyGround.coveredCount}}</div>
                                     <div>覆盖企业数量</div>
                                 </div>
                                 <div class="vBox vh_content_between mr20" style="height: 100%">
                                     <div>
-                                        <div>88</div>
+                                        <div>{{skyGround.currentWarnCount}}</div>
                                         <div>当前预警数量</div>
                                     </div>
                                     <div>
-                                        <div>88</div>
+                                        <div>{{skyGround.historyWarnCount}}</div>
                                         <div>历史预警数量</div>
                                     </div>
                                 </div>
@@ -61,16 +61,16 @@
                             <div class="two-block-rect-title font-size-medium font-weight-medium">自查自报</div>
                             <div class="hBox vh_items_center vh_content_around ktd-content" style="flex-grow: 1">
                                 <div>
-                                    <div>3288</div>
+                                    <div>{{checkSelf.hiddenDangerDoneCount}}</div>
                                     <div>隐患整改数量</div>
                                 </div>
                                 <div class="vBox vh_content_between mr20" style="height: 100%">
                                     <div>
-                                        <div>88</div>
+                                        <div>{{checkSelf.currentWarnCount}}</div>
                                         <div>当前预警数量</div>
                                     </div>
                                     <div>
-                                        <div>88</div>
+                                        <div>{{checkSelf.historyWarnCount}}</div>
                                         <div>历史预警数量</div>
                                     </div>
                                 </div>
@@ -82,11 +82,11 @@
                         <div class=" ml20 mb6 two-block-rect-title font-size-medium font-weight-medium">证照情况</div>
                         <div class="hBox vh_items_center vh_content_around zz-content" style="flex-grow: 1">
                             <div>
-                                <div>88</div>
+                                <div>{{card.alarmCount}}</div>
                                 <div>安证超期报警企业数</div>
                             </div>
                             <div>
-                                <div>88</div>
+                                <div>{{card.alertCount}}</div>
                                 <div>安证到期提醒企业数</div>
                             </div>
                         </div>
@@ -114,21 +114,6 @@ export default {
     },
     data () {
         return {
-            beiDouData: [
-                {
-                    name: '排土场(家）',
-                    value: 98,
-                    icon:require('../../assets/img/coal/16.png')
-                }, {
-                    name: '露天矿场(家）',
-                    value: 98,
-                    icon:require('../../assets/img/coal/15.png')
-                }, {
-                    name: '尾矿库(家）',
-                    value: 98,
-                    icon:require('../../assets/img/coal/17.png')
-                }
-            ],
             activeIndex: 0,
             borderWidth1: 'coal-two-block-title-width-1',
             borderWidth2: 'coal-two-block-title-width-2',
@@ -136,6 +121,40 @@ export default {
             rectHeight: 'coal-two-block-rect-height',
             rectBorderTop: 'coal-two-block-rect-border-top'
         };
+    },
+    computed: {
+        skyGround: function () {
+            return this.$store.state.coalData.mineAirSpaceGround || {};
+        },
+        checkSelf() {
+            return this.$store.state.coalData.mineSelfCheck || {};
+        },
+        card() {
+            return this.$store.state.coalData.mineLicence || {};
+
+        },
+        total() {
+            let obj = this.$store.state.coalData.mineBDStatistics || {};
+            return obj.companyCount || 0
+        },
+        beiDouData () {
+            let obj = this.$store.state.coalData.mineBDStatistics || {};
+            return [
+                {
+                    name: '排土场(家）',
+                    value: obj.dumpCount,
+                    icon: require('../../assets/img/coal/16.png')
+                }, {
+                    name: '露天矿场(家）',
+                    value: obj.openPitMineCount,
+                    icon: require('../../assets/img/coal/15.png')
+                }, {
+                    name: '尾矿库(家）',
+                    value: obj.tailingPondCount,
+                    icon: require('../../assets/img/coal/17.png')
+                }
+            ];
+        }
     },
     methods: {
         goTo (type) {
@@ -157,7 +176,7 @@ export default {
             width: 491px;
             margin-bottom: 40px;
             .navigation-item {
-                cursor:pointer;
+                cursor: pointer;
                 width: 150px;
                 height: 40px;
                 opacity: 0.5;
@@ -195,11 +214,11 @@ export default {
                 .bei-dou-item {
                     width: 238px;
                     height: 44px;
-                    background: url("../../assets/img/coal/6.png") center  no-repeat;
+                    background: url("../../assets/img/coal/6.png") center center no-repeat;
                     background-size: contain;
-                    position:relative;
+                    position: relative;
                     &:hover {
-                        background:url("../../assets/img/coal/5.png") center no-repeat;
+                        background: url("../../assets/img/coal/5.png") center center no-repeat;
                         background-size: contain;
                     }
                     > div {
@@ -207,14 +226,14 @@ export default {
                         text-align: center;
                     }
                     > div:first-child {
-                        height:26px;
+                        height: 26px;
                         width: 26px;
-                        >img {
-                            height:100%;
+                        > img {
+                            height: 100%;
                             width: 100%;
                         }
                         left: 18px;
-                        top:9px;
+                        top: 9px;
                     }
                     > div:nth-child(2) {
                         left: 78px;
@@ -225,7 +244,7 @@ export default {
                     }
                     > div:last-child {
                         width: 91px;
-                        height:28px;
+                        height: 28px;
                         line-height: 28px;
                         right: 10px;
                         top: 8px;
@@ -236,7 +255,7 @@ export default {
                 }
 
                 .ktd-content {
-                    >div:first-child {
+                    > div:first-child {
                         width: 141px;
                         height: 146px;
                         background: url("../../assets/img/coal/4.png") center center no-repeat;
@@ -263,14 +282,14 @@ export default {
                             height: 36px;
                             line-height: 36px;
                             bottom: 18px;
-                            left:19.5px;
+                            left: 19.5px;
                             font-size: 12px;
                             background: url("../../assets/img/coal/8.png") center center no-repeat;
                             background-size: contain;
                         }
                     }
-                    >div:last-child {
-                        >div {
+                    > div:last-child {
+                        > div {
                             width: 236px;
                             height: 65px;
                             background: url("../../assets/img/coal/1.png") center center no-repeat;
@@ -290,56 +309,55 @@ export default {
                                 width: 77px;
                                 height: 70px;
                                 line-height: 70px;
-                                right:0;
-                                top:-2px;
+                                right: 0;
+                                top: -2px;
                                 font-family: BebasNeue;
                             }
                             > div:last-child {
                                 text-align: left;
                                 top: 12px;
-                                left:14px;
+                                left: 14px;
                                 font-size: 14px;
                             }
                         }
                     }
                 }
 
-                                .zz-content {
-                        >div {
-                            width: 190px;
-                            height: 148px;
-                            background: url("../../assets/img/coal/7.png") center center no-repeat;
+                .zz-content {
+                    > div {
+                        width: 190px;
+                        height: 148px;
+                        background: url("../../assets/img/coal/7.png") center center no-repeat;
+                        background-size: contain;
+                        position: relative;
+                        &:hover {
+                            background: url("../../assets/img/coal/2.png") center center no-repeat;
                             background-size: contain;
-                            position: relative;
-                            &:hover {
-                                background: url("../../assets/img/coal/2.png") center center no-repeat;
-                                background-size: contain;
-                            }
-                            > div {
-                                width: 100%;
-                                position: absolute;
-                                text-align: center;
-                            }
-                            > div:first-child {
-                                font-size: 50px;
-                                width: 100%;
-                                top:23px;
-                                font-family: BebasNeue;
-                            }
-                            > div:last-child {
-                                width: 100%;
-                                height:44px;
-                                line-height:44px;
-                                text-align: center;
-                                bottom: 12px;
-                                font-size: 14px;
-                                background: url("../../assets/img/coal/14.png") center center no-repeat;
-                                background-size: contain;
-                            }
                         }
+                        > div {
+                            width: 100%;
+                            position: absolute;
+                            text-align: center;
+                        }
+                        > div:first-child {
+                            font-size: 50px;
+                            width: 100%;
+                            top: 23px;
+                            font-family: BebasNeue;
+                        }
+                        > div:last-child {
+                            width: 100%;
+                            height: 44px;
+                            line-height: 44px;
+                            text-align: center;
+                            bottom: 12px;
+                            font-size: 14px;
+                            background: url("../../assets/img/coal/14.png") center center no-repeat;
+                            background-size: contain;
+                        }
+                    }
 
                 }
-
 
             }
         }

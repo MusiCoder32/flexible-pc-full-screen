@@ -4,7 +4,7 @@
                        :title="obliqueTextLeft"></oblique-angle>
         <oblique-angle-rect class="font-size-base" :rectHeight="rectHeight"
                             :rectBorderTop="rectBorderTop">
-            <div class="hBox vh_content_center table-box emphasis-attention-company-chemical">
+            <div v-if="tableData.length>0" class="hBox vh_content_center table-box emphasis-attention-company-chemical">
                 <el-table
                         :data="tableData"
                         class="company-table font-size-small"
@@ -14,20 +14,33 @@
                         @cell-mouse-leave="leaveTable"
                 >
                     <el-table-column
-                            prop="companyName"
-                            show-overflow-tooltip
-                            label="企业名称"
-                            min-width="2">
-                    </el-table-column>
-                    <el-table-column
                             prop="name"
-                            label="姓名"
+                            show-overflow-tooltip
+                            label="重点关注企业名称"
                             min-width="2">
                     </el-table-column>
                     <el-table-column
-                            prop="telephone"
+                            prop="type"
+                            label="企业类型"
+                            min-width="1">
+                    </el-table-column>
+                    <el-table-column
+                            prop="personName"
+                            label="企业负责人"
+                            min-width="1">
+                    </el-table-column>
+                    <el-table-column
+                            prop="tel"
                             min-width="2"
                             label="联系电话">
+                    </el-table-column>
+                    <el-table-column
+                            prop="riskLevel"
+                            min-width="1"
+                            label="风险等级">
+                        <template v-slot="level">
+                            <div class="icon-class" :class="{'high-risk':level.row.riskLevel==4,'medium-risk':level.row.riskLevel==3,'general-risk':level.row.riskLevel==2,'low-risk':level.row.riskLevel==1}"></div>
+                        </template>
                     </el-table-column>
                 </el-table>
 
@@ -61,18 +74,10 @@ export default {
     },
     mounted () {
         let me = this;
-        for (let i = 0; i < 19; i++) {
-            let obj = {
-                telephone: '13359322022',
-                name: '王小虎' + i,
-                companyName: '四川成伟矿业有限公司'
-            };
-            this.tableData.push(obj);
-        }
-        this.$nextTick(() => {
-            me._tableDataLength = me.tableData.length;
+        this.tableData = this.$store.state.chemicalData.hazardChemicalCompanyList || []
+        setTimeout(()=>{
             this.readyRoll();
-        });
+        },1000)
         window.addEventListener('resize', () => {
             me._tableSetInterval = clearInterval(me._tableSetInterval);
             me._rollSetTime && clearTimeout(me._rollSetTime)
@@ -92,13 +97,12 @@ export default {
             this.isMouseEnter = false;
         },
         readyRoll () {
-            this._trHeight = document.querySelector('div.emphasis-attention-company-chemical table  thead  tr').offsetHeight;
+            this._trHeight = document.querySelector('div.emphasis-attention-company-chemical table  tbody  tr').offsetHeight;
             let bodyHeight = document.querySelector('div.emphasis-attention-company-chemical').offsetHeight;
 
-            let len = Math.floor(bodyHeight / this._trHeight);
             this._containBoxStyle = document.querySelector('div.emphasis-attention-company-chemical div.el-table__body-wrapper.is-scrolling-none').style;
 
-            if (len < this.tableData.length) {
+            if ((this.tableData.length+1)*this._trHeight> bodyHeight) {
                 this._containBoxStyle.transform = `translate(0,-${this._trHeight * 2 + 'px'})`;
                 this._containBoxStyle.paddingTop = this._trHeight * 2 + 'px';
                 this.beginRolling();

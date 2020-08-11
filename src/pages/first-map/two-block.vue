@@ -95,8 +95,8 @@
                             class="company-table font-size-small"
                             :header-cell-style="{backgroundColor:'#0847A1 !important',color:'white'}"
                             :row-class-name="tableRowClassName"
-                            @cell-mouse-enter="enterTable"
-                            @cell-mouse-leave="leaveTable"
+                            @cell-mouse-enter="enterTable3"
+                            @cell-mouse-leave="leaveTable3"
                     >
                         <el-table-column
                                 prop="name"
@@ -133,8 +133,8 @@
                             class="company-table font-size-small"
                             :header-cell-style="{backgroundColor:'#0847A1 !important',color:'white'}"
                             :row-class-name="tableRowClassName"
-                            @cell-mouse-enter="enterTable"
-                            @cell-mouse-leave="leaveTable"
+                            @cell-mouse-enter="enterTable4"
+                            @cell-mouse-leave="leaveTable4"
                     >
                         <el-table-column
                                 prop="name"
@@ -179,7 +179,8 @@ export default {
     data () {
         return {
             coalStatistics: {},
-            isMouseEnter: false,
+            isMouseEnter3: false,
+            isMouseEnter4: false,
             chemicalCompanyArr: [
                 {
                     name: '危险化学品企业数量',
@@ -233,9 +234,8 @@ export default {
         this.chemicalCompanyArr[1].value = chemicalStatistics.majorHazardCount || 0;
         this.chemicalCompanyArr[2].value = chemicalStatistics.chemicalIndustryParkCount || 0;
         this.chemicalCompanyArr[3].value = chemicalStatistics.keySupervisionProcessCount || 0;
-        let coalCompanyList = this.$store.state.firstData.mineCompanyList || [];
-        let chemicalCompanyList = this.$store.state.firstData.hazardChemicalCompanyList || [];
-        this.tableData.push(...coalCompanyList,...chemicalCompanyList)
+        this.tableData3 = this.$store.state.firstData.mineCompanyList || [];
+        this.tableData4 = this.$store.state.firstData.hazardChemicalCompanyList || [];
         this.$nextTick(() => {
             this.readyRoll();
         });
@@ -251,56 +251,72 @@ export default {
         clearInterval(this._tableSetInterval);
     },
     methods: {
-        enterTable () {
-            this.isMouseEnter = true;
+        enterTable3 () {
+            this.isMouseEnter3 = true;
         },
-        leaveTable () {
-            this.isMouseEnter = false;
+        leaveTable3 () {
+            this.isMouseEnter3 = false;
+        },
+        enterTable4 () {
+            this.isMouseEnter4 = true;
+        },
+        leaveTable4 () {
+            this.isMouseEnter4 = false;
         },
         readyRoll () {
             this._trHeight = document.querySelector('div.emphasis-attention-company3 table  thead  tr').offsetHeight;
             let bodyHeight = document.querySelector('div.emphasis-attention-company3').offsetHeight;
 
-            let len = Math.floor(bodyHeight / this._trHeight);
-            this.tableData3 = this.tableData.slice(0, len + 2);
-            this.tableData4 = this.tableData.slice(len, this.tableData.length);
             this._containBoxStyle3 = document.querySelector('div.emphasis-attention-company3 div.el-table__body-wrapper.is-scrolling-none').style;
             this._containBoxStyle4 = document.querySelector('div.emphasis-attention-company4 div.el-table__body-wrapper.is-scrolling-none').style;
 
-            if (len < this.tableData4.length) {
+            if ((this.tableData3.length+1)*this._trHeight> bodyHeight) {
                 this._containBoxStyle3.transform = `translate(0,-${this._trHeight * 2 + 'px'})`;
                 this._containBoxStyle3.paddingTop = this._trHeight * 2 + 'px';
+                this.beginRolling3();
+            }
+            if ((this.tableData4.length+1)*this._trHeight> bodyHeight) {
                 this._containBoxStyle4.transform = `translate(0,-${this._trHeight * 2 + 'px'})`;
                 this._containBoxStyle4.paddingTop = this._trHeight * 2 + 'px';
-                this.beginRolling();
+                this.beginRolling4();
             }
         },
-        beginRolling () {
+        beginRolling3() {
             let me = this;
             this._tableSetInterval = setInterval(() => {
-
-                if (!me.isMouseEnter) {
-                    this.tableData4.push(this.tableData3[0], this.tableData3[1]);
+                if (!me.isMouseEnter3) {
+                    this.tableData3.push(this.tableData3[0], this.tableData3[1]);
                     this._containBoxStyle3.transition = 'all .5s';
                     this._containBoxStyle3.paddingTop = this._trHeight + 'px';
-                    this._containBoxStyle4.transition = 'all .5s';
-                    this._containBoxStyle4.paddingTop = this._trHeight + 'px';
 
                     setTimeout(() => {
                         this._containBoxStyle3.transition = 'all .5s';
                         this._containBoxStyle3.paddingTop = 0;
+                    }, 2000);
+
+                    setTimeout(() => {
+                        this.tableData3.splice(0, 2);
+                        this._containBoxStyle3.transition = 'all 0s ease 0s';
+                        this._containBoxStyle3.paddingTop = this._trHeight * 2 + 'px';
+                    }, 2500);
+                }
+            }, 4000);
+        },
+        beginRolling4() {
+            let me = this;
+            this._tableSetInterval = setInterval(() => {
+                if (!me.isMouseEnter4) {
+                    this.tableData4.push(this.tableData4[0], this.tableData4[1]);
+                    this._containBoxStyle4.transition = 'all .5s';
+                    this._containBoxStyle4.paddingTop = this._trHeight + 'px';
+
+                    setTimeout(() => {
                         this._containBoxStyle4.transition = 'all .5s';
                         this._containBoxStyle4.paddingTop = 0;
                     }, 2000);
 
                     setTimeout(() => {
-                        this.tableData3.splice(0, 2);
                         this.tableData4.splice(0, 2);
-
-                        this.tableData3.push(this.tableData4[0], this.tableData4[1]);
-
-                        this._containBoxStyle3.transition = 'all 0s ease 0s';
-                        this._containBoxStyle3.paddingTop = this._trHeight * 2 + 'px';
                         this._containBoxStyle4.transition = 'all 0s ease 0s';
                         this._containBoxStyle4.paddingTop = this._trHeight * 2 + 'px';
                     }, 2500);

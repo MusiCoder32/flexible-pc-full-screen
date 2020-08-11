@@ -23,7 +23,7 @@
                         <div class="two-block-rect-title font-size-medium font-weight-medium">重大风险源总量</div>
                         <div class="hBox vh_items_center vh_content_around ktd-content" style="flex-grow: 1">
                             <div>
-                                <div>3288</div>
+                                <div>{{total}}</div>
                                 <div>累计总数</div>
                             </div>
                             <div class="vBox vh_content_between mr20" style="height: 100%">
@@ -60,43 +60,57 @@ export default {
     },
     data () {
         return {
-            chemicalCompany: [
+            dangerousTotalNumber: 400
+        };
+    },
+    computed: {
+        chemicalCompany () {
+            let obj = this.$store.state.chemicalData.hazardCompanyTypeCount || {};
+            return [
                 {
-                    value: 288,
+                    value: obj.productionCount || 0,
                     name: '生产企业（家）'
                 }, {
-                    value: 288,
+                    value: obj.usingCount || 0,
                     name: '使用企业（家）'
                 }, {
-                    value: 288,
+                    value: obj.runningCount || 0,
                     name: '经营企业（家）'
                 }, {
-                    value: 288,
+                    value: obj.safetyCommitteeCount || 0,
                     name: '安委会企业（家）'
                 }
-            ],
-            dangerousTotalNumber: 400,
-            dangerousTotal: [
+            ];
+        }
+        ,
+        total () {
+            let obj = this.$store.state.chemicalData.majorHazardInstallation || {};
+            return obj.total || 0;
+        },
+        dangerousTotal () {
+            let obj = this.$store.state.chemicalData.majorHazardInstallation || {};
+
+            return [
                 {
-                    value: 88,
+                    value: obj.one || 0,
                     name: '一级',
                     bgColor: 'rgba(255,94,84,1)'
                 },
                 {
-                    value: 112,
+                    value: obj.two || 0,
                     name: '二级',
                     bgColor: 'rgba(255,115,46,1)'
                 }, {
-                    value: 88,
+                    value: obj.three || 0,
                     name: '三级',
                     bgColor: 'rgba(255,214,0,1)'
                 }, {
-                    value: 112,
+                    value: obj.four || 0,
                     name: '四级',
                     bgColor: 'rgba(0,123,255,1)'
                 }
-            ]
-        };
+            ];
+        }
     }
 };
 </script>
