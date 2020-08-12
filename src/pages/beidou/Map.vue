@@ -16,6 +16,7 @@
 <script>
 import ChemicalChart from './chemical-chart'
 import CoalChart from './coal-chart'
+import xss from 'xss'
 export default {
     components: { ChemicalChart ,CoalChart},
     data () {
@@ -47,6 +48,7 @@ export default {
         };
     },
     mounted () {
+        this.getStartData()
         this.drawMap();
         console.log(this.$route.query)
         this.type = this.$route.query.type
@@ -107,13 +109,13 @@ export default {
 
         },
         updateMarkerPosition () {
+        // <div><img src="${me.startIcon}"/>星座曲线</div>
             let me = this;
             let infoContent = document.createElement('div');
             infoContent.setAttribute('class', 'bei-dou-info');
             me._infoContent = infoContent;
-            infoContent.innerHTML = `<div>米易县亿恒矿业有限责任公司摩梭河尾矿库</div>
-            <div>传感器：W川AJH104R0009F4</div>
-            <div><img src="${me.startIcon}"/>星座曲线</div>`;
+            infoContent.innerHTML = xss(`<div>米易县亿恒矿业有限责任公司摩梭河尾矿库</div>
+            <div>传感器：W川AJH104R0009F4</div>`);
             this.$nextTick(() => {
                 me._infoWindow = new AMap.InfoWindow({
                     isCustom: true,  //使用自定义窗体
@@ -126,14 +128,14 @@ export default {
                     let content = document.createElement('div');
                     content.setAttribute('class', 'bei-dou-marker');
                     content.setAttribute('id', 'start-' + i);
-                    content.innerHTML = `
+                    content.innerHTML = xss(`
                         <div>
                             <div>
                                 <div>
                                     <img src="${me.startArr[i].imageUrl}"/>
                                 </div>
                             </div>
-                        </div>`;
+                        </div>`);
                     let box = document.querySelector('.bei-dou-box');
                     box.appendChild(content);
                     setTimeout(() => {
@@ -147,16 +149,27 @@ export default {
                             offset: new AMap.Pixel(-width / 2, -height / 2)
                         });
                         marker.on('mouseover', (e) => me._markerOver(e, i));
+                        marker.on('mouseout', (e) => me._windowTime = setTimeout(()=>me._infoWindow.close(),5000));
                         marker.on('click', (e) => me._markerClick(e, i));
                         // marker.on('mouseout', (e) => me._markerLeave());
-                        marker.emit('mouseover', { target: marker });
+                        // marker.emit('mouseover', { target: marker });
                     });
                 });
             });
         },
+        async getStartData() {
+            try {
+               let res =await  this.$req.get(this.$url.start.line,{OrgId:'ssssss'})
+                console.log(res)
+            }
+            catch (e) {
+                console.log(e);
+            }
+        },
 
         _markerOver (e, i) {
             let me = this;
+            clearTimeout(me._windowTime)
             me._infoWindow.setContent(me._infoContent);
             me._infoWindow.open(me._beiDouMap, e.target.getPosition());
         } ,
@@ -165,12 +178,6 @@ export default {
             console.log(i)
             this.dialogTableVisible = true;
         }
-        // _markerLeave () {
-        //     let me = this;
-        //     setTimeout(()=>{
-        //         me._infoWindow.close();
-        //     })
-        // }
 
     }
 };
@@ -262,24 +269,23 @@ export default {
                 text-align: left;
                 line-height: 12px;
                 letter-spacing: 0px;
-                margin: 16px 0;
-
+                margin: 16px 0 0 0;
             }
-            > div:last-child {
-                width: 112px;
-                height: 32px;
-                background: #ffffff;
-                border: 1px solid rgba(8, 33, 85, 0.29);
-                border-radius: 5px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                > img {
-                    width: 18px;
-                    height: 18px;
-                    margin-right: 10px;
-                }
-            }
+            /*> div:last-child {*/
+                /*width: 112px;*/
+                /*height: 32px;*/
+                /*background: #ffffff;*/
+                /*border: 1px solid rgba(8, 33, 85, 0.29);*/
+                /*border-radius: 5px;*/
+                /*display: flex;*/
+                /*align-items: center;*/
+                /*justify-content: center;*/
+                /*> img {*/
+                    /*width: 18px;*/
+                    /*height: 18px;*/
+                    /*margin-right: 10px;*/
+                /*}*/
+            /*}*/
         }
 
         .el-dialog {

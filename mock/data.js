@@ -1067,6 +1067,119 @@ mock = function (api, params) {
             }
         };
     }
+    if (api === 'api/BDSatellite/GetBdSensorListByOrgId') {
+        return {
+            'code': 200,
+            'data': [
+                {
+                    'id': '921447bae5544e8bbe34b1359987035e',
+                    'orgId': '63bd342666e94942b3c6a022f9492af2',
+                    'orgName': '星座1',
+                    'orgParentName': '企业名称1',
+                    'name': '川Jxxxxx001',
+                    'number': 6181,
+                    'hytDataId': null,
+                    'type': 0,//星星
+                    'normalStatus': 0,
+                    'abnormalStatus': 0,
+                    'eqStatus': null,
+                    'status': null,
+                    'bdStatus': null,
+                    'lastUploadTime': null,
+                    'eqLastUploadTime': null,
+                    'eqPower': null,
+                    'eqVoltage': null,
+                    'longitude': 103.83785,
+                    'latitude': 29.378422,
+                    'orderNumber': 1
+                }, {
+                    'id': '5a767935c7b7454f9f86029bcb843403',
+                    'orgId': '63bd342666e94942b3c6a022f9492af2',
+                    'orgName': '星座1',
+                    'orgParentName': '企业名称1',
+                    'name': '川Jxxxxx002',
+                    'number': 6182,
+                    'hytDataId': null,
+                    'type': 1,//矿山图标
+                    'normalStatus': 0,
+                    'abnormalStatus': 0,
+                    'eqStatus': null,
+                    'status': null,
+                    'bdStatus': null,
+                    'lastUploadTime': null,
+                    'eqLastUploadTime': null,
+                    'eqPower': null,
+                    'eqVoltage': null,
+                    'longitude': 103.84481,
+                    'latitude': 29.37831,
+                    'orderNumber': 2
+                }, {
+                    'id': '3496596d54c74556973fa60c18326926',
+                    'orgId': '63bd342666e94942b3c6a022f9492af2',
+                    'orgName': '星座1',
+                    'orgParentName': '企业名称1',
+                    'name': '川Jxxxxx003',
+                    'number': 6183,
+                    'hytDataId': null,
+                    'type': 1,
+                    'normalStatus': 0,
+                    'abnormalStatus': 0,
+                    'eqStatus': null,
+                    'status': null,
+                    'bdStatus': null,
+                    'lastUploadTime': null,
+                    'eqLastUploadTime': null,
+                    'eqPower': null,
+                    'eqVoltage': null,
+                    'longitude': 103.850945,
+                    'latitude': 29.383863,
+                    'orderNumber': 3
+                }, {
+                    'id': '81cbd54a52bb4771b57a571b9c398852',
+                    'orgId': '63bd342666e94942b3c6a022f9492af2',
+                    'orgName': '星座1',
+                    'orgParentName': '企业名称1',
+                    'name': '川Jxxxxx004',
+                    'number': 6184,
+                    'hytDataId': null,
+                    'type': 1,
+                    'normalStatus': 0,
+                    'abnormalStatus': 0,
+                    'eqStatus': null,
+                    'status': null,
+                    'bdStatus': null,
+                    'lastUploadTime': null,
+                    'eqLastUploadTime': null,
+                    'eqPower': null,
+                    'eqVoltage': null,
+                    'longitude': 103.84099,
+                    'latitude': 29.376478,
+                    'orderNumber': 4
+                }, {
+                    'id': '1dd191e058674e61ae36da3b4eeed817',
+                    'orgId': '63bd342666e94942b3c6a022f9492af2',
+                    'orgName': '星座1',
+                    'orgParentName': '企业名称1',
+                    'name': '川Jxxxxx005',
+                    'number': 6186,
+                    'hytDataId': null,
+                    'type': 1,
+                    'normalStatus': 0,
+                    'abnormalStatus': 0,
+                    'eqStatus': null,
+                    'status': null,
+                    'bdStatus': null,
+                    'lastUploadTime': null,
+                    'eqLastUploadTime': null,
+                    'eqPower': null,
+                    'eqVoltage': null,
+                    'longitude': 103.839294,
+                    'latitude': 29.382391,
+                    'orderNumber': 5
+                }
+            ]
+        };
+    }
 
 
 };

@@ -3,4 +3,7 @@ module.exports = {
     first:'api/Home/GetHomeStatistics',
     coal:'api/Mine/GetMineStatistics',
     chemical:'api/HazardChemical/GetHazardChemicalStatistics',
+    start:{
+        line:'api/BDSatellite/GetBdSensorListByOrgId'
+    },
 };
