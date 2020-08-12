@@ -22,7 +22,6 @@
             <p>覆盖人群数（万）</p>
         </div>
         <div>
-            <slider-pie></slider-pie>
         </div>
     </div>
 </template>
@@ -136,10 +135,12 @@ export default {
             left: 32px;
         }
         div:nth-child(8) {
-            width: 80px;
-            height: 80px;
-            top: 243px;
-            left: 36px;
+            width: 56px;
+            height: 56px;
+            top: 280px;
+            left: 24px;
+            background: url("../assets/img/2.png") center center no-repeat;
+            background-size: contain;
         }
     }
 

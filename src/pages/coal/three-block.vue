@@ -28,7 +28,7 @@
                                 </div>
                                 <div class="title-icon">
                                     <div class="icon right-bottom"></div>
-                                    <pre>低风险  </pre>
+                                    <pre>重大风险  </pre>
                                 </div>
                             </div>
                         </div>

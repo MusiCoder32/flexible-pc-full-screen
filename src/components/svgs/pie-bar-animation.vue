@@ -12,6 +12,11 @@ let _this;
 export default {
     name: 'first-map',
     props: {
+        hover: {
+            default: false,
+            required: true,
+            type: Boolean
+        },
         number: {
             required: true,
             type: Number
@@ -46,8 +51,8 @@ export default {
             stdDeviation: 3,
             width: 193,
             height: 125,
-            rx: 40,
-            ry: 18,
+            rx: 30,
+            ry: 13.5,
             h: 4,
             innerRadius: 0.4,
             animationInterval: null,
@@ -55,13 +60,14 @@ export default {
         };
     },
     computed: {
-        salesData(){
+        salesData () {
             return [
-            { label: 'Basic', color: '#007BFF', value: this.lowRiskCount },
-            { label: 'Plus', color: '#FFD600', value: this.generalRiskCount },
-            { label: 'Lite', color: '#FF732E', value:  this.highRiskCount},
-            { label: 'Elite', color: '#FF5E54', value: this.significantRisk }
-        ]}
+                { label: 'Basic', color: '#007BFF', value: this.lowRiskCount },
+                { label: 'Plus', color: '#FFD600', value: this.generalRiskCount },
+                { label: 'Lite', color: '#FF732E', value: this.highRiskCount },
+                { label: 'Elite', color: '#FF5E54', value: this.significantRisk }
+            ];
+        }
     },
     mounted () {
         _this = this;
@@ -84,9 +90,14 @@ export default {
 
             let i = 0;
             this.animationInterval = setInterval(() => {
+                if (this.hover) {
+                    me._animationColor = '#00FFF3';
+                }
+                else {
+                    me._animationColor = '#007BFF';
+                }
                 let j = i / 25;
-                this.updateCircle(animation.selectAll('ellipse').data(circleData), me._animationColor, rx, ry, h, j)
-                ;
+                this.updateCircle(animation.selectAll('ellipse').data(circleData), me._animationColor, rx, ry, h, j);
                 i++;
                 i = i % 101;
             }, 100);
@@ -317,17 +328,22 @@ export default {
         font-size: 30px;
         font-family: 'BebasNeue';
         text-align: left;
+        position: absolute;
+        top: -30px;
+        z-index: 1000;
     }
 
     .text-name {
         font-size: 12px;
         font-family: 'BebasNeue';
         text-align: left;
+        position: absolute;
+        z-index: 1000;
     }
 
     .map-point {
-        width: 193px;
-        height: 204px;
+        width: 110px;
+        height: 110px;
         display: flex;
         flex-direction: column;
         align-items: center;

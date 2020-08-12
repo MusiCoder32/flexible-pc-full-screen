@@ -17,9 +17,9 @@
                     >
                     </el-input>
                 </el-form-item>
-                <div class="hBox vh_content_between vh_items_center login-checkbox">
+                <div class="hBox vh_content_start vh_items_center login-checkbox">
                     <el-checkbox v-model="rememberPassword">记住密码</el-checkbox>
-                    <el-checkbox v-model="autoLogin">自动登录</el-checkbox>
+                    <!--<el-checkbox v-model="autoLogin">自动登录</el-checkbox>-->
                 </div>
                 <div class="login-btn">
                     <el-button type="primary" :disabled="loginDisabled" @click="submitForm()">登录</el-button>
@@ -98,7 +98,7 @@ export default {
                     this.loginDisabled = true;
                     this.$req.post(this.$url.login, reqData).then((res) => {
                         if (res.code === 200) {
-                            localStorage.setItem('isLogin', true);
+                            sessionStorage.setItem('isLogin', true);
                             localStorage.setItem('role', this.param.UserName);
                             localStorage.setItem('Authorization', res.data);
                             this.$router.push('/');

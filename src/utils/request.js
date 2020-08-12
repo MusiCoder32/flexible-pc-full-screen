@@ -76,16 +76,14 @@ function whenErr(url, resolve, reject, error = '') {
     if (process.env.NODE_ENV === 'development' || hostNotUsed) {
         // hostNotUsed = true;
         let errorString = error.toLocaleString();
-        let message = '请重试或联系主机管理员';
+        let message = '请稍后重试或联系主机管理员';
         if (errorString.indexOf('500') > -1) {
-            router.push({ name: 'login' });
             Notification({
                 message: `服务器错误，${message}`,
                 type: 'error',
                 duration: 5000
             });
         } else if (errorString.indexOf('timeout') > -1) {
-            router.push({ name: 'login' });
             Notification({
                 message: `连接超时`,
                 type: 'error',

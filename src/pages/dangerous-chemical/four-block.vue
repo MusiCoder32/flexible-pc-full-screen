@@ -75,7 +75,7 @@ export default {
     mounted () {
         let me = this;
         this.tableData = this.$store.state.chemicalData.hazardChemicalCompanyList || []
-        setTimeout(()=>{
+        me._rollSetTime = setTimeout(()=>{
             this.readyRoll();
         },1000)
         window.addEventListener('resize', () => {
@@ -88,6 +88,7 @@ export default {
     },
     destroyed () {
         clearInterval(this._tableSetInterval);
+        clearTimeout(this._rollSetTime)
     },
     methods: {
         enterTable () {

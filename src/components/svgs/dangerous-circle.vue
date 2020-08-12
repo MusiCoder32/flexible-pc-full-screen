@@ -29,23 +29,23 @@ export default {
         svgInit(this.drawSvg, this.id, [this.width, this.height, this.radius, this.lineWidth, this.spaceBetween, this.tickSize, this.tickTitlePadding, this.tickStrokeWidth, this.tickFontSize, this.backgroundCirclePadding, this.tickPadding]);
     },
     computed: {
-        percent() {
+        percent () {
             let obj = this.$store.state.coalData.companyRiskCount || {};
-            let total = obj.total||0
-            let lowRiskCount = obj.lowRiskCount||0
-            let generalRiskCount = obj.generalRiskCount||0
-            let highRiskCount = obj.highRiskCount||0
-            let significantRisk = obj.significantRisk||0
-            lowRiskCount = lowRiskCount/total*100
-            generalRiskCount = generalRiskCount/total*100
-            highRiskCount = highRiskCount/total*100
-            significantRisk = significantRisk/total*100
+            let total = obj.total || 0;
+            let lowRiskCount = obj.lowRiskCount || 0;
+            let generalRiskCount = obj.generalRiskCount || 0;
+            let highRiskCount = obj.highRiskCount || 0;
+            let significantRisk = obj.significantRisk || 0;
+            lowRiskCount = lowRiskCount / total * 100;
+            generalRiskCount = generalRiskCount / total * 100;
+            highRiskCount = highRiskCount / total * 100;
+            significantRisk = significantRisk / total * 100;
             return {
                 lowRiskCount,
                 generalRiskCount,
                 highRiskCount,
-                significantRisk,
-            }
+                significantRisk
+            };
         }
     },
     methods: {

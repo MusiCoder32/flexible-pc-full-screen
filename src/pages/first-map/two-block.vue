@@ -236,9 +236,9 @@ export default {
         this.chemicalCompanyArr[3].value = chemicalStatistics.keySupervisionProcessCount || 0;
         this.tableData3 = this.$store.state.firstData.mineCompanyList || [];
         this.tableData4 = this.$store.state.firstData.hazardChemicalCompanyList || [];
-        this.$nextTick(() => {
+        me._rollSetTime = setTimeout(() => {
             this.readyRoll();
-        });
+        }, 2000);
         window.addEventListener('resize', () => {
             clearInterval(me._tableSetInterval);
             me._rollSetTime && clearTimeout(me._rollSetTime);
@@ -249,6 +249,7 @@ export default {
     },
     destroyed () {
         clearInterval(this._tableSetInterval);
+        clearTimeout(this._rollSetTime);
     },
     methods: {
         enterTable3 () {
@@ -270,18 +271,18 @@ export default {
             this._containBoxStyle3 = document.querySelector('div.emphasis-attention-company3 div.el-table__body-wrapper.is-scrolling-none').style;
             this._containBoxStyle4 = document.querySelector('div.emphasis-attention-company4 div.el-table__body-wrapper.is-scrolling-none').style;
 
-            if ((this.tableData3.length+1)*this._trHeight> bodyHeight) {
+            if ((this.tableData3.length + 1) * this._trHeight > bodyHeight) {
                 this._containBoxStyle3.transform = `translate(0,-${this._trHeight * 2 + 'px'})`;
                 this._containBoxStyle3.paddingTop = this._trHeight * 2 + 'px';
                 this.beginRolling3();
             }
-            if ((this.tableData4.length+1)*this._trHeight> bodyHeight) {
+            if ((this.tableData4.length + 1) * this._trHeight > bodyHeight) {
                 this._containBoxStyle4.transform = `translate(0,-${this._trHeight * 2 + 'px'})`;
                 this._containBoxStyle4.paddingTop = this._trHeight * 2 + 'px';
                 this.beginRolling4();
             }
         },
-        beginRolling3() {
+        beginRolling3 () {
             let me = this;
             this._tableSetInterval = setInterval(() => {
                 if (!me.isMouseEnter3) {
@@ -302,7 +303,7 @@ export default {
                 }
             }, 4000);
         },
-        beginRolling4() {
+        beginRolling4 () {
             let me = this;
             this._tableSetInterval = setInterval(() => {
                 if (!me.isMouseEnter4) {
@@ -513,11 +514,11 @@ export default {
                         flex-direction: column;
                         justify-content: space-between;
                         align-items: center;
-                        &> div:first-child {
+                        & > div:first-child {
                             width: 100%;
                             display: flex;
                             justify-content: space-between;
-                            &> div {
+                            & > div {
                                 background: url("../../assets/img/index/5.png") no-repeat;
                                 background-size: contain;
                                 width: 98px;
@@ -527,7 +528,7 @@ export default {
                                     background: url("../../assets/img/index/4.png") no-repeat;
                                     background-size: contain;
                                 }
-                               & > div:first-child {
+                                & > div:first-child {
                                     width: 100%;
                                     text-align: center;
                                     position: absolute;
@@ -535,7 +536,7 @@ export default {
                                     font-size: 36px;
                                     font-family: BebasNeue;
                                 }
-                                &> div:last-child {
+                                & > div:last-child {
                                     width: 100%;
                                     text-align: center;
                                     position: absolute;
@@ -545,7 +546,7 @@ export default {
                                 }
                             }
                         }
-                        &> div:last-child {
+                        & > div:last-child {
                             background: url("../../assets/img/index/6.png") no-repeat;
                             background-size: contain;
                             width: 214px;
@@ -580,7 +581,7 @@ export default {
                     &:nth-child(n + 3) {
                         align-items: flex-end;
                     }
-                    &> div {
+                    & > div {
                         width: 190px;
                         height: 67px;
                         background: url("../../assets/img/index/2.png") center no-repeat;
@@ -592,17 +593,17 @@ export default {
                             background: url("../../assets/img/index/1.png") center no-repeat;
                             background-size: contain;
                         }
-                       & > div {
+                        & > div {
                             width: 100%;
                             position: absolute;
                             text-align: center;
                         }
-                        &> div:first-child {
+                        & > div:first-child {
                             top: 2px;
                             font-size: 36px;
                             font-family: BebasNeue;
                         }
-                        &> div:last-child {
+                        & > div:last-child {
                             bottom: 7px;
                             font-size: 12px;
                         }

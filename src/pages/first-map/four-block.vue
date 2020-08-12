@@ -25,7 +25,6 @@
 
 import ObliqueAngle from '../../components/business_component/oblique-angle';
 import ObliqueAngleRect from '../../components/business_component/oblique-angle-rect';
-import FourBlockLine from '../../components/charts/four-block-line';
 
 
 export default {
@@ -33,7 +32,6 @@ export default {
     components: {
         ObliqueAngle,
         ObliqueAngleRect,
-        FourBlockLine
     },
     data () {
         return {

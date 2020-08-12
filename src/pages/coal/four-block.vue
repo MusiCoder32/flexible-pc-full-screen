@@ -39,7 +39,8 @@
                             min-width="1"
                             label="风险等级">
                         <template v-slot="level">
-                            <div class="icon-class" :class="{'high-risk':level.row.riskLevel==4,'medium-risk':level.row.riskLevel==3,'general-risk':level.row.riskLevel==2,'low-risk':level.row.riskLevel==1}"></div>
+                            <div class="icon-class"
+                                 :class="{'high-risk':level.row.riskLevel==4,'medium-risk':level.row.riskLevel==3,'general-risk':level.row.riskLevel==2,'low-risk':level.row.riskLevel==1}"></div>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -69,28 +70,28 @@ export default {
             rectHeight: 'coal-four-block-rect-height',
             rectBorderTop: 'coal-four-block-rect-border-top',
             isMouseEnter: false,
-            tableData:[]
+            tableData: []
         };
     },
-    computed: {
-
-    },
+    computed: {},
     mounted () {
         let me = this;
-        this.tableData = this.$store.state.coalData.mineCompanyList || []
-        setTimeout(()=>{
+        this.tableData = this.$store.state.coalData.mineCompanyList || [];
+        me._rollSetTime = setTimeout(() => {
             this.readyRoll();
-        },1000)
+        }, 2000);
         window.addEventListener('resize', () => {
             me._tableSetInterval = clearInterval(me._tableSetInterval);
-            me._rollSetTime && clearTimeout(me._rollSetTime)
+            me._rollSetTime && clearTimeout(me._rollSetTime);
             me._rollSetTime = setTimeout(() => {
                 me.readyRoll();
             }, 2000);
         });
     },
     destroyed () {
+        let me = this;
         clearInterval(this._tableSetInterval);
+        clearTimeout(me._rollSetTime);
     },
     methods: {
         enterTable () {
@@ -105,7 +106,7 @@ export default {
 
             this._containBoxStyle = document.querySelector('div.emphasis-attention-company-coal div.el-table__body-wrapper.is-scrolling-none').style;
 
-            if ((this.tableData.length+1)*this._trHeight> bodyHeight) {
+            if ((this.tableData.length + 1) * this._trHeight > bodyHeight) {
                 this._containBoxStyle.transform = `translate(0,-${this._trHeight * 2 + 'px'})`;
                 this._containBoxStyle.paddingTop = this._trHeight * 2 + 'px';
                 this.beginRolling();
@@ -168,7 +169,6 @@ export default {
         border-right-color: transparent !important;
         border-left: none !important;
     }
-
 
     .table-box {
         width: 100%;

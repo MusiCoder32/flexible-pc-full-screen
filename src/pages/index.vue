@@ -7,11 +7,12 @@
         <slider></slider>
         <div class="map">
             <div class="county-box">
-                <div v-for="(item,index) in mapMarkers" :class="'map-'+item.class" :key="item.name+index">
+                <div v-for="(item,index) in mapMarkers" :class="'map-'+item.class" :key="item.name+index" @mouseover="hoverIndex=index" @mouseout="hoverIndex=-1">
                     <map-marker
                             :id="'marker'+item.name+index"
                             :number="item.total"
                             :name="item.name"
+                            :hover="index===hoverIndex"
                             :lowRiskCount="item.lowRiskCount"
                             :generalRiskCount="item.generalRiskCount"
                             :highRiskCount="item.highRiskCount"
@@ -82,7 +83,8 @@ export default {
     data () {
         return {
             isFullScreen: false,
-            chemicalType:0
+            chemicalType:0,
+            hoverIndex:0
         };
     },
     computed: {
@@ -150,8 +152,12 @@ export default {
                 {
                     name: '泸州市',
                     class: 'lzs',
-
-                    src: require('../assets/img/map/泸州市_img.png')
+                    src: require('../assets/img/map/泸州市_img.png'),
+                },
+                {
+                    name: '南充市',
+                    class: 'ncs',
+                    src: require('../assets/img/map/南充市_img.png')
                 },
                 {
                     name: '眉山市',
@@ -160,43 +166,15 @@ export default {
                     src: require('../assets/img/map/眉山市_img.png')
                 },
                 {
-                    name: '绵阳市',
-                    class: 'mys',
-                    src: require('../assets/img/map/绵阳市_img.png')
-                },
-                {
-                    name: '南充市',
-                    class: 'ncs',
-                    src: require('../assets/img/map/南充市_img.png')
-                },
-                {
-                    name: '内江市',
-                    class: 'njs',
-                    src: require('../assets/img/map/内江市_img.png')
-                },
-                {
-                    name: '攀枝花',
-                    class: 'pzh',
-
-                    src: require('../assets/img/map/攀枝花_img.png')
-                },
-                {
                     name: '遂宁市',
                     class: 'sns',
 
                     src: require('../assets/img/map/遂宁市_img.png')
                 },
                 {
-                    name: '雅安市',
-                    class: 'yas',
-
-                    src: require('../assets/img/map/雅安市_img.png')
-                },
-                {
-                    name: '宜宾市',
-                    class: 'ybs',
-
-                    src: require('../assets/img/map/宜宾市_img.png')
+                    name: '绵阳市',
+                    class: 'mys',
+                    src: require('../assets/img/map/绵阳市_img.png')
                 },
                 {
                     name: '资阳市',
@@ -205,11 +183,32 @@ export default {
                     src: require('../assets/img/map/资阳市_img.png')
                 },
                 {
-                    name: '自贡市',
-                    class: 'zys',
+                    name: '攀枝花',
+                    class: 'pzh',
 
+                    src: require('../assets/img/map/攀枝花_img.png')
+                },
+                {
+                    name: '内江市',
+                    class: 'njs',
+                    src: require('../assets/img/map/内江市_img.png')
+                },
+                {
+                    name: '自贡市',
+                    class: 'zgs',
                     src: require('../assets/img/map/自贡市_img.png')
-                }
+                },
+                {
+                    name: '雅安市',
+                    class: 'yas',
+                    src: require('../assets/img/map/雅安市_img.png')
+                },
+                {
+                    name: '宜宾市',
+                    class: 'ybs',
+                    src: require('../assets/img/map/宜宾市_img.png')
+                },
+
             ];
             let path = this.$route.path;
             let data = [];
@@ -233,6 +232,7 @@ export default {
                 });
                 return { ...item, ...obj[0] };
             });
+            console.log(al)
             return al;
         }
     },
@@ -325,113 +325,132 @@ export default {
                 opacity: 1;
                 transform: translate(-50%, -60%) scale(0.8);
             }
-            .map-lss {
-                width: 125px;
-                height: 115px;
-                left: 423px;
-                top: 371px;
-            }
-            .map-zgs {
-                width: 108px;
-                height: 53px;
-                left: 530px;
-                top: 393px;
-            }
-            .map-ybs {
-                width: 162px;
-                height: 115px;
-                left: 488px;
-                top: 421px;
-            }
             .map-lzs {
                 width: 119px;
                 height: 137px;
                 left: 631px;
                 top: 417px;
-            }
-            .map-njs {
-                width: 102px;
-                height: 64px;
-                left: 548px;
-                top: 361px;
-            }
-            .map-zys {
-                width: 108px;
-                height: 62px;
-                left: 565px;
-                top: 325px;
-            }
-            .map-sns {
-                width: 79px;
-                height: 63px;
-                left: 613px;
-                top: 291px;
+                z-index:1000
             }
             .map-gas {
                 width: 108px;
                 height: 53px;
                 left: 692px;
                 top: 311px;
-            }
-            .map-ncs {
-                width: 120px;
-                height: 81px;
-                left: 644px;
-                top: 253px;
+                z-index: 999;
             }
             .map-dzs {
                 width: 132px;
                 height: 120px;
                 left: 746px;
                 top: 225px;
+                z-index: 998;
+            }
+            .map-ybs {
+                width: 162px;
+                height: 115px;
+                left: 488px;
+                top: 421px;
+                z-index: 997;
+            }
+            .map-zgs {
+                width: 108px;
+                height: 53px;
+                left: 530px;
+                top: 393px;
+                z-index: 996;
+            }
+            .map-njs {
+                width: 102px;
+                height: 64px;
+                left: 548px;
+                top: 361px;
+                z-index: 995;
+            }
+            .map-zys {
+                width: 108px;
+                height: 62px;
+                left: 565px;
+                top: 325px;
+                z-index: 994;
+            }
+
+            .map-sns {
+                width: 79px;
+                height: 63px;
+                left: 613px;
+                top: 291px;
+                z-index: 993;
+            }
+            .map-ncs {
+                width: 120px;
+                height: 81px;
+                left: 644px;
+                top: 253px;
+                z-index: 992;
             }
             .map-bzs {
                 width: 100px;
                 height: 82px;
                 left: 714px;
                 top: 204px;
-            }
-            .map-gys {
-                width: 160px;
-                height: 74px;
-                left: 579px;
-                top: 195px;
-            }
-            .map-mys {
-                width: 155px;
-                height: 131px;
-                left: 513px;
-                top: 187px;
-            }
-            .map-dys {
-                width: 110px;
-                height: 70px;
-                left: 513px;
-                top: 260px;
-            }
-            .map-cds {
-                width: 155px;
-                height: 86px;
-                left: 446px;
-                top: 275px;
+                z-index: 991;
             }
             .map-mss {
                 width: 147px;
                 height: 79px;
                 left: 421px;
                 top: 343px;
+                z-index: 990;
+            }
+            .map-lss {
+                width: 125px;
+                height: 115px;
+                left: 423px;
+                top: 371px;
+                z-index: 990;
+            }
+            .map-cds {
+                width: 155px;
+                height: 86px;
+                left: 446px;
+                top: 275px;
+                z-index: 899;
+            }
+            .map-dys {
+                width: 110px;
+                height: 70px;
+                left: 513px;
+                top: 260px;
+                z-index: 898;
+            }
+            .map-mys {
+                width: 155px;
+                height: 131px;
+                left: 513px;
+                top: 187px;
+                z-index: 897;
+            }
+            .map-gys {
+                width: 160px;
+                height: 74px;
+                left: 579px;
+                top: 195px;
+                z-index: 896;
             }
             .map-yas {
                 width: 132px;
                 height: 147px;
                 left: 342px;
                 top: 305px;
+                z-index: 895;
             }
             .map-gzz {
                 width: 348px;
                 height: 393px;
                 top: 133px;
                 left: 55px;
+                z-index: 697;
             }
             .map-abz {
                 width: 287px;
@@ -444,12 +463,14 @@ export default {
                 height: 304px;
                 left: 145px;
                 top: 417px;
+                z-index: 698;
             }
             .map-pzh {
                 width: 115px;
                 height: 128px;
                 left: 218px;
                 top: 585px;
+                z-index: 699;
             }
         }
         .legend {
@@ -469,6 +490,7 @@ export default {
             .center-content {
                 width: 200px;
                 height: 50px;
+                padding-left:15px;
                 background: rgba(0, 123, 255, 0.2);
                 font-size: 10px;
                 display: flex;
@@ -476,7 +498,7 @@ export default {
                 .title-icon {
                     width: 50%;
                     display: flex;
-                    justify-content: center;
+                    justify-content: flex-start;
                     align-items: center;
                     .icon {
                         width: 10px;

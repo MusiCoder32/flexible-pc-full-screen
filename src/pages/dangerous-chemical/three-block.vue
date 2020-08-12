@@ -21,7 +21,7 @@
                 <oblique-angle-rect>
                     <div class="content ml20 vBox bigger-dangerous-box">
                         <div class="two-block-rect-title font-size-medium font-weight-medium">重大风险源总量</div>
-                        <div class="hBox vh_items_center vh_content_around ktd-content" style="flex-grow: 1">
+                        <div class="hBox vh_items_center vh_content_around ktd-content pr20" style="flex-grow: 1">
                             <div>
                                 <div>{{total}}</div>
                                 <div>累计总数</div>
