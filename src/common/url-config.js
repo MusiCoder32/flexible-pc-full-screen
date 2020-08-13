@@ -4,6 +4,8 @@ module.exports = {
     coal:'api/Mine/GetMineStatistics',
     chemical:'api/HazardChemical/GetHazardChemicalStatistics',
     start:{
-        line:'api/BDSatellite/GetBdSensorListByOrgId'
+        line:'api/BDSatellite/GetBdSensorListByOrgId',
+        types:'api/BDSatellite/GetSensBdSensorMenus',
+        sensorData:'api/BDSatellite/GetChartData',
     },
 };

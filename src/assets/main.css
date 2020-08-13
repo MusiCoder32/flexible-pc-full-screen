@@ -54,16 +54,16 @@ body {
 }
 
 .high-risk {
-    background: #ff5e54;
+    background: rgba(255,94,84,1);
 }
 .medium-risk {
-    background: #FF732E;
+    background: rgba(255,115,46,1);
 }
 .general-risk {
-    background: #C3A300;
+    background: rgba(255,214,0,1);
 }
 .low-risk {
-    background: #005EFF;
+    background:  rgba(0,123,255,1);
 }
 
 .content {

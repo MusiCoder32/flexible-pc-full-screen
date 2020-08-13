@@ -1,85 +1,85 @@
 <template>
-    <div class="bei-dou-box">
+    <div class="bei-dou-box" v-loading="dialogLoading">
         <div v-if="type==='chemical'" class="bei-dou-nav" style="top: 20px;">
-            <div @click="navClick('left')" :class="{'nav-opacity':rightActive}" style="padding-right:20px;text-align:right;width: 180px;height:40px;line-height: 40px;font-size: 16px">企业分布</div>
-            <div @click="navClick('right')" :class="{'nav-opacity':!rightActive}" style="padding-left:20px;text-align:left;width: 180px;height:40px;line-height: 40px;font-size: 16px">预警态势</div>
+            <div @click="navClick('left')" :class="{'nav-opacity':rightActive}"
+                 style="padding-right:20px;text-align:right;width: 180px;height:40px;line-height: 40px;font-size: 16px">
+                企业分布
+            </div>
+            <div @click="navClick('right')" :class="{'nav-opacity':!rightActive}"
+                 style="padding-left:20px;text-align:left;width: 180px;height:40px;line-height: 40px;font-size: 16px">
+                预警态势
+            </div>
         </div>
         <div class="bei-dou-container" id="beidouMapContainer"></div>
-        <el-dialog width="65.62%" title="传感器：W川AJH104R0009F4" :visible.sync="dialogTableVisible" :close-on-click-modal=false>
+        <el-dialog width="65.62%" title="传感器：W川AJH104R0009F4" :visible.sync="dialogTableVisible"
+                   :close-on-click-modal=false>
             <!--<router-view></router-view>-->
-            <chemical-chart v-if="type==='chemical'"></chemical-chart>
-            <coal-chart v-else></coal-chart>
+            <div>
+                <chemical-chart v-if="type==='chemical'"></chemical-chart>
+                <coal-chart v-else></coal-chart>
+            </div>
+
         </el-dialog>
     </div>
 </template>
 
 <script>
-import ChemicalChart from './chemical-chart'
-import CoalChart from './coal-chart'
-import xss from 'xss'
+import ChemicalChart from './chemical-chart';
+import CoalChart from './coal-chart';
+import xss from 'xss';
+
 export default {
-    components: { ChemicalChart ,CoalChart},
+    components: { ChemicalChart, CoalChart },
     data () {
         return {
-            type:'coal',
-            rightActive:false,
-            dialogTableVisible:false,
-            path: [
-                [116.397428, 39.90923],
-                [116.398428, 39.90923],
-                [116.398428, 39.90823],
-                [116.397428, 39.90823]
-            ],
-            startArr: [
-                {
-                    imageUrl: require('../../assets/img/icon/3.png')
-                },
-                {
-                    imageUrl: require('../../assets/img/icon/3.png')
-                },
-                {
-                    imageUrl: require('../../assets/img/icon/1.png')
-                },
-                {
-                    imageUrl: require('../../assets/img/icon/2.png')
-                }
-            ],
-            startIcon: require('../../assets/img/icon/4.png')
+            type: 'coal',
+            rightActive: false,
+            dialogTableVisible: false,
+            dialogLoading: false,
+            path: [],
+            startArr: [],
+            startIcon: require('../../assets/img/icon/4.png'),
+            colorArr: [
+                'blue',
+                'blue',
+                'yellow',
+                'orange',
+                'red'
+            ]
         };
     },
     mounted () {
-        this.getStartData()
-        this.drawMap();
-        console.log(this.$route.query)
-        this.type = this.$route.query.type
+        // this.getStartData();
+        // this.drawMap();
+        this.drawStart();
+        console.log(this.$route.query);
+        this.type = this.$route.query.type;
         window.addEventListener('resize', () => {
             this.drawMap();
         });
     },
     methods: {
-        navClick(type) {
-          if(type==='left') {
-              this.rightActive = false
-          }
-          else {
-              this.rightActive = true
-          }
+        navClick (type) {
+            if (type === 'left') {
+                this.rightActive = false;
+            }
+            else {
+                this.rightActive = true;
+            }
         },
-        drawMap () {
+        async drawMap () {
             let me = this;
             let box = document.querySelector('.bei-dou-box');
             let container = document.querySelector('.bei-dou-container');
             container.style.width = box.offsetWidth - 40 + 'px';
             container.style.height = box.offsetHeight - 40 + 'px';
-            this.$nextTick(() => {
+            await this.$nextTick(() => {
                 me._beiDouMap = new AMap.Map('beidouMapContainer', {
                     resizeEnable: true,
                     mapStyle: 'amap://styles/97dc37fba506b5695a546dfb165032d4',
                     center: [116.397428, 39.90923],
                     zoom: 13
                 });
-                me.drawLine();
-                me.updateMarkerPosition();
             });
         },
         drawLine () {
@@ -109,58 +109,80 @@ export default {
 
         },
         updateMarkerPosition () {
-        // <div><img src="${me.startIcon}"/>星座曲线</div>
+            // <div><img src="${me.startIcon}"/>星座曲线</div>
             let me = this;
             let infoContent = document.createElement('div');
             infoContent.setAttribute('class', 'bei-dou-info');
             me._infoContent = infoContent;
-            infoContent.innerHTML = xss(`<div>米易县亿恒矿业有限责任公司摩梭河尾矿库</div>
-            <div>传感器：W川AJH104R0009F4</div>`);
-            this.$nextTick(() => {
-                me._infoWindow = new AMap.InfoWindow({
-                    isCustom: true,  //使用自定义窗体
-                    closed: true,
-                    content: infoContent,
-                    offset: new AMap.Pixel(16, -45)
-                });
-                document.querySelectorAll('.bei-dou-marker').forEach(item => item.remove());
-                this.path.forEach(function (item, i) {
-                    let content = document.createElement('div');
-                    content.setAttribute('class', 'bei-dou-marker');
-                    content.setAttribute('id', 'start-' + i);
-                    content.innerHTML = xss(`
+            me._infoWindow = new AMap.InfoWindow({
+                isCustom: true,  //使用自定义窗体
+                closed: true,
+                content: '',
+                offset: new AMap.Pixel(16, -45)
+            });
+            document.querySelectorAll('.bei-dou-marker').forEach(item => item.remove());
+            this.startArr.forEach((item, i) => {
+                let content = document.createElement('div');
+                content.setAttribute('class', `bei-dou-marker ${me.colorArr[item.alarmLevel]}`);
+                content.setAttribute('id', 'start-' + i);
+                content.innerHTML = xss(`
                         <div>
                             <div>
                                 <div>
-                                    <img src="${me.startArr[i].imageUrl}"/>
+                                    <img src="${item.imageUrl}"/>
                                 </div>
                             </div>
                         </div>`);
-                    let box = document.querySelector('.bei-dou-box');
-                    box.appendChild(content);
-                    setTimeout(() => {
-                        let width = document.querySelector('#start-' + i).offsetWidth;
-                        let height = document.querySelector('#start-' + i).offsetHeight;
-                        let marker = new AMap.Marker({
-                            map: me._beiDouMap,
-                            content: content,
-                            animation: 'AMAP_ANIMATION_DROP',
-                            position: item,
-                            offset: new AMap.Pixel(-width / 2, -height / 2)
-                        });
-                        marker.on('mouseover', (e) => me._markerOver(e, i));
-                        marker.on('mouseout', (e) => me._windowTime = setTimeout(()=>me._infoWindow.close(),5000));
-                        marker.on('click', (e) => me._markerClick(e, i));
-                        // marker.on('mouseout', (e) => me._markerLeave());
-                        // marker.emit('mouseover', { target: marker });
+                let box = document.querySelector('.bei-dou-box');
+                box.appendChild(content);
+                setTimeout(() => {
+                    let width = document.querySelector('#start-' + i).offsetWidth;
+                    let height = document.querySelector('#start-' + i).offsetHeight;
+                    let marker = new AMap.Marker({
+                        map: me._beiDouMap,
+                        content: content,
+                        animation: 'AMAP_ANIMATION_DROP',
+                        position: item.path,
+                        offset: new AMap.Pixel(-width / 2, -height / 2)
                     });
+                    marker.on('mouseover', (e) => me._markerOver(e, i));
+                    marker.on('mouseout', (e) => me._windowTime = setTimeout(() => me._infoWindow.close(), 5000));
+                    marker.on('click', (e) => me._markerClick(e, item.id,item.number));
+                    // marker.on('mouseout', (e) => me._markerLeave());
+                    // marker.emit('mouseover', { target: marker });
                 });
             });
         },
-        async getStartData() {
+        async getStartData () {
             try {
-               let res =await  this.$req.get(this.$url.start.line,{OrgId:'ssssss'})
-                console.log(res)
+                let res = await  this.$req.get(this.$url.start.line, { OrgId: 'test' });
+                let data = res.data;
+                let imageStartUrl = require('../../assets/img/icon/3.png');
+                let imageCoalUrl = require('../../assets/img/icon/2.png');
+                data.forEach(item => {
+                    this.path.push([item.longitude, item.latitude]);
+                    let obj = {
+                        imageUrl: item.type ? imageStartUrl : imageCoalUrl,
+                        orgName: item.orgName,
+                        name: item.name,
+                        id: item.id,
+                        number: item.number,
+                        alarmLevel: item.alarmLevel,
+                        path: [item.longitude, item.latitude]
+                    };
+                    this.startArr.push(obj);
+                });
+            }
+            catch (e) {
+                console.log(e);
+            }
+        },
+        async drawStart () {
+            let me = this;
+            try {
+                await Promise.all([me.drawMap(), me.getStartData()]);
+                me.drawLine();
+                me.updateMarkerPosition();
             }
             catch (e) {
                 console.log(e);
@@ -169,14 +191,28 @@ export default {
 
         _markerOver (e, i) {
             let me = this;
-            clearTimeout(me._windowTime)
+            clearTimeout(me._windowTime);
+            me._infoContent.innerHTML = xss(`<div>${me.startArr[i].orgName}</div>
+            <div>${me.startArr[i].name}</div>`);
             me._infoWindow.setContent(me._infoContent);
             me._infoWindow.open(me._beiDouMap, e.target.getPosition());
-        } ,
-        _markerClick (e, i) {
-            console.log(e)
-            console.log(i)
-            this.dialogTableVisible = true;
+        },
+        _markerClick (e, id,sensorNumber) {
+            let me = this;
+            console.log(id);
+            this.dialogLoading = true;
+            this.$req.get(this.$url.start.types, { id }).then((res) => {
+                if (res.code === 200) {
+                    this.$store.commit('setSensorTypesData', { data: res.data });
+                    sessionStorage.setItem('sensorNumber',sensorNumber)
+                }
+                else {
+                    console.log(res);
+                }
+            }).finally(() => {
+                this.dialogLoading = false;
+                this.dialogTableVisible = true;
+            });
         }
 
     }
@@ -186,6 +222,7 @@ export default {
     .nav-opacity {
         opacity: 0.5;
     }
+
     .bei-dou-box {
         display: flex;
         justify-content: center;
@@ -228,7 +265,6 @@ export default {
         .bei-dou-marker {
             border-radius: 50%;
             padding: 4px;
-            border: 1px solid rgba(255, 94, 84, 0.8);
             background: #ffffff;
             box-shadow: 0px 0px 8px 0px rgba(8, 33, 85, 0.2);
             div {
@@ -238,12 +274,55 @@ export default {
                 justify-content: center;
                 align-items: center;
             }
+        }
+        .red {
+            border: 1px solid rgba(255, 94, 84, 0.8);
             > div {
                 background: rgba(255, 94, 84, 0.2);
                 > div {
                     background: rgba(255, 94, 84, 0.6);
                     > div {
                         background: rgba(255, 94, 84, 1);
+                        padding: 3px;
+                    }
+                }
+            }
+
+        }
+        .orange {
+            border: 1px solid rgba(255, 115, 46, 0.8);
+            > div {
+                background: rgba(255, 115, 46, 0.2);
+                > div {
+                    background: rgba(255, 115, 46, 0.6);
+                    > div {
+                        background: rgba(255, 115, 46, 1);
+                        padding: 3px;
+                    }
+                }
+            }
+        }
+        .yellow {
+            border: 1px solid rgba(255, 214, 0, 0.8);
+            > div {
+                background: rgba(255, 214, 0, 0.2);
+                > div {
+                    background: rgba(255, 214, 0, 0.6);
+                    > div {
+                        background: rgba(255, 214, 0, 1);
+                        padding: 3px;
+                    }
+                }
+            }
+        }
+        .blue {
+            border: 1px solid rgba(0, 123, 255, 0.8);
+            > div {
+                background: rgba(0, 123, 255, 0.2);
+                > div {
+                    background: rgba(0, 123, 255, 0.6);
+                    > div {
+                        background: rgba(0, 123, 255, 1);
                         padding: 3px;
                     }
                 }
@@ -272,19 +351,19 @@ export default {
                 margin: 16px 0 0 0;
             }
             /*> div:last-child {*/
-                /*width: 112px;*/
-                /*height: 32px;*/
-                /*background: #ffffff;*/
-                /*border: 1px solid rgba(8, 33, 85, 0.29);*/
-                /*border-radius: 5px;*/
-                /*display: flex;*/
-                /*align-items: center;*/
-                /*justify-content: center;*/
-                /*> img {*/
-                    /*width: 18px;*/
-                    /*height: 18px;*/
-                    /*margin-right: 10px;*/
-                /*}*/
+            /*width: 112px;*/
+            /*height: 32px;*/
+            /*background: #ffffff;*/
+            /*border: 1px solid rgba(8, 33, 85, 0.29);*/
+            /*border-radius: 5px;*/
+            /*display: flex;*/
+            /*align-items: center;*/
+            /*justify-content: center;*/
+            /*> img {*/
+            /*width: 18px;*/
+            /*height: 18px;*/
+            /*margin-right: 10px;*/
+            /*}*/
             /*}*/
         }
 
@@ -298,7 +377,7 @@ export default {
                 }
             }
             .el-dialog__body {
-                padding-top:10px;
+                padding-top: 10px;
             }
         }
     }

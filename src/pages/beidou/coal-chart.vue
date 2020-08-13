@@ -1,32 +1,57 @@
 <template>
     <div class="content bei-dou-sensor-dialog">
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-            <el-menu-item v-for="(item,i) in sensorArr" :index="item.type" :key="item.name + i">{{item.name}}
+            <el-menu-item v-for="(item,i) in sensorArr" :index="i+''" :key="item.name + i">{{item.name}}
             </el-menu-item>
         </el-menu>
         <div class="bei-dou-sensor-chart-box">
-
-            <div class="chart-box-head hBox vh_content_between vh_items_start">
+            <div class="chart-box-head hBox vh_content_start vh_items_start">
                 <el-date-picker
                         v-model="value1"
                         class="mr30"
-                        type="datetimerange"
+                        type="daterange"
                         :picker-options="pickerOptions"
                         size="large"
                         range-separator="至"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
+                        style="flex: 1"
                         align="right">
                 </el-date-picker>
-                <div class="button-box">
+                <div v-if="type!=='LPG'" class="button-box">
                     <div @click="dayTimeChange('day')" :class="{'active':buttonIndex==='accordingDay'}">按天排列</div>
                     <div @click="dayTimeChange('time')" :class="{'active':buttonIndex==='accordingTime'}">按时排列</div>
                 </div>
+                <template v-if="type==='LPG'">
+                    <div class="el">
+                        <div style="font-size: 16px;">0.08824%LEL</div>
+                        <div style="font-size: 12px">当前监测点气体浓度</div>
+                    </div>
+                    <div class="el2" style="background: rgba(0,189,153,0.2)">
+                        <div style="font-size: 16px;">0.23m/s</div>
+                        <div style="font-size: 12px">实时风速</div>
+                    </div>
+                    <div class="el2" style="background: rgba(232,95,134,0.2)">
+                        <div style="font-size: 16px;">&#8594 西</div>
+                        <div style="font-size: 12px">实时风向</div>
+                    </div>
+                    <div class="el2" style="background:rgba(255,214,0,0.2) ">
+                        <div style="font-size: 16px;">0</div>
+                        <div style="font-size: 12px">今日泄漏次数</div>
+                    </div>
+                    <div class="el2" style="background: rgba(8,33,85,0.2)">
+                        <div style="font-size: 16px;" class="hBox vh_content_center vh_items_center">
+                            <div style="width: 10px;height: 10px;border-radius: 50%;background: #007BFF;margin-right: 5px"></div>
+                            正常状态
+                        </div>
+                        <div style="font-size: 12px">整体风险等级</div>
+                    </div>
+                </template>
 
             </div>
 
             <div class="chart-container">
-                <chart v-for="(item,i) in sensorArr" :key="item.type + i" v-show="activeIndex===item.type"
+                <chart v-for="(item,i) in sensorArr" :key="item.type + i" v-show="activeIndex==i && chartDateReady"
                        :auto-resize='true' :options='optionsGroup[i]'></chart>
             </div>
         </div>
@@ -753,28 +778,9 @@ export default {
     components: {},
     data () {
         return {
-            sensorArr: [
-                {
-                    type: 'heapDisplacement',
-                    name: '累计位移'
-                }, {
-                    type: 'displacementSpeed',
-                    name: '位移速度'
-                },
-                {
-                    type: 'acceleratedSpeed',
-                    name: '加速度'
-                },
-                {
-                    type: 'horizontalDistribution',
-                    name: '水平散点分布'
-                },
-                {
-                    type: 'spaceDistribution',
-                    name: '空间坐标分布'
-                }
-            ],
-            activeIndex: 'heapDisplacement',
+            activeIndex: '0',
+            type:'',
+            chartDateReady: false,
             pickerOptions: {
                 shortcuts: [
                     {
@@ -804,1423 +810,1775 @@ export default {
                     }
                 ]
             },
-            value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],//设置默认时间
-            value2: '',
+            value1: '',//设置默认时间
+            value2: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],//设置默认时间
             value3: '',
             buttonIndex: 'accordingDay',
             optionsGroup: [
-                {
-                    backgroundColor: 'transparent',
-                    textStyle: {
-                        fontSize: 12,
-                        fontFamily: 'PingFang',
-                        fontWeight: 600,
-                        color: '#1E2C41'
-                    },
-                    title: [
-                        {
-                            text: '空间偏移量： 三维空间XYH的位移偏移量 水平偏移量： 平面XY方位的位移偏移量 沉降： 垂直H方位的位移偏移量',
-                            textStyle: {
-                                fontSize: 12,
-                                fontWeight: 400,
-                                fontFamily: 'PingFang'
-                            },
-                            top: 62,
-                            left: 400,
-                            backgroundColor: 'rgba(0,123,255,0.1)'
-                        }
-                        // {
-                        //     text: '上一次数据刷新时间： 2020-06-21 16:37:18',
-                        //     textAlign: 'center',
-                        //     textStyle: {
-                        //         fontSize: 12
-                        //     },
-                        //     top: 10,
-                        //     right: 0
-                        // }
-                    ],
-                    legend: {
-                        icon: 'circle',
-                        top: 28,
-                        left: 400,
-                        itemWidth: 6,
-                        itemGap: 20,
-                        textStyle: {
-                            color: '#556677'
-                        }
-                    },
-                    'tooltip': {
-                        'trigger': 'axis',
-                        'axisPointer': {
-                            'type': 'none',
-                            textStyle: {
-                                color: '#fff',
-                                fontSize: 12
-                            }
-
-                        },
-                        formatter: '{b}日  {a0}:{c0}',
-                        backgroundColor: 'rgba(0,123,255,1)'
-                    },
-                    'grid': {
-                        'borderWidth': 0,
-                        'top': 100,
-                        left: 50,
-                        right: 20,
-                        'bottom': 100,
-                        textStyle: {
-                            color: '#fff'
-                        }
-                    },
-                    'calculable': true,
-                    dataZoom: [
-                        {
-                            show: true,
-                            realtime: true,
-                            bottom: 0,
-                            height: 32,
-                            start: 30,
-                            end: 60,
-                            backgroundColor: 'rgba(19,114,255,0.2)',
-                            borderColor: 'transparent',
-                            fillerColor: 'rgba(19,114,255,0.2)',
-                            handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-                            handleSize: '80%',
-                            handleStyle: {
-                                color: '#fff',
-                                shadowBlur: 3,
-                                shadowColor: 'rgba(0, 0, 0, 0.6)',
-                                shadowOffsetX: 2,
-                                shadowOffsetY: 2
-                            },
-                            borderRadius: 5,
-                            textStyle: {
-                                height: '10px'
-                            }
-                        },
-                        {
-                            type: 'inside',
-                            realtime: true,
-                            start: 0,
-                            end: 60
-                        }
-                    ],
-                    'xAxis': [
-                        {
-                            'type': 'category',
-                            'axisLine': {
-                                lineStyle: {
-                                    color: '#A5BFE2',
-                                    width: 1
-                                }
-                            },
-                            'splitLine': {
-                                'show': false
-                            },
-                            'axisTick': {
-                                'show': false
-                            },
-                            'splitArea': {
-                                'show': false
-                            },
-                            'axisLabel': {
-                                'interval': 0,
-                                formatter: function (value, index) {
-                                    // 格式化成月/日，只在第一个刻度显示年份
-                                    return '2020-04-0' + index + '日' + '\n' + '12:30:0' + index;
-                                }
-                            },
-                            'data': xData
-                        }
-                    ],
-                    'yAxis': [
-                        {
-                            'type': 'value',
-                            'splitLine': {
-                                'show': true,
-                                lineStyle: {
-                                    color: 'rgba(165,191,226,0.2)'
-                                }
-                            },
-                            'axisLine': {
-                                'show': false
-                            },
-                            'axisTick': {
-                                'show': false
-                            },
-                            'axisLabel': {
-                                'interval': 0,
-                                align: 'left',
-                                inside: false,
-                                formatter: function (value, index) {
-                                    // 格式化成月/日，只在第一个刻度显示年份
-                                    return value;
-                                }
-
-                            },
-                            offset: 20,
-                            'splitArea': {
-                                'show': false
-                            }
-
-                        }
-                    ],
-                    'series': [
-                        {
-                            'name': '空间偏移值',
-                            'type': 'line',
-                            symbolSize: 10,
-                            symbol: 'circle',
-                            showSymbol: true,
-                            'itemStyle': {
-                                'normal': {
-                                    'color': 'rgba(0,123,255,1)',
-                                    'barBorderRadius': 1,
-                                    borderWidth: 1,
-                                    borderColor: 'white',
-                                    areaStyle: {
-                                        //color: '#94C9EC'
-                                        color: {
-                                            x1: 0,
-                                            y1: 0,
-                                            x2: 0,
-                                            y2: 1,
-                                            colorStops: [
-                                                {
-                                                    offset: 0,
-                                                    color: 'rgba(0,94,255,0.3)' // 0% 处的颜色
-                                                }, {
-                                                    offset: 1,
-                                                    color: 'rgba(0,123,255,0)' // 100% 处的颜色
-                                                }
-                                            ]
-                                        }
-                                    }
-
-                                }
-                            },
-                            lineStyle: {
-                                normal: {
-                                    width: 2,
-                                    color: '#007BFF'
-                                }
-                            },
-                            'data': shuffle(datadd),
-                            smooth: true
-                        },
-                        {
-                            'name': '水平偏移值',
-                            'type': 'line',
-                            symbolSize: 10,
-                            symbol: 'circle',
-                            showSymbol: true,
-                            'itemStyle': {
-                                'normal': {
-                                    'color': 'rgba(78,0,255,1)',
-                                    'barBorderRadius': 1,
-                                    borderWidth: 1,
-                                    borderColor: 'white',
-                                    areaStyle: {
-                                        //color: '#94C9EC'
-                                        color: {
-                                            x1: 0,
-                                            y1: 0,
-                                            x2: 0,
-                                            y2: 1,
-                                            colorStops: [
-                                                {
-                                                    offset: 0,
-                                                    color: 'rgba(0,94,255,0.3)' // 0% 处的颜色
-                                                }, {
-                                                    offset: 1,
-                                                    color: 'rgba(0,123,255,0)' // 100% 处的颜色
-                                                }
-                                            ]
-                                        }
-                                    }
-
-                                }
-                            },
-                            lineStyle: {
-                                normal: {
-                                    width: 2,
-                                    color: 'rgba(78,0,255,1)'
-                                }
-                            },
-                            'data': shuffle(datadd),
-                            smooth: true
-                        },
-                        {
-                            'name': '沉降',
-                            'type': 'line',
-                            symbolSize: 10,
-                            symbol: 'circle',
-                            showSymbol: true,
-                            'itemStyle': {
-                                'normal': {
-                                    'color': 'rgba(0,189,153,1)',
-                                    'barBorderRadius': 1,
-                                    borderWidth: 1,
-                                    borderColor: 'white',
-                                    areaStyle: {
-                                        //color: '#94C9EC'
-                                        color: {
-                                            x1: 0,
-                                            y1: 0,
-                                            x2: 0,
-                                            y2: 1,
-                                            colorStops: [
-                                                {
-                                                    offset: 0,
-                                                    color: 'rgba(0,94,255,0.3)' // 0% 处的颜色
-                                                }, {
-                                                    offset: 1,
-                                                    color: 'rgba(0,123,255,0)' // 100% 处的颜色
-                                                }
-                                            ]
-                                        }
-                                    }
-
-                                }
-                            },
-                            lineStyle: {
-                                normal: {
-                                    width: 2,
-                                    color: 'rgba(0,189,153,1)'
-                                }
-                            },
-                            'data': shuffle(datadd),
-                            smooth: true
-                        }
-                    ]
-                },
-                {
-                    backgroundColor: 'transparent',
-                    textStyle: {
-                        fontSize: 12,
-                        fontFamily: 'PingFang',
-                        fontWeight: 600,
-                        color: '#1E2C41'
-                    },
-                    title: [
-                        {
-                            text: 'X： -X西/X东 Y：-Y南/Y北 H：沉降',
-                            textStyle: {
-                                fontSize: 12,
-                                fontWeight: 400,
-                                fontFamily: 'PingFang'
-                            },
-                            top: 28,
-                            left: 550,
-                            backgroundColor: 'rgba(0,123,255,0.1)'
-                        }
-                        // {
-                        //     text: '上一次数据刷新时间： 2020-06-21 16:37:18',
-                        //     textAlign: 'center',
-                        //     textStyle: {
-                        //         fontSize: 12
-                        //     },
-                        //     top: 10,
-                        //     right: 0
-                        // }
-                    ],
-                    legend: {
-                        icon: 'circle',
-                        top: 28,
-                        left: 400,
-                        itemWidth: 6,
-                        itemGap: 20,
-                        textStyle: {
-                            color: '#556677'
-                        }
-                    },
-                    'tooltip': {
-                        'trigger': 'axis',
-                        'axisPointer': {
-                            'type': 'none',
-                            textStyle: {
-                                color: '#fff',
-                                fontSize: 12
-                            }
-
-                        },
-                        formatter: '{b}日  {a0}:{c0}',
-                        backgroundColor: 'rgba(0,123,255,1)'
-                    },
-                    'grid': {
-                        'borderWidth': 0,
-                        'top': 100,
-                        left: 50,
-                        right: 20,
-                        'bottom': 100,
-                        textStyle: {
-                            color: '#fff'
-                        }
-                    },
-                    'calculable': true,
-                    dataZoom: [
-                        {
-                            show: true,
-                            realtime: true,
-                            bottom: 0,
-                            height: 32,
-                            start: 30,
-                            end: 60,
-                            backgroundColor: 'rgba(19,114,255,0.2)',
-                            borderColor: 'transparent',
-                            fillerColor: 'rgba(19,114,255,0.2)',
-                            handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-                            handleSize: '80%',
-                            handleStyle: {
-                                color: '#fff',
-                                shadowBlur: 3,
-                                shadowColor: 'rgba(0, 0, 0, 0.6)',
-                                shadowOffsetX: 2,
-                                shadowOffsetY: 2
-                            },
-                            borderRadius: 5,
-                            textStyle: {
-                                height: '10px'
-                            }
-                        },
-                        {
-                            type: 'inside',
-                            realtime: true,
-                            start: 0,
-                            end: 60
-                        }
-                    ],
-                    'xAxis': [
-                        {
-                            'type': 'category',
-                            'axisLine': {
-                                lineStyle: {
-                                    color: '#A5BFE2',
-                                    width: 1
-                                }
-                            },
-                            'splitLine': {
-                                'show': false
-                            },
-                            'axisTick': {
-                                'show': false
-                            },
-                            'splitArea': {
-                                'show': false
-                            },
-                            'axisLabel': {
-                                'interval': 0,
-                                formatter: function (value, index) {
-                                    // 格式化成月/日，只在第一个刻度显示年份
-                                    return '2020-04-0' + index + '日' + '\n' + '12:30:0' + index;
-                                }
-                            },
-                            'data': xData
-                        }
-                    ],
-                    'yAxis': [
-                        {
-                            'type': 'value',
-                            'splitLine': {
-                                'show': true,
-                                lineStyle: {
-                                    color: 'rgba(165,191,226,0.2)'
-                                }
-                            },
-                            'axisLine': {
-                                'show': false
-                            },
-                            'axisTick': {
-                                'show': false
-                            },
-                            'axisLabel': {
-                                'interval': 0,
-                                align: 'left',
-                                inside: false,
-                                formatter: function (value, index) {
-                                    // 格式化成月/日，只在第一个刻度显示年份
-                                    return value;
-                                }
-
-                            },
-                            offset: 20,
-                            'splitArea': {
-                                'show': false
-                            }
-
-                        }
-                    ],
-                    'series': [
-                        {
-                            'name': 'X',
-                            'type': 'line',
-                            symbolSize: 10,
-                            symbol: 'circle',
-                            showSymbol: true,
-                            'itemStyle': {
-                                'normal': {
-                                    'color': 'rgba(0,123,255,1)',
-                                    'barBorderRadius': 1,
-                                    borderWidth: 1,
-                                    borderColor: 'white',
-                                    areaStyle: {
-                                        //color: '#94C9EC'
-                                        color: {
-                                            x1: 0,
-                                            y1: 0,
-                                            x2: 0,
-                                            y2: 1,
-                                            colorStops: [
-                                                {
-                                                    offset: 0,
-                                                    color: 'rgba(0,94,255,0.3)' // 0% 处的颜色
-                                                }, {
-                                                    offset: 1,
-                                                    color: 'rgba(0,123,255,0)' // 100% 处的颜色
-                                                }
-                                            ]
-                                        }
-                                    }
-
-                                }
-                            },
-                            lineStyle: {
-                                normal: {
-                                    width: 2,
-                                    color: '#007BFF'
-                                }
-                            },
-                            'data': shuffle(datadd),
-                            smooth: true
-                        },
-                        {
-                            'name': 'Y',
-                            'type': 'line',
-                            symbolSize: 10,
-                            symbol: 'circle',
-                            showSymbol: true,
-                            'itemStyle': {
-                                'normal': {
-                                    'color': 'rgba(78,0,255,1)',
-                                    'barBorderRadius': 1,
-                                    borderWidth: 1,
-                                    borderColor: 'white',
-                                    areaStyle: {
-                                        //color: '#94C9EC'
-                                        color: {
-                                            x1: 0,
-                                            y1: 0,
-                                            x2: 0,
-                                            y2: 1,
-                                            colorStops: [
-                                                {
-                                                    offset: 0,
-                                                    color: 'rgba(0,94,255,0.3)' // 0% 处的颜色
-                                                }, {
-                                                    offset: 1,
-                                                    color: 'rgba(0,123,255,0)' // 100% 处的颜色
-                                                }
-                                            ]
-                                        }
-                                    }
-
-                                }
-                            },
-                            lineStyle: {
-                                normal: {
-                                    width: 2,
-                                    color: 'rgba(78,0,255,1)'
-                                }
-                            },
-                            'data': shuffle(datadd),
-                            smooth: true
-                        },
-                        {
-                            'name': 'H',
-                            'type': 'line',
-                            symbolSize: 10,
-                            symbol: 'circle',
-                            showSymbol: true,
-                            'itemStyle': {
-                                'normal': {
-                                    'color': 'rgba(0,189,153,1)',
-                                    'barBorderRadius': 1,
-                                    borderWidth: 1,
-                                    borderColor: 'white',
-                                    areaStyle: {
-                                        //color: '#94C9EC'
-                                        color: {
-                                            x1: 0,
-                                            y1: 0,
-                                            x2: 0,
-                                            y2: 1,
-                                            colorStops: [
-                                                {
-                                                    offset: 0,
-                                                    color: 'rgba(0,94,255,0.3)' // 0% 处的颜色
-                                                }, {
-                                                    offset: 1,
-                                                    color: 'rgba(0,123,255,0)' // 100% 处的颜色
-                                                }
-                                            ]
-                                        }
-                                    }
-
-                                }
-                            },
-                            lineStyle: {
-                                normal: {
-                                    width: 2,
-                                    color: 'rgba(0,189,153,1)'
-                                }
-                            },
-                            'data': shuffle(datadd),
-                            smooth: true
-                        }
-                    ]
-                },
-                {
-                    backgroundColor: 'transparent',
-                    textStyle: {
-                        fontSize: 12,
-                        fontFamily: 'PingFang',
-                        fontWeight: 600,
-                        color: '#1E2C41'
-                    },
-                    title: [
-                        {
-                            text: '空间偏移量： 三维空间XYH的位移偏移量 水平偏移量： 平面XY方位的位移偏移量 沉降： 垂直H方位的位移偏移量',
-                            textStyle: {
-                                fontSize: 12,
-                                fontWeight: 400,
-                                fontFamily: 'PingFang'
-                            },
-                            top: 62,
-                            left: 400,
-                            backgroundColor: 'rgba(0,123,255,0.1)'
-                        }
-                        // {
-                        //     text: '上一次数据刷新时间： 2020-06-21 16:37:18',
-                        //     textAlign: 'center',
-                        //     textStyle: {
-                        //         fontSize: 12
-                        //     },
-                        //     top: 10,
-                        //     right: 0
-                        // }
-                    ],
-                    legend: {
-                        icon: 'circle',
-                        top: 28,
-                        left: 400,
-                        itemWidth: 6,
-                        itemGap: 20,
-                        textStyle: {
-                            color: '#556677'
-                        }
-                    },
-                    'tooltip': {
-                        'trigger': 'axis',
-                        'axisPointer': {
-                            'type': 'none',
-                            textStyle: {
-                                color: '#fff',
-                                fontSize: 12
-                            }
-
-                        },
-                        formatter: '{b}日  {a0}:{c0}',
-                        backgroundColor: 'rgba(0,123,255,1)'
-                    },
-                    'grid': {
-                        'borderWidth': 0,
-                        'top': 100,
-                        left: 50,
-                        right: 20,
-                        'bottom': 100,
-                        textStyle: {
-                            color: '#fff'
-                        }
-                    },
-                    'calculable': true,
-                    dataZoom: [
-                        {
-                            show: true,
-                            realtime: true,
-                            bottom: 0,
-                            height: 32,
-                            start: 30,
-                            end: 60,
-                            backgroundColor: 'rgba(19,114,255,0.2)',
-                            borderColor: 'transparent',
-                            fillerColor: 'rgba(19,114,255,0.2)',
-                            handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-                            handleSize: '80%',
-                            handleStyle: {
-                                color: '#fff',
-                                shadowBlur: 3,
-                                shadowColor: 'rgba(0, 0, 0, 0.6)',
-                                shadowOffsetX: 2,
-                                shadowOffsetY: 2
-                            },
-                            borderRadius: 5,
-                            textStyle: {
-                                height: '10px'
-                            }
-                        },
-                        {
-                            type: 'inside',
-                            realtime: true,
-                            start: 0,
-                            end: 60
-                        }
-                    ],
-                    'xAxis': [
-                        {
-                            'type': 'category',
-                            'axisLine': {
-                                lineStyle: {
-                                    color: '#A5BFE2',
-                                    width: 1
-                                }
-                            },
-                            'splitLine': {
-                                'show': false
-                            },
-                            'axisTick': {
-                                'show': false
-                            },
-                            'splitArea': {
-                                'show': false
-                            },
-                            'axisLabel': {
-                                'interval': 0,
-                                formatter: function (value, index) {
-                                    // 格式化成月/日，只在第一个刻度显示年份
-                                    return '2020-04-0' + index + '日' + '\n' + '12:30:0' + index;
-                                }
-                            },
-                            'data': xData
-                        }
-                    ],
-                    'yAxis': [
-                        {
-                            'type': 'value',
-                            'splitLine': {
-                                'show': true,
-                                lineStyle: {
-                                    color: 'rgba(165,191,226,0.2)'
-                                }
-                            },
-                            'axisLine': {
-                                'show': false
-                            },
-                            'axisTick': {
-                                'show': false
-                            },
-                            'axisLabel': {
-                                'interval': 0,
-                                align: 'left',
-                                inside: false,
-                                formatter: function (value, index) {
-                                    // 格式化成月/日，只在第一个刻度显示年份
-                                    return value;
-                                }
-
-                            },
-                            offset: 20,
-                            'splitArea': {
-                                'show': false
-                            }
-
-                        }
-                    ],
-                    'series': [
-                        {
-                            'name': '空间偏移值',
-                            'type': 'line',
-                            symbolSize: 10,
-                            symbol: 'circle',
-                            showSymbol: true,
-                            'itemStyle': {
-                                'normal': {
-                                    'color': 'rgba(0,123,255,1)',
-                                    'barBorderRadius': 1,
-                                    borderWidth: 1,
-                                    borderColor: 'white',
-                                    areaStyle: {
-                                        //color: '#94C9EC'
-                                        color: {
-                                            x1: 0,
-                                            y1: 0,
-                                            x2: 0,
-                                            y2: 1,
-                                            colorStops: [
-                                                {
-                                                    offset: 0,
-                                                    color: 'rgba(0,94,255,0.3)' // 0% 处的颜色
-                                                }, {
-                                                    offset: 1,
-                                                    color: 'rgba(0,123,255,0)' // 100% 处的颜色
-                                                }
-                                            ]
-                                        }
-                                    }
-
-                                }
-                            },
-                            lineStyle: {
-                                normal: {
-                                    width: 2,
-                                    color: '#007BFF'
-                                }
-                            },
-                            'data': shuffle(datadd),
-                            smooth: true
-                        },
-                        {
-                            'name': '水平偏移值',
-                            'type': 'line',
-                            symbolSize: 10,
-                            symbol: 'circle',
-                            showSymbol: true,
-                            'itemStyle': {
-                                'normal': {
-                                    'color': 'rgba(78,0,255,1)',
-                                    'barBorderRadius': 1,
-                                    borderWidth: 1,
-                                    borderColor: 'white',
-                                    areaStyle: {
-                                        //color: '#94C9EC'
-                                        color: {
-                                            x1: 0,
-                                            y1: 0,
-                                            x2: 0,
-                                            y2: 1,
-                                            colorStops: [
-                                                {
-                                                    offset: 0,
-                                                    color: 'rgba(0,94,255,0.3)' // 0% 处的颜色
-                                                }, {
-                                                    offset: 1,
-                                                    color: 'rgba(0,123,255,0)' // 100% 处的颜色
-                                                }
-                                            ]
-                                        }
-                                    }
-
-                                }
-                            },
-                            lineStyle: {
-                                normal: {
-                                    width: 2,
-                                    color: 'rgba(78,0,255,1)'
-                                }
-                            },
-                            'data': shuffle(datadd),
-                            smooth: true
-                        },
-                        {
-                            'name': '沉降',
-                            'type': 'line',
-                            symbolSize: 10,
-                            symbol: 'circle',
-                            showSymbol: true,
-                            'itemStyle': {
-                                'normal': {
-                                    'color': 'rgba(0,189,153,1)',
-                                    'barBorderRadius': 1,
-                                    borderWidth: 1,
-                                    borderColor: 'white',
-                                    areaStyle: {
-                                        //color: '#94C9EC'
-                                        color: {
-                                            x1: 0,
-                                            y1: 0,
-                                            x2: 0,
-                                            y2: 1,
-                                            colorStops: [
-                                                {
-                                                    offset: 0,
-                                                    color: 'rgba(0,94,255,0.3)' // 0% 处的颜色
-                                                }, {
-                                                    offset: 1,
-                                                    color: 'rgba(0,123,255,0)' // 100% 处的颜色
-                                                }
-                                            ]
-                                        }
-                                    }
-
-                                }
-                            },
-                            lineStyle: {
-                                normal: {
-                                    width: 2,
-                                    color: 'rgba(0,189,153,1)'
-                                }
-                            },
-                            'data': shuffle(datadd),
-                            smooth: true
-                        }
-                    ]
-                },
-                {
-                    backgroundColor: 'white',
-                    borderColor: 'rgba(165,191,226,1)',
-                    borderWidth: 1,
-                    tooltip: {
-                        formatter: function (params) {
-                            console.log(params);
-                            return 'X : ' + params.data[0] + '<br>Y : ' + params.data[1];
-                        },
-                        textStyle: {
-                            fontSize: fSize
-                        }
-                    },
-                    legend: {
-                        orient: 'horizontal',
-                        x: 'center',
-                        y: '3%',
-                        itemWidth: 12,
-                        itemHeight: 12,
-                        icon: 'circle',
-                        selectedMode: true,
-                        textStyle: {
-                            color: color, // 图例文字颜色
-                            fontSize: fSize
-                        },
-                        data: ['起始点', '结束点']
-                    },
-                    grid: {
-                        left: 100,
-                        right: 100,
-                        bottom: 100,
-                        top: 100,
-                        containLabel: false
-                    },
-                    xAxis: [
-                        {
-                            axisLabel: {
-                                inside: false,
-
-                                textStyle: {
-                                    color: color,
-                                    fontSize: fSize,
-                                    padding:20,
-
-                                }
-                            },
-                            nameTextStyle: {
-                                color: color,
-                                fontSize: fSize
-                            },
-
-                            axisTick: {
-                                show: false,
-                                lineStyle: {
-                                    color: color
-                                }
-                            },
-                            axisLine: {
-                                lineStyle: {
-                                    color: 'rgba(0,123,255,1)',
-                                    width: 2
-                                }
-                            },
-                            splitLine: {
-                                show: false,
-                                lineStyle: {
-                                    color: 'rgba(80,224,255,0.3)',
-                                    type: 'dashed'
-                                }
-                            },
-                            name: '负损值'
-                        },
-                        // {
-                        //     axisLabel: {
-                        //         show: false,
-                        //         textStyle: {
-                        //             color: color,
-                        //             fontSize: fSize
-                        //         }
-                        //     },
-                        //     min: '-0.005',
-                        //     max: '-0.005',
-                        //     axisTick: {
-                        //         show: false,
-                        //         lineStyle: {
-                        //             color: color
-                        //         }
-                        //     },
-                        //     axisLine: {
-                        //         lineStyle: {
-                        //             color: 'rgba(165,191,226,1)',
-                        //             width: 2
-                        //         }
-                        //     },
-                        //     splitLine: {
-                        //         show: false
-                        //     },
-                        //     position: 'top',
-                        //     silent: true
-                        // },
-                        // {
-                        //     min: '0.025',
-                        //     max: '0.025',
-                        //     position: 'bottom',
-                        //     axisLabel: {
-                        //         show: false,
-                        //         textStyle: {
-                        //             color: color,
-                        //             fontSize: fSize
-                        //         }
-                        //     },
-                        //     axisTick: {
-                        //         show: false,
-                        //         lineStyle: {
-                        //             color: color
-                        //         }
-                        //     },
-                        //     axisLine: {
-                        //         lineStyle: {
-                        //             color: 'rgba(165,191,226,1)',
-                        //             width: 2
-                        //         }
-                        //     },
-                        //     splitLine: {
-                        //         show: false
-                        //     },
-                        //     silent: true
-                        // }
-
-                    ],
-                    yAxis: [
-                        {
-                            axisLabel: {
-                                textStyle: {
-                                    color: color,
-                                    fontSize: fSize,
-                                    padding:20
-                                },
-
-                            },
-
-                            axisTick: {
-                                show: false,
-                                lineStyle: {
-                                    color: color
-                                }
-                            },
-                            axisLine: {
-                                lineStyle: {
-                                    color: 'rgba(0,123,255,1)',
-                                    width: 2
-                                }
-                            },
-                            splitLine: {
-                                show: true,
-                                lineStyle: {
-                                    color: 'rgba(165,191,226,0.3)',
-                                    type: 'solid'
-                                }
-                            },
-                            name: '负损提升',
-                            nameTextStyle: {
-                                color: color,
-                                fontSize: fSize
-                            }
-                        },
-                        // {
-                        //     position: 'right',
-                        //     min: '-0.025',
-                        //     max: '-0.025',
-                        //     axisLabel: {
-                        //         show: false,
-                        //         textStyle: {
-                        //             color: color,
-                        //             fontSize: fSize
-                        //         }
-                        //     },
-                        //     axisTick: {
-                        //         show: false,
-                        //         lineStyle: {
-                        //             color: color
-                        //         }
-                        //     },
-                        //     axisLine: {
-                        //         lineStyle: {
-                        //             color: 'rgba(165,191,226,1)',
-                        //             width: 2
-                        //         }
-                        //     },
-                        //
-                        //     splitLine: {
-                        //         show: false
-                        //     },
-                        //     silent: true
-                        // },
-                        // {
-                        //     position: 'left',
-                        //     min: '0.01',
-                        //     max: '0.01',
-                        //     axisLabel: {
-                        //         show: false,
-                        //         textStyle: {
-                        //             color: color,
-                        //             fontSize: fSize
-                        //         }
-                        //     },
-                        //     axisTick: {
-                        //         show: false,
-                        //         lineStyle: {
-                        //             color: color
-                        //         }
-                        //     },
-                        //     axisLine: {
-                        //         lineStyle: {
-                        //             color: 'rgba(165,191,226,1)',
-                        //             width: 2
-                        //         }
-                        //     },
-                        //     splitLine: {
-                        //         show: false
-                        //     },
-                        //     silent: true
-                        // }
-
-                    ],
-                    visualMap: {
-                        show: false,
-                        max: 100,
-                        inRange: {
-                            symbolSize: [18, 18]
-                        }
-                    },
-                    series: [
-                        {
-                            type: 'scatter',
-                            itemStyle: {
-                                color: 'rgba(0,123,255,0.3)',
-                                borderColor: 'white',
-                                borderWidth: 1
-                            },
-                            data: scatterData
-                        },
-                        {
-                            name: '起始点',
-                            type: 'scatter',
-                            itemStyle: {
-                                color: 'rgba(8,33,85,1)',
-                                borderColor: 'white',
-                                borderWidth: 1
-                            },
-                            data: [
-                                [-0.0041, -0.002399]
-                            ]
-                        },
-                        {
-                            name: '结束点',
-                            type: 'scatter',
-                            itemStyle: {
-                                color: 'rgba(255,94,84,1)',
-                                borderColor: 'white',
-                                borderWidth: 1
-                            },
-                            data: [
-                                [-0.0012, -0.004899]
-                            ]
-                        }
-                    ],
-                },
-                {
-                    backgroundColor: 'transparent',
-                    textStyle: {
-                        fontSize: 12,
-                        fontFamily: 'PingFang',
-                        fontWeight: 600,
-                        color: '#1E2C41'
-                    },
-                    title: [
-                        {
-                            text: '空间偏移量： 三维空间XYH的位移偏移量 水平偏移量： 平面XY方位的位移偏移量 沉降： 垂直H方位的位移偏移量',
-                            textStyle: {
-                                fontSize: 12,
-                                fontWeight: 400,
-                                fontFamily: 'PingFang'
-                            },
-                            top: 62,
-                            left: 400,
-                            backgroundColor: 'rgba(0,123,255,0.1)'
-                        }
-                        // {
-                        //     text: '上一次数据刷新时间： 2020-06-21 16:37:18',
-                        //     textAlign: 'center',
-                        //     textStyle: {
-                        //         fontSize: 12
-                        //     },
-                        //     top: 10,
-                        //     right: 0
-                        // }
-                    ],
-                    legend: {
-                        icon: 'circle',
-                        top: 28,
-                        left: 400,
-                        itemWidth: 6,
-                        itemGap: 20,
-                        textStyle: {
-                            color: '#556677'
-                        }
-                    },
-                    'tooltip': {
-                        'trigger': 'axis',
-                        'axisPointer': {
-                            'type': 'none',
-                            textStyle: {
-                                color: '#fff',
-                                fontSize: 12
-                            }
-
-                        },
-                        formatter: '{b}日  {a0}:{c0}',
-                        backgroundColor: 'rgba(0,123,255,1)'
-                    },
-                    'grid': {
-                        'borderWidth': 0,
-                        'top': 100,
-                        left: 50,
-                        right: 20,
-                        'bottom': 100,
-                        textStyle: {
-                            color: '#fff'
-                        }
-                    },
-                    'calculable': true,
-                    dataZoom: [
-                        {
-                            show: true,
-                            realtime: true,
-                            bottom: 0,
-                            height: 32,
-                            start: 30,
-                            end: 60,
-                            backgroundColor: 'rgba(19,114,255,0.2)',
-                            borderColor: 'transparent',
-                            fillerColor: 'rgba(19,114,255,0.2)',
-                            handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-                            handleSize: '80%',
-                            handleStyle: {
-                                color: '#fff',
-                                shadowBlur: 3,
-                                shadowColor: 'rgba(0, 0, 0, 0.6)',
-                                shadowOffsetX: 2,
-                                shadowOffsetY: 2
-                            },
-                            borderRadius: 5,
-                            textStyle: {
-                                height: '10px'
-                            }
-                        },
-                        {
-                            type: 'inside',
-                            realtime: true,
-                            start: 0,
-                            end: 60
-                        }
-                    ],
-                    'xAxis': [
-                        {
-                            'type': 'category',
-                            'axisLine': {
-                                lineStyle: {
-                                    color: '#A5BFE2',
-                                    width: 1
-                                }
-                            },
-                            'splitLine': {
-                                'show': false
-                            },
-                            'axisTick': {
-                                'show': false
-                            },
-                            'splitArea': {
-                                'show': false
-                            },
-                            'axisLabel': {
-                                'interval': 0,
-                                formatter: function (value, index) {
-                                    // 格式化成月/日，只在第一个刻度显示年份
-                                    return '2020-04-0' + index + '日' + '\n' + '12:30:0' + index;
-                                }
-                            },
-                            'data': xData
-                        }
-                    ],
-                    'yAxis': [
-                        {
-                            'type': 'value',
-                            'splitLine': {
-                                'show': true,
-                                lineStyle: {
-                                    color: 'rgba(165,191,226,0.2)'
-                                }
-                            },
-                            'axisLine': {
-                                'show': false
-                            },
-                            'axisTick': {
-                                'show': false
-                            },
-                            'axisLabel': {
-                                'interval': 0,
-                                align: 'left',
-                                inside: false,
-                                formatter: function (value, index) {
-                                    // 格式化成月/日，只在第一个刻度显示年份
-                                    return value;
-                                }
-
-                            },
-                            offset: 20,
-                            'splitArea': {
-                                'show': false
-                            }
-
-                        }
-                    ],
-                    'series': [
-                        {
-                            'name': '空间偏移值',
-                            'type': 'line',
-                            symbolSize: 10,
-                            symbol: 'circle',
-                            showSymbol: true,
-                            'itemStyle': {
-                                'normal': {
-                                    'color': 'rgba(0,123,255,1)',
-                                    'barBorderRadius': 1,
-                                    borderWidth: 1,
-                                    borderColor: 'white',
-                                    areaStyle: {
-                                        //color: '#94C9EC'
-                                        color: {
-                                            x1: 0,
-                                            y1: 0,
-                                            x2: 0,
-                                            y2: 1,
-                                            colorStops: [
-                                                {
-                                                    offset: 0,
-                                                    color: 'rgba(0,94,255,0.3)' // 0% 处的颜色
-                                                }, {
-                                                    offset: 1,
-                                                    color: 'rgba(0,123,255,0)' // 100% 处的颜色
-                                                }
-                                            ]
-                                        }
-                                    }
-
-                                }
-                            },
-                            lineStyle: {
-                                normal: {
-                                    width: 2,
-                                    color: '#007BFF'
-                                }
-                            },
-                            'data': shuffle(datadd),
-                            smooth: true
-                        },
-                        {
-                            'name': '水平偏移值',
-                            'type': 'line',
-                            symbolSize: 10,
-                            symbol: 'circle',
-                            showSymbol: true,
-                            'itemStyle': {
-                                'normal': {
-                                    'color': 'rgba(78,0,255,1)',
-                                    'barBorderRadius': 1,
-                                    borderWidth: 1,
-                                    borderColor: 'white',
-                                    areaStyle: {
-                                        //color: '#94C9EC'
-                                        color: {
-                                            x1: 0,
-                                            y1: 0,
-                                            x2: 0,
-                                            y2: 1,
-                                            colorStops: [
-                                                {
-                                                    offset: 0,
-                                                    color: 'rgba(0,94,255,0.3)' // 0% 处的颜色
-                                                }, {
-                                                    offset: 1,
-                                                    color: 'rgba(0,123,255,0)' // 100% 处的颜色
-                                                }
-                                            ]
-                                        }
-                                    }
-
-                                }
-                            },
-                            lineStyle: {
-                                normal: {
-                                    width: 2,
-                                    color: 'rgba(78,0,255,1)'
-                                }
-                            },
-                            'data': shuffle(datadd),
-                            smooth: true
-                        },
-                        {
-                            'name': '沉降',
-                            'type': 'line',
-                            symbolSize: 10,
-                            symbol: 'circle',
-                            showSymbol: true,
-                            'itemStyle': {
-                                'normal': {
-                                    'color': 'rgba(0,189,153,1)',
-                                    'barBorderRadius': 1,
-                                    borderWidth: 1,
-                                    borderColor: 'white',
-                                    areaStyle: {
-                                        //color: '#94C9EC'
-                                        color: {
-                                            x1: 0,
-                                            y1: 0,
-                                            x2: 0,
-                                            y2: 1,
-                                            colorStops: [
-                                                {
-                                                    offset: 0,
-                                                    color: 'rgba(0,94,255,0.3)' // 0% 处的颜色
-                                                }, {
-                                                    offset: 1,
-                                                    color: 'rgba(0,123,255,0)' // 100% 处的颜色
-                                                }
-                                            ]
-                                        }
-                                    }
-
-                                }
-                            },
-                            lineStyle: {
-                                normal: {
-                                    width: 2,
-                                    color: 'rgba(0,189,153,1)'
-                                }
-                            },
-                            'data': shuffle(datadd),
-                            smooth: true
-                        }
-                    ]
-                }
+                // {
+                //     backgroundColor: 'transparent',
+                //     textStyle: {
+                //         fontSize: 12,
+                //         fontFamily: 'PingFang',
+                //         fontWeight: 600,
+                //         color: '#1E2C41'
+                //     },
+                //     title: [
+                //         {
+                //             text: '空间偏移量： 三维空间XYH的位移偏移量 水平偏移量： 平面XY方位的位移偏移量 沉降： 垂直H方位的位移偏移量',
+                //             textStyle: {
+                //                 fontSize: 12,
+                //                 fontWeight: 400,
+                //                 fontFamily: 'PingFang'
+                //             },
+                //             top: 62,
+                //             left: 400,
+                //             backgroundColor: 'rgba(0,123,255,0.1)'
+                //         }
+                //     ],
+                //     legend: {
+                //         icon: 'circle',
+                //         top: 28,
+                //         left: 400,
+                //         itemWidth: 6,
+                //         itemGap: 20,
+                //         textStyle: {
+                //             color: '#556677'
+                //         }
+                //     },
+                //     'tooltip': {
+                //         'trigger': 'axis',
+                //         'axisPointer': {
+                //             'type': 'none',
+                //             textStyle: {
+                //                 color: '#fff',
+                //                 fontSize: 12
+                //             }
+                //
+                //         },
+                //         formatter: '{b}日  {a0}:{c0}',
+                //         backgroundColor: 'rgba(0,123,255,1)'
+                //     },
+                //     'grid': {
+                //         'borderWidth': 0,
+                //         'top': 100,
+                //         left: 50,
+                //         right: 20,
+                //         'bottom': 100,
+                //         textStyle: {
+                //             color: '#fff'
+                //         }
+                //     },
+                //     'calculable': true,
+                //     dataZoom: [
+                //         {
+                //             show: true,
+                //             realtime: true,
+                //             bottom: 0,
+                //             height: 32,
+                //             start: 30,
+                //             end: 60,
+                //             backgroundColor: 'rgba(19,114,255,0.2)',
+                //             borderColor: 'transparent',
+                //             fillerColor: 'rgba(19,114,255,0.2)',
+                //             handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+                //             handleSize: '80%',
+                //             handleStyle: {
+                //                 color: '#fff',
+                //                 shadowBlur: 3,
+                //                 shadowColor: 'rgba(0, 0, 0, 0.6)',
+                //                 shadowOffsetX: 2,
+                //                 shadowOffsetY: 2
+                //             },
+                //             borderRadius: 5,
+                //             textStyle: {
+                //                 height: '10px'
+                //             }
+                //         },
+                //         {
+                //             type: 'inside',
+                //             realtime: true,
+                //             start: 0,
+                //             end: 60
+                //         }
+                //     ],
+                //     'xAxis': [
+                //         {
+                //             'type': 'category',
+                //             'axisLine': {
+                //                 lineStyle: {
+                //                     color: '#A5BFE2',
+                //                     width: 1
+                //                 }
+                //             },
+                //             'splitLine': {
+                //                 'show': false
+                //             },
+                //             'axisTick': {
+                //                 'show': false
+                //             },
+                //             'splitArea': {
+                //                 'show': false
+                //             },
+                //             'axisLabel': {
+                //                 'interval': 0,
+                //                 formatter: function (value, index) {
+                //                     // 格式化成月/日，只在第一个刻度显示年份
+                //                     return '2020-04-0' + index + '日' + '\n' + '12:30:0' + index;
+                //                 }
+                //             },
+                //             'data': xData
+                //         }
+                //     ],
+                //     'yAxis': [
+                //         {
+                //             'type': 'value',
+                //             'splitLine': {
+                //                 'show': true,
+                //                 lineStyle: {
+                //                     color: 'rgba(165,191,226,0.2)'
+                //                 }
+                //             },
+                //             'axisLine': {
+                //                 'show': false
+                //             },
+                //             'axisTick': {
+                //                 'show': false
+                //             },
+                //             'axisLabel': {
+                //                 'interval': 0,
+                //                 align: 'left',
+                //                 inside: false,
+                //                 formatter: function (value, index) {
+                //                     // 格式化成月/日，只在第一个刻度显示年份
+                //                     return value;
+                //                 }
+                //
+                //             },
+                //             offset: 20,
+                //             'splitArea': {
+                //                 'show': false
+                //             }
+                //
+                //         }
+                //     ],
+                //     'series': [
+                //         {
+                //             'name': '空间偏移值',
+                //             'type': 'line',
+                //             symbolSize: 10,
+                //             symbol: 'circle',
+                //             showSymbol: true,
+                //             'itemStyle': {
+                //                 'normal': {
+                //                     'color': 'rgba(0,123,255,1)',
+                //                     'barBorderRadius': 1,
+                //                     borderWidth: 1,
+                //                     borderColor: 'white',
+                //                     areaStyle: {
+                //                         //color: '#94C9EC'
+                //                         color: {
+                //                             x1: 0,
+                //                             y1: 0,
+                //                             x2: 0,
+                //                             y2: 1,
+                //                             colorStops: [
+                //                                 {
+                //                                     offset: 0,
+                //                                     color: 'rgba(0,94,255,0.3)' // 0% 处的颜色
+                //                                 }, {
+                //                                     offset: 1,
+                //                                     color: 'rgba(0,123,255,0)' // 100% 处的颜色
+                //                                 }
+                //                             ]
+                //                         }
+                //                     }
+                //
+                //                 }
+                //             },
+                //             lineStyle: {
+                //                 normal: {
+                //                     width: 2,
+                //                     color: '#007BFF'
+                //                 }
+                //             },
+                //             'data': [],
+                //             smooth: true
+                //         }
+                //     ]
+                // },
+                // {
+                //     backgroundColor: 'transparent',
+                //     textStyle: {
+                //         fontSize: 12,
+                //         fontFamily: 'PingFang',
+                //         fontWeight: 600,
+                //         color: '#1E2C41'
+                //     },
+                //     title: [
+                //         {
+                //             text: 'X： -X西/X东 Y：-Y南/Y北 H：沉降',
+                //             textStyle: {
+                //                 fontSize: 12,
+                //                 fontWeight: 400,
+                //                 fontFamily: 'PingFang'
+                //             },
+                //             top: 28,
+                //             left: 550,
+                //             backgroundColor: 'rgba(0,123,255,0.1)'
+                //         }
+                //         // {
+                //         //     text: '上一次数据刷新时间： 2020-06-21 16:37:18',
+                //         //     textAlign: 'center',
+                //         //     textStyle: {
+                //         //         fontSize: 12
+                //         //     },
+                //         //     top: 10,
+                //         //     right: 0
+                //         // }
+                //     ],
+                //     legend: {
+                //         icon: 'circle',
+                //         top: 28,
+                //         left: 400,
+                //         itemWidth: 6,
+                //         itemGap: 20,
+                //         textStyle: {
+                //             color: '#556677'
+                //         }
+                //     },
+                //     'tooltip': {
+                //         'trigger': 'axis',
+                //         'axisPointer': {
+                //             'type': 'none',
+                //             textStyle: {
+                //                 color: '#fff',
+                //                 fontSize: 12
+                //             }
+                //
+                //         },
+                //         formatter: '{b}日  {a0}:{c0}',
+                //         backgroundColor: 'rgba(0,123,255,1)'
+                //     },
+                //     'grid': {
+                //         'borderWidth': 0,
+                //         'top': 100,
+                //         left: 50,
+                //         right: 20,
+                //         'bottom': 100,
+                //         textStyle: {
+                //             color: '#fff'
+                //         }
+                //     },
+                //     'calculable': true,
+                //     dataZoom: [
+                //         {
+                //             show: true,
+                //             realtime: true,
+                //             bottom: 0,
+                //             height: 32,
+                //             start: 30,
+                //             end: 60,
+                //             backgroundColor: 'rgba(19,114,255,0.2)',
+                //             borderColor: 'transparent',
+                //             fillerColor: 'rgba(19,114,255,0.2)',
+                //             handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+                //             handleSize: '80%',
+                //             handleStyle: {
+                //                 color: '#fff',
+                //                 shadowBlur: 3,
+                //                 shadowColor: 'rgba(0, 0, 0, 0.6)',
+                //                 shadowOffsetX: 2,
+                //                 shadowOffsetY: 2
+                //             },
+                //             borderRadius: 5,
+                //             textStyle: {
+                //                 height: '10px'
+                //             }
+                //         },
+                //         {
+                //             type: 'inside',
+                //             realtime: true,
+                //             start: 0,
+                //             end: 60
+                //         }
+                //     ],
+                //     'xAxis': [
+                //         {
+                //             'type': 'category',
+                //             'axisLine': {
+                //                 lineStyle: {
+                //                     color: '#A5BFE2',
+                //                     width: 1
+                //                 }
+                //             },
+                //             'splitLine': {
+                //                 'show': false
+                //             },
+                //             'axisTick': {
+                //                 'show': false
+                //             },
+                //             'splitArea': {
+                //                 'show': false
+                //             },
+                //             'axisLabel': {
+                //                 'interval': 0,
+                //                 formatter: function (value, index) {
+                //                     // 格式化成月/日，只在第一个刻度显示年份
+                //                     return '2020-04-0' + index + '日' + '\n' + '12:30:0' + index;
+                //                 }
+                //             },
+                //             'data': xData
+                //         }
+                //     ],
+                //     'yAxis': [
+                //         {
+                //             'type': 'value',
+                //             'splitLine': {
+                //                 'show': true,
+                //                 lineStyle: {
+                //                     color: 'rgba(165,191,226,0.2)'
+                //                 }
+                //             },
+                //             'axisLine': {
+                //                 'show': false
+                //             },
+                //             'axisTick': {
+                //                 'show': false
+                //             },
+                //             'axisLabel': {
+                //                 'interval': 0,
+                //                 align: 'left',
+                //                 inside: false,
+                //                 formatter: function (value, index) {
+                //                     // 格式化成月/日，只在第一个刻度显示年份
+                //                     return value;
+                //                 }
+                //
+                //             },
+                //             offset: 20,
+                //             'splitArea': {
+                //                 'show': false
+                //             }
+                //
+                //         }
+                //     ],
+                //     'series': [
+                //         {
+                //             'name': 'X',
+                //             'type': 'line',
+                //             symbolSize: 10,
+                //             symbol: 'circle',
+                //             showSymbol: true,
+                //             'itemStyle': {
+                //                 'normal': {
+                //                     'color': 'rgba(0,123,255,1)',
+                //                     'barBorderRadius': 1,
+                //                     borderWidth: 1,
+                //                     borderColor: 'white',
+                //                     areaStyle: {
+                //                         //color: '#94C9EC'
+                //                         color: {
+                //                             x1: 0,
+                //                             y1: 0,
+                //                             x2: 0,
+                //                             y2: 1,
+                //                             colorStops: [
+                //                                 {
+                //                                     offset: 0,
+                //                                     color: 'rgba(0,94,255,0.3)' // 0% 处的颜色
+                //                                 }, {
+                //                                     offset: 1,
+                //                                     color: 'rgba(0,123,255,0)' // 100% 处的颜色
+                //                                 }
+                //                             ]
+                //                         }
+                //                     }
+                //
+                //                 }
+                //             },
+                //             lineStyle: {
+                //                 normal: {
+                //                     width: 2,
+                //                     color: '#007BFF'
+                //                 }
+                //             },
+                //             'data': shuffle(datadd),
+                //             smooth: true
+                //         },
+                //         {
+                //             'name': 'Y',
+                //             'type': 'line',
+                //             symbolSize: 10,
+                //             symbol: 'circle',
+                //             showSymbol: true,
+                //             'itemStyle': {
+                //                 'normal': {
+                //                     'color': 'rgba(78,0,255,1)',
+                //                     'barBorderRadius': 1,
+                //                     borderWidth: 1,
+                //                     borderColor: 'white',
+                //                     areaStyle: {
+                //                         //color: '#94C9EC'
+                //                         color: {
+                //                             x1: 0,
+                //                             y1: 0,
+                //                             x2: 0,
+                //                             y2: 1,
+                //                             colorStops: [
+                //                                 {
+                //                                     offset: 0,
+                //                                     color: 'rgba(0,94,255,0.3)' // 0% 处的颜色
+                //                                 }, {
+                //                                     offset: 1,
+                //                                     color: 'rgba(0,123,255,0)' // 100% 处的颜色
+                //                                 }
+                //                             ]
+                //                         }
+                //                     }
+                //
+                //                 }
+                //             },
+                //             lineStyle: {
+                //                 normal: {
+                //                     width: 2,
+                //                     color: 'rgba(78,0,255,1)'
+                //                 }
+                //             },
+                //             'data': shuffle(datadd),
+                //             smooth: true
+                //         },
+                //         {
+                //             'name': 'H',
+                //             'type': 'line',
+                //             symbolSize: 10,
+                //             symbol: 'circle',
+                //             showSymbol: true,
+                //             'itemStyle': {
+                //                 'normal': {
+                //                     'color': 'rgba(0,189,153,1)',
+                //                     'barBorderRadius': 1,
+                //                     borderWidth: 1,
+                //                     borderColor: 'white',
+                //                     areaStyle: {
+                //                         //color: '#94C9EC'
+                //                         color: {
+                //                             x1: 0,
+                //                             y1: 0,
+                //                             x2: 0,
+                //                             y2: 1,
+                //                             colorStops: [
+                //                                 {
+                //                                     offset: 0,
+                //                                     color: 'rgba(0,94,255,0.3)' // 0% 处的颜色
+                //                                 }, {
+                //                                     offset: 1,
+                //                                     color: 'rgba(0,123,255,0)' // 100% 处的颜色
+                //                                 }
+                //                             ]
+                //                         }
+                //                     }
+                //
+                //                 }
+                //             },
+                //             lineStyle: {
+                //                 normal: {
+                //                     width: 2,
+                //                     color: 'rgba(0,189,153,1)'
+                //                 }
+                //             },
+                //             'data': shuffle(datadd),
+                //             smooth: true
+                //         }
+                //     ]
+                // },
+                // {
+                //     backgroundColor: 'transparent',
+                //     textStyle: {
+                //         fontSize: 12,
+                //         fontFamily: 'PingFang',
+                //         fontWeight: 600,
+                //         color: '#1E2C41'
+                //     },
+                //     title: [
+                //         {
+                //             text: '空间偏移量： 三维空间XYH的位移偏移量 水平偏移量： 平面XY方位的位移偏移量 沉降： 垂直H方位的位移偏移量',
+                //             textStyle: {
+                //                 fontSize: 12,
+                //                 fontWeight: 400,
+                //                 fontFamily: 'PingFang'
+                //             },
+                //             top: 62,
+                //             left: 400,
+                //             backgroundColor: 'rgba(0,123,255,0.1)'
+                //         }
+                //         // {
+                //         //     text: '上一次数据刷新时间： 2020-06-21 16:37:18',
+                //         //     textAlign: 'center',
+                //         //     textStyle: {
+                //         //         fontSize: 12
+                //         //     },
+                //         //     top: 10,
+                //         //     right: 0
+                //         // }
+                //     ],
+                //     legend: {
+                //         icon: 'circle',
+                //         top: 28,
+                //         left: 400,
+                //         itemWidth: 6,
+                //         itemGap: 20,
+                //         textStyle: {
+                //             color: '#556677'
+                //         }
+                //     },
+                //     'tooltip': {
+                //         'trigger': 'axis',
+                //         'axisPointer': {
+                //             'type': 'none',
+                //             textStyle: {
+                //                 color: '#fff',
+                //                 fontSize: 12
+                //             }
+                //
+                //         },
+                //         formatter: '{b}日  {a0}:{c0}',
+                //         backgroundColor: 'rgba(0,123,255,1)'
+                //     },
+                //     'grid': {
+                //         'borderWidth': 0,
+                //         'top': 100,
+                //         left: 50,
+                //         right: 20,
+                //         'bottom': 100,
+                //         textStyle: {
+                //             color: '#fff'
+                //         }
+                //     },
+                //     'calculable': true,
+                //     dataZoom: [
+                //         {
+                //             show: true,
+                //             realtime: true,
+                //             bottom: 0,
+                //             height: 32,
+                //             start: 30,
+                //             end: 60,
+                //             backgroundColor: 'rgba(19,114,255,0.2)',
+                //             borderColor: 'transparent',
+                //             fillerColor: 'rgba(19,114,255,0.2)',
+                //             handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+                //             handleSize: '80%',
+                //             handleStyle: {
+                //                 color: '#fff',
+                //                 shadowBlur: 3,
+                //                 shadowColor: 'rgba(0, 0, 0, 0.6)',
+                //                 shadowOffsetX: 2,
+                //                 shadowOffsetY: 2
+                //             },
+                //             borderRadius: 5,
+                //             textStyle: {
+                //                 height: '10px'
+                //             }
+                //         },
+                //         {
+                //             type: 'inside',
+                //             realtime: true,
+                //             start: 0,
+                //             end: 60
+                //         }
+                //     ],
+                //     'xAxis': [
+                //         {
+                //             'type': 'category',
+                //             'axisLine': {
+                //                 lineStyle: {
+                //                     color: '#A5BFE2',
+                //                     width: 1
+                //                 }
+                //             },
+                //             'splitLine': {
+                //                 'show': false
+                //             },
+                //             'axisTick': {
+                //                 'show': false
+                //             },
+                //             'splitArea': {
+                //                 'show': false
+                //             },
+                //             'axisLabel': {
+                //                 'interval': 0,
+                //                 formatter: function (value, index) {
+                //                     // 格式化成月/日，只在第一个刻度显示年份
+                //                     return '2020-04-0' + index + '日' + '\n' + '12:30:0' + index;
+                //                 }
+                //             },
+                //             'data': xData
+                //         }
+                //     ],
+                //     'yAxis': [
+                //         {
+                //             'type': 'value',
+                //             'splitLine': {
+                //                 'show': true,
+                //                 lineStyle: {
+                //                     color: 'rgba(165,191,226,0.2)'
+                //                 }
+                //             },
+                //             'axisLine': {
+                //                 'show': false
+                //             },
+                //             'axisTick': {
+                //                 'show': false
+                //             },
+                //             'axisLabel': {
+                //                 'interval': 0,
+                //                 align: 'left',
+                //                 inside: false,
+                //                 formatter: function (value, index) {
+                //                     // 格式化成月/日，只在第一个刻度显示年份
+                //                     return value;
+                //                 }
+                //
+                //             },
+                //             offset: 20,
+                //             'splitArea': {
+                //                 'show': false
+                //             }
+                //
+                //         }
+                //     ],
+                //     'series': [
+                //         {
+                //             'name': '空间偏移值',
+                //             'type': 'line',
+                //             symbolSize: 10,
+                //             symbol: 'circle',
+                //             showSymbol: true,
+                //             'itemStyle': {
+                //                 'normal': {
+                //                     'color': 'rgba(0,123,255,1)',
+                //                     'barBorderRadius': 1,
+                //                     borderWidth: 1,
+                //                     borderColor: 'white',
+                //                     areaStyle: {
+                //                         //color: '#94C9EC'
+                //                         color: {
+                //                             x1: 0,
+                //                             y1: 0,
+                //                             x2: 0,
+                //                             y2: 1,
+                //                             colorStops: [
+                //                                 {
+                //                                     offset: 0,
+                //                                     color: 'rgba(0,94,255,0.3)' // 0% 处的颜色
+                //                                 }, {
+                //                                     offset: 1,
+                //                                     color: 'rgba(0,123,255,0)' // 100% 处的颜色
+                //                                 }
+                //                             ]
+                //                         }
+                //                     }
+                //
+                //                 }
+                //             },
+                //             lineStyle: {
+                //                 normal: {
+                //                     width: 2,
+                //                     color: '#007BFF'
+                //                 }
+                //             },
+                //             'data': shuffle(datadd),
+                //             smooth: true
+                //         },
+                //         {
+                //             'name': '水平偏移值',
+                //             'type': 'line',
+                //             symbolSize: 10,
+                //             symbol: 'circle',
+                //             showSymbol: true,
+                //             'itemStyle': {
+                //                 'normal': {
+                //                     'color': 'rgba(78,0,255,1)',
+                //                     'barBorderRadius': 1,
+                //                     borderWidth: 1,
+                //                     borderColor: 'white',
+                //                     areaStyle: {
+                //                         //color: '#94C9EC'
+                //                         color: {
+                //                             x1: 0,
+                //                             y1: 0,
+                //                             x2: 0,
+                //                             y2: 1,
+                //                             colorStops: [
+                //                                 {
+                //                                     offset: 0,
+                //                                     color: 'rgba(0,94,255,0.3)' // 0% 处的颜色
+                //                                 }, {
+                //                                     offset: 1,
+                //                                     color: 'rgba(0,123,255,0)' // 100% 处的颜色
+                //                                 }
+                //                             ]
+                //                         }
+                //                     }
+                //
+                //                 }
+                //             },
+                //             lineStyle: {
+                //                 normal: {
+                //                     width: 2,
+                //                     color: 'rgba(78,0,255,1)'
+                //                 }
+                //             },
+                //             'data': shuffle(datadd),
+                //             smooth: true
+                //         },
+                //         {
+                //             'name': '沉降',
+                //             'type': 'line',
+                //             symbolSize: 10,
+                //             symbol: 'circle',
+                //             showSymbol: true,
+                //             'itemStyle': {
+                //                 'normal': {
+                //                     'color': 'rgba(0,189,153,1)',
+                //                     'barBorderRadius': 1,
+                //                     borderWidth: 1,
+                //                     borderColor: 'white',
+                //                     areaStyle: {
+                //                         //color: '#94C9EC'
+                //                         color: {
+                //                             x1: 0,
+                //                             y1: 0,
+                //                             x2: 0,
+                //                             y2: 1,
+                //                             colorStops: [
+                //                                 {
+                //                                     offset: 0,
+                //                                     color: 'rgba(0,94,255,0.3)' // 0% 处的颜色
+                //                                 }, {
+                //                                     offset: 1,
+                //                                     color: 'rgba(0,123,255,0)' // 100% 处的颜色
+                //                                 }
+                //                             ]
+                //                         }
+                //                     }
+                //
+                //                 }
+                //             },
+                //             lineStyle: {
+                //                 normal: {
+                //                     width: 2,
+                //                     color: 'rgba(0,189,153,1)'
+                //                 }
+                //             },
+                //             'data': shuffle(datadd),
+                //             smooth: true
+                //         }
+                //     ]
+                // },
+                // {
+                //     backgroundColor: 'white',
+                //     borderColor: 'rgba(165,191,226,1)',
+                //     borderWidth: 1,
+                //     tooltip: {
+                //         formatter: function (params) {
+                //             console.log(params);
+                //             return 'X : ' + params.data[0] + '<br>Y : ' + params.data[1];
+                //         },
+                //         textStyle: {
+                //             fontSize: fSize
+                //         }
+                //     },
+                //     legend: {
+                //         orient: 'horizontal',
+                //         x: 'center',
+                //         y: '3%',
+                //         itemWidth: 12,
+                //         itemHeight: 12,
+                //         icon: 'circle',
+                //         selectedMode: true,
+                //         textStyle: {
+                //             color: color, // 图例文字颜色
+                //             fontSize: fSize
+                //         },
+                //         data: ['起始点', '结束点']
+                //     },
+                //     grid: {
+                //         left: 100,
+                //         right: 100,
+                //         bottom: 100,
+                //         top: 100,
+                //         containLabel: false
+                //     },
+                //     xAxis: [
+                //         {
+                //             axisLabel: {
+                //                 inside: false,
+                //
+                //                 textStyle: {
+                //                     color: color,
+                //                     fontSize: fSize,
+                //                     padding: 20
+                //
+                //                 }
+                //             },
+                //             nameTextStyle: {
+                //                 color: color,
+                //                 fontSize: fSize
+                //             },
+                //
+                //             axisTick: {
+                //                 show: false,
+                //                 lineStyle: {
+                //                     color: color
+                //                 }
+                //             },
+                //             axisLine: {
+                //                 lineStyle: {
+                //                     color: 'rgba(0,123,255,1)',
+                //                     width: 2
+                //                 }
+                //             },
+                //             splitLine: {
+                //                 show: false,
+                //                 lineStyle: {
+                //                     color: 'rgba(80,224,255,0.3)',
+                //                     type: 'dashed'
+                //                 }
+                //             },
+                //             name: '负损值'
+                //         }
+                //         // {
+                //         //     axisLabel: {
+                //         //         show: false,
+                //         //         textStyle: {
+                //         //             color: color,
+                //         //             fontSize: fSize
+                //         //         }
+                //         //     },
+                //         //     min: '-0.005',
+                //         //     max: '-0.005',
+                //         //     axisTick: {
+                //         //         show: false,
+                //         //         lineStyle: {
+                //         //             color: color
+                //         //         }
+                //         //     },
+                //         //     axisLine: {
+                //         //         lineStyle: {
+                //         //             color: 'rgba(165,191,226,1)',
+                //         //             width: 2
+                //         //         }
+                //         //     },
+                //         //     splitLine: {
+                //         //         show: false
+                //         //     },
+                //         //     position: 'top',
+                //         //     silent: true
+                //         // },
+                //         // {
+                //         //     min: '0.025',
+                //         //     max: '0.025',
+                //         //     position: 'bottom',
+                //         //     axisLabel: {
+                //         //         show: false,
+                //         //         textStyle: {
+                //         //             color: color,
+                //         //             fontSize: fSize
+                //         //         }
+                //         //     },
+                //         //     axisTick: {
+                //         //         show: false,
+                //         //         lineStyle: {
+                //         //             color: color
+                //         //         }
+                //         //     },
+                //         //     axisLine: {
+                //         //         lineStyle: {
+                //         //             color: 'rgba(165,191,226,1)',
+                //         //             width: 2
+                //         //         }
+                //         //     },
+                //         //     splitLine: {
+                //         //         show: false
+                //         //     },
+                //         //     silent: true
+                //         // }
+                //
+                //     ],
+                //     yAxis: [
+                //         {
+                //             axisLabel: {
+                //                 textStyle: {
+                //                     color: color,
+                //                     fontSize: fSize,
+                //                     padding: 20
+                //                 }
+                //
+                //             },
+                //
+                //             axisTick: {
+                //                 show: false,
+                //                 lineStyle: {
+                //                     color: color
+                //                 }
+                //             },
+                //             axisLine: {
+                //                 lineStyle: {
+                //                     color: 'rgba(0,123,255,1)',
+                //                     width: 2
+                //                 }
+                //             },
+                //             splitLine: {
+                //                 show: true,
+                //                 lineStyle: {
+                //                     color: 'rgba(165,191,226,0.3)',
+                //                     type: 'solid'
+                //                 }
+                //             },
+                //             name: '负损提升',
+                //             nameTextStyle: {
+                //                 color: color,
+                //                 fontSize: fSize
+                //             }
+                //         }
+                //         // {
+                //         //     position: 'right',
+                //         //     min: '-0.025',
+                //         //     max: '-0.025',
+                //         //     axisLabel: {
+                //         //         show: false,
+                //         //         textStyle: {
+                //         //             color: color,
+                //         //             fontSize: fSize
+                //         //         }
+                //         //     },
+                //         //     axisTick: {
+                //         //         show: false,
+                //         //         lineStyle: {
+                //         //             color: color
+                //         //         }
+                //         //     },
+                //         //     axisLine: {
+                //         //         lineStyle: {
+                //         //             color: 'rgba(165,191,226,1)',
+                //         //             width: 2
+                //         //         }
+                //         //     },
+                //         //
+                //         //     splitLine: {
+                //         //         show: false
+                //         //     },
+                //         //     silent: true
+                //         // },
+                //         // {
+                //         //     position: 'left',
+                //         //     min: '0.01',
+                //         //     max: '0.01',
+                //         //     axisLabel: {
+                //         //         show: false,
+                //         //         textStyle: {
+                //         //             color: color,
+                //         //             fontSize: fSize
+                //         //         }
+                //         //     },
+                //         //     axisTick: {
+                //         //         show: false,
+                //         //         lineStyle: {
+                //         //             color: color
+                //         //         }
+                //         //     },
+                //         //     axisLine: {
+                //         //         lineStyle: {
+                //         //             color: 'rgba(165,191,226,1)',
+                //         //             width: 2
+                //         //         }
+                //         //     },
+                //         //     splitLine: {
+                //         //         show: false
+                //         //     },
+                //         //     silent: true
+                //         // }
+                //
+                //     ],
+                //     visualMap: {
+                //         show: false,
+                //         max: 100,
+                //         inRange: {
+                //             symbolSize: [18, 18]
+                //         }
+                //     },
+                //     series: [
+                //         {
+                //             type: 'scatter',
+                //             itemStyle: {
+                //                 color: 'rgba(0,123,255,0.3)',
+                //                 borderColor: 'white',
+                //                 borderWidth: 1
+                //             },
+                //             data: scatterData
+                //         },
+                //         {
+                //             name: '起始点',
+                //             type: 'scatter',
+                //             itemStyle: {
+                //                 color: 'rgba(8,33,85,1)',
+                //                 borderColor: 'white',
+                //                 borderWidth: 1
+                //             },
+                //             data: [
+                //                 [-0.0041, -0.002399]
+                //             ]
+                //         },
+                //         {
+                //             name: '结束点',
+                //             type: 'scatter',
+                //             itemStyle: {
+                //                 color: 'rgba(255,94,84,1)',
+                //                 borderColor: 'white',
+                //                 borderWidth: 1
+                //             },
+                //             data: [
+                //                 [-0.0012, -0.004899]
+                //             ]
+                //         }
+                //     ]
+                // },
+                // {
+                //     backgroundColor: 'transparent',
+                //     textStyle: {
+                //         fontSize: 12,
+                //         fontFamily: 'PingFang',
+                //         fontWeight: 600,
+                //         color: '#1E2C41'
+                //     },
+                //     title: [
+                //         {
+                //             text: '空间偏移量： 三维空间XYH的位移偏移量 水平偏移量： 平面XY方位的位移偏移量 沉降： 垂直H方位的位移偏移量',
+                //             textStyle: {
+                //                 fontSize: 12,
+                //                 fontWeight: 400,
+                //                 fontFamily: 'PingFang'
+                //             },
+                //             top: 62,
+                //             left: 400,
+                //             backgroundColor: 'rgba(0,123,255,0.1)'
+                //         }
+                //         // {
+                //         //     text: '上一次数据刷新时间： 2020-06-21 16:37:18',
+                //         //     textAlign: 'center',
+                //         //     textStyle: {
+                //         //         fontSize: 12
+                //         //     },
+                //         //     top: 10,
+                //         //     right: 0
+                //         // }
+                //     ],
+                //     legend: {
+                //         icon: 'circle',
+                //         top: 28,
+                //         left: 400,
+                //         itemWidth: 6,
+                //         itemGap: 20,
+                //         textStyle: {
+                //             color: '#556677'
+                //         }
+                //     },
+                //     'tooltip': {
+                //         'trigger': 'axis',
+                //         'axisPointer': {
+                //             'type': 'none',
+                //             textStyle: {
+                //                 color: '#fff',
+                //                 fontSize: 12
+                //             }
+                //
+                //         },
+                //         formatter: '{b}日  {a0}:{c0}',
+                //         backgroundColor: 'rgba(0,123,255,1)'
+                //     },
+                //     'grid': {
+                //         'borderWidth': 0,
+                //         'top': 100,
+                //         left: 50,
+                //         right: 20,
+                //         'bottom': 100,
+                //         textStyle: {
+                //             color: '#fff'
+                //         }
+                //     },
+                //     'calculable': true,
+                //     dataZoom: [
+                //         {
+                //             show: true,
+                //             realtime: true,
+                //             bottom: 0,
+                //             height: 32,
+                //             start: 30,
+                //             end: 60,
+                //             backgroundColor: 'rgba(19,114,255,0.2)',
+                //             borderColor: 'transparent',
+                //             fillerColor: 'rgba(19,114,255,0.2)',
+                //             handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+                //             handleSize: '80%',
+                //             handleStyle: {
+                //                 color: '#fff',
+                //                 shadowBlur: 3,
+                //                 shadowColor: 'rgba(0, 0, 0, 0.6)',
+                //                 shadowOffsetX: 2,
+                //                 shadowOffsetY: 2
+                //             },
+                //             borderRadius: 5,
+                //             textStyle: {
+                //                 height: '10px'
+                //             }
+                //         },
+                //         {
+                //             type: 'inside',
+                //             realtime: true,
+                //             start: 0,
+                //             end: 60
+                //         }
+                //     ],
+                //     'xAxis': [
+                //         {
+                //             'type': 'category',
+                //             'axisLine': {
+                //                 lineStyle: {
+                //                     color: '#A5BFE2',
+                //                     width: 1
+                //                 }
+                //             },
+                //             'splitLine': {
+                //                 'show': false
+                //             },
+                //             'axisTick': {
+                //                 'show': false
+                //             },
+                //             'splitArea': {
+                //                 'show': false
+                //             },
+                //             'axisLabel': {
+                //                 'interval': 0,
+                //                 formatter: function (value, index) {
+                //                     // 格式化成月/日，只在第一个刻度显示年份
+                //                     return '2020-04-0' + index + '日' + '\n' + '12:30:0' + index;
+                //                 }
+                //             },
+                //             'data': xData
+                //         }
+                //     ],
+                //     'yAxis': [
+                //         {
+                //             'type': 'value',
+                //             'splitLine': {
+                //                 'show': true,
+                //                 lineStyle: {
+                //                     color: 'rgba(165,191,226,0.2)'
+                //                 }
+                //             },
+                //             'axisLine': {
+                //                 'show': false
+                //             },
+                //             'axisTick': {
+                //                 'show': false
+                //             },
+                //             'axisLabel': {
+                //                 'interval': 0,
+                //                 align: 'left',
+                //                 inside: false,
+                //                 formatter: function (value, index) {
+                //                     // 格式化成月/日，只在第一个刻度显示年份
+                //                     return value;
+                //                 }
+                //
+                //             },
+                //             offset: 20,
+                //             'splitArea': {
+                //                 'show': false
+                //             }
+                //
+                //         }
+                //     ],
+                //     'series': [
+                //         {
+                //             'name': '空间偏移值',
+                //             'type': 'line',
+                //             symbolSize: 10,
+                //             symbol: 'circle',
+                //             showSymbol: true,
+                //             'itemStyle': {
+                //                 'normal': {
+                //                     'color': 'rgba(0,123,255,1)',
+                //                     'barBorderRadius': 1,
+                //                     borderWidth: 1,
+                //                     borderColor: 'white',
+                //                     areaStyle: {
+                //                         //color: '#94C9EC'
+                //                         color: {
+                //                             x1: 0,
+                //                             y1: 0,
+                //                             x2: 0,
+                //                             y2: 1,
+                //                             colorStops: [
+                //                                 {
+                //                                     offset: 0,
+                //                                     color: 'rgba(0,94,255,0.3)' // 0% 处的颜色
+                //                                 }, {
+                //                                     offset: 1,
+                //                                     color: 'rgba(0,123,255,0)' // 100% 处的颜色
+                //                                 }
+                //                             ]
+                //                         }
+                //                     }
+                //
+                //                 }
+                //             },
+                //             lineStyle: {
+                //                 normal: {
+                //                     width: 2,
+                //                     color: '#007BFF'
+                //                 }
+                //             },
+                //             'data': shuffle(datadd),
+                //             smooth: true
+                //         },
+                //         {
+                //             'name': '水平偏移值',
+                //             'type': 'line',
+                //             symbolSize: 10,
+                //             symbol: 'circle',
+                //             showSymbol: true,
+                //             'itemStyle': {
+                //                 'normal': {
+                //                     'color': 'rgba(78,0,255,1)',
+                //                     'barBorderRadius': 1,
+                //                     borderWidth: 1,
+                //                     borderColor: 'white',
+                //                     areaStyle: {
+                //                         //color: '#94C9EC'
+                //                         color: {
+                //                             x1: 0,
+                //                             y1: 0,
+                //                             x2: 0,
+                //                             y2: 1,
+                //                             colorStops: [
+                //                                 {
+                //                                     offset: 0,
+                //                                     color: 'rgba(0,94,255,0.3)' // 0% 处的颜色
+                //                                 }, {
+                //                                     offset: 1,
+                //                                     color: 'rgba(0,123,255,0)' // 100% 处的颜色
+                //                                 }
+                //                             ]
+                //                         }
+                //                     }
+                //
+                //                 }
+                //             },
+                //             lineStyle: {
+                //                 normal: {
+                //                     width: 2,
+                //                     color: 'rgba(78,0,255,1)'
+                //                 }
+                //             },
+                //             'data': shuffle(datadd),
+                //             smooth: true
+                //         },
+                //         {
+                //             'name': '沉降',
+                //             'type': 'line',
+                //             symbolSize: 10,
+                //             symbol: 'circle',
+                //             showSymbol: true,
+                //             'itemStyle': {
+                //                 'normal': {
+                //                     'color': 'rgba(0,189,153,1)',
+                //                     'barBorderRadius': 1,
+                //                     borderWidth: 1,
+                //                     borderColor: 'white',
+                //                     areaStyle: {
+                //                         //color: '#94C9EC'
+                //                         color: {
+                //                             x1: 0,
+                //                             y1: 0,
+                //                             x2: 0,
+                //                             y2: 1,
+                //                             colorStops: [
+                //                                 {
+                //                                     offset: 0,
+                //                                     color: 'rgba(0,94,255,0.3)' // 0% 处的颜色
+                //                                 }, {
+                //                                     offset: 1,
+                //                                     color: 'rgba(0,123,255,0)' // 100% 处的颜色
+                //                                 }
+                //                             ]
+                //                         }
+                //                     }
+                //
+                //                 }
+                //             },
+                //             lineStyle: {
+                //                 normal: {
+                //                     width: 2,
+                //                     color: 'rgba(0,189,153,1)'
+                //                 }
+                //             },
+                //             'data': shuffle(datadd),
+                //             smooth: true
+                //         }
+                //     ]
+                // }
             ]
         };
     },
+    computed: {
+        sensorArr () {
+            let arr = this.$store.state.sensorTypes;
+            let data = [];
+            arr.forEach(item => {
+                data.push({
+                    type: item.menuCode,
+                    name: item.menuName
+                });
+            });
+            if (data[0]) {
+                console.log(1);
+                this.getSensorData(data[0].type, 0);
+                this.type = data[0].type
+            }
+            console.log(2);
+            return data;
+        }
+    },
     methods: {
+        seriesFunction (arr) {
+            let series = [];
+
+            arr.forEach(item => {
+                if (item.type === 'line') {
+                    series.push({
+                        'name': item.name,
+                        'type': item.type,
+                        symbolSize: 10,
+                        symbol: 'circle',
+                        showSymbol: true,
+                        'itemStyle': {
+                            'normal': {
+                                color: item.itemStyle.normalColor,
+                                'barBorderRadius': 1,
+                                borderWidth: 1,
+                                borderColor: 'white',
+                                areaStyle:item.itemStyle.areaShow? {
+                                    //color: '#94C9EC'
+                                    color: {
+                                        x1: 0,
+                                        y1: 0,
+                                        x2: 0,
+                                        y2: 1,
+                                        colorStops: [
+                                            {
+                                                offset: 0,
+                                                color: item.itemStyle.colorStart // 0% 处的颜色
+                                            }, {
+                                                offset: 1,
+                                                color: item.itemStyle.colorEnd  // 100% 处的颜色
+                                            }
+                                        ]
+                                    }
+                                } : ''
+
+                            }
+                        },
+                        lineStyle: {
+                            normal: {
+                                width: 2,
+                                color: item.itemStyle.normalColor
+                            }
+                        },
+                        'data': item.data,
+                        smooth: true
+                    });
+
+                }
+                else if (item.type === 'bar') {
+                    series.push(
+                        {
+                            data: item.data,
+                            type: item.type,
+                            name: item.name,
+                            showBackground: true,
+                            itemStyle: {
+                                color: item.itemStyle.color
+                            }
+                        }
+                    );
+
+                }
+            });
+
+            return series;
+        },
+        optionFunction (obj) {
+            return {
+                backgroundColor: 'transparent',
+                textStyle: {
+                    fontSize: 12,
+                    fontFamily: 'PingFang',
+                    fontWeight: 600,
+                    color: '#1E2C41'
+                },
+                title: [
+                    {
+                        text: obj.title.text,
+                        show: obj.title.show,
+                        textStyle: {
+                            fontSize: 12,
+                            fontWeight: 400,
+                            fontFamily: 'PingFang'
+                        },
+                        top: 62,
+                        left: 400,
+                        backgroundColor: 'rgba(0,123,255,0.1)'
+                    }
+                ],
+                legend: {
+                    icon: 'circle',
+                    top:obj.legend?obj.legend.top?obj.legend.top:28:28,
+                    left:obj.legend? obj.legend.left? obj.legend.left:100:100,
+                    itemWidth: 10,
+                    itemGap: 20,
+                    textStyle: {
+                        color: '#556677',
+                        fontSize: 16
+                    },
+                    backgroundColor: 'rgba(0,123,255,0.1)'
+                },
+                'tooltip': {
+                    'trigger': 'axis',
+                    'axisPointer': {
+                        'type': 'none',
+                        textStyle: {
+                            color: '#fff',
+                            fontSize: 12
+                        }
+
+                    },
+                    formatter: obj.tooltip.formatter
+                    // backgroundColor: 'rgba(0,123,255,1)'
+                },
+                'grid': {
+                    'borderWidth': 0,
+                    top:obj.grid?obj.grid.top?obj.grid.top:100:100,
+                    left:obj.grid? obj.grid.left? obj.grid.left:50:50,
+                    right:obj.grid? obj.grid.right?obj.grid.right:20:20,
+                    bottom:obj.grid? obj.grid.bottom?obj.grid.bottom:100:100,
+                    textStyle: {
+                        color: '#fff'
+                    }
+                },
+                'calculable': true,
+                dataZoom: [
+                    {
+                        show: obj.dataZoomShow,
+                        realtime: true,
+                        bottom: 10,
+                        height: 32,
+                        backgroundColor: 'rgba(19,114,255,0.2)',
+                        borderColor: 'transparent',
+                        fillerColor: 'rgba(19,114,255,0.2)',
+                        handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+                        handleSize: '80%',
+                        handleStyle: {
+                            color: '#fff',
+                            shadowBlur: 3,
+                            shadowColor: 'rgba(0, 0, 0, 0.6)',
+                            shadowOffsetX: 2,
+                            shadowOffsetY: 2
+                        },
+                        borderRadius: 5,
+                        textStyle: {
+                            height: '10px'
+                        }
+                    },
+                    {
+                        type: 'inside',
+                        realtime: true,
+                        start: 0,
+                        end: 60
+                    }
+                ],
+                'xAxis': [
+                    {
+                        'type': 'category',
+                        'axisLine': {
+                            lineStyle: {
+                                color: '#A5BFE2',
+                                width: 1
+                            }
+                        },
+                        'splitLine': {
+                            'show': false
+                        },
+                        'axisTick': {
+                            'show': false
+                        },
+                        'splitArea': {
+                            'show': false
+                        },
+                        'axisLabel': {
+                            'interval': 0,
+                            formatter: obj.xAxis.formatter
+                        },
+                        'data': obj.xAxis.data
+                    }
+                ],
+                'yAxis': [
+                    {
+                        'type': 'value',
+                        name: obj.yAxis.name,
+                        'splitLine': {
+                            'show': true,
+                            lineStyle: {
+                                color: 'rgba(165,191,226,0.2)'
+                            }
+                        },
+                        'axisLine': {
+                            'show': false
+                        },
+                        'axisTick': {
+                            'show': false
+                        },
+                        'axisLabel': {
+                            'interval': 0,
+                            align: 'right',
+                            inside: false,
+                            formatter: function (value, index) {
+                                // 格式化成月/日，只在第一个刻度显示年份
+                                return value;
+                            }
+
+                        },
+                        offset: 20,
+                        'splitArea': {
+                            'show': false
+                        }
+
+                    }
+                ],
+                'series': this.seriesFunction(obj.series)
+            };
+        },
+        setOptionObj (data, type) {
+            let xData = data.x ||data.xData
+            let seriesData = data.y ||data.yData
+            let obj = {
+                title: {},
+                tooltip: {},
+                xAxis: {},
+                yAxis: {},
+                series: [
+                    {
+                        name: '降雨量',
+                        type: 'bar',
+                        itemStyle: {
+                            normalColor: 'rgba(0,123,255,1)',
+                            colorStart: 'rgba(0,123,255,0.1)',
+                            colorEnd: 'rgba(0,123,255,0)'
+                        }
+                    }
+                ]
+            };
+            switch (type) {
+
+                case 'LPG':
+                    obj = {
+                        title: {
+                            show: false
+                        },
+                        tooltip: {
+                            formatter: '{b0}  {a0}<br/>{b1}  {a1}<br/>{b2}  {a2}'
+                        },
+                        legend: {
+                          top:80,
+                          left:30,
+                        },
+                        grid: {
+                            top:140,
+                            right:20,
+                            left:80
+                        },
+                        dataZoomShow: true,
+                        xAxis: {
+                            data: xData,
+                            formatter: function (value, index) {
+                                // 格式化成月/日，只在第一个刻度显示年份
+                                if(index%5===0) {
+                                    return value;
+                                }
+                                return '';
+                            }
+                        },
+                        yAxis: {
+                        },
+                        series: [
+                            {
+                                name: 'PRE:  ' +seriesData.per.curr + '%' ,
+                                type: 'line',
+                                itemStyle: {
+                                    normalColor: 'rgba(0,123,255,0.2)',
+                                    colorStart: 'rgba(0,123,255,0.1)',
+                                    colorEnd: 'rgba(0,123,255,0)',
+                                    areaShow:false
+                                },
+                                data: seriesData.per.data
+                            },
+                            {
+                                name: 'PPM:  ' +seriesData.ppm.curr + 'ppm' ,
+                                type: 'line',
+                                itemStyle: {
+                                    normalColor: 'rgba(0,123,255,0.4)',
+                                    colorStart: 'rgba(0,123,255,0.1)',
+                                    colorEnd: 'rgba(0,123,255,0)',
+                                    areaShow:false
+
+                                },
+                                data: seriesData.ppm.data
+                            },
+                            {
+                                name: 'LEL:  ' +seriesData.perLEL.curr + 'LEL' ,
+                                type: 'line',
+                                itemStyle: {
+                                    normalColor: 'rgba(0,123,255,0.8)',
+                                    colorStart: 'rgba(0,123,255,0.1)',
+                                    colorEnd: 'rgba(0,123,255,0)',
+                                    areaShow:false
+                                },
+                                data: seriesData.perLEL.data
+                            },
+                        ]
+                    };
+                    break;
+                case 'SHIDU':
+                case 'WENDU':
+                    obj = {
+                        title: {
+                            show: false
+                        },
+                        tooltip: {
+                            formatter: '{b}日  {a0}:{c0}'
+                        },
+                        dataZoomShow: true,
+                        xAxis: {
+                            data: xData,
+                            formatter: function (value, index) {
+                                // 格式化成月/日，只在第一个刻度显示年份
+                                return value + '日';
+                            }
+                        },
+                        yAxis: {
+                            name: data.unit
+                        },
+                        series: [
+                            {
+                                name: seriesData.slice(-1) + data.unit + '  当前' + data.label,
+                                type: 'line',
+                                itemStyle: {
+                                    normalColor: 'rgba(0,123,255,1)',
+                                    colorStart: 'rgba(0,123,255,0.1)',
+                                    colorEnd: 'rgba(0,123,255,0)',
+                                    areaShow:true
+                                },
+                                data: seriesData
+                            }
+                        ]
+                    };
+                    break;
+                case 'JIANGYULIANG':
+                    obj = {
+                        title: {
+                            show: false
+                        },
+                        tooltip: {
+                            formatter: '{b}日  {a0}:{c0}'
+                        },
+                        dataZoomShow: true,
+                        xAxis: {
+                            data: xData,
+                            formatter: function (value, index) {
+                                // 格式化成月/日，只在第一个刻度显示年份
+                                return value + '日';
+                            }
+                        },
+                        yAxis: {
+                            name: data.unit
+                        },
+                        series: [
+                            {
+                                name: '降雨量',
+                                type: 'bar',
+                                itemStyle: {
+                                    color: 'rgba(0,123,255,1)',
+                                    areaShow:true
+                                },
+                                data: seriesData
+                            }
+                        ]
+                    };
+                    break;
+                default:
+                    break;
+            }
+            return obj;
+        },
+        async getSensorData (type, i) {
+            console.log(3);
+            let res = {};
+            try {
+                res = await this.$req.get(this.$url.start.sensorData, {
+                    SensorMenu: type,
+                    Id: sessionStorage.getItem('sensorNumber')
+                });
+                console.log(res);
+                console.log(4);
+            }
+            catch (e) {
+                console.log(e);
+            }
+            this.chartDateReady = true;
+            let data = res.data;
+            if (!data) {
+                this.optionsGroup[i] = {
+                    title: {
+                        text: '未查询到数据',
+                        textStyle: {
+                            fontSize: 32,
+                            fontWeight: 600,
+                            fontFamily: 'PingFang'
+                        },
+                        top: 'center',
+                        left: 'center',
+                        backgroundColor: 'rgba(0,123,255,0.1)'
+                    }
+                };
+            }
+            else {
+                let obj = this.setOptionObj(data, type);
+                let option = this.optionFunction(obj);
+                console.log(type);
+                console.log(option);
+                this.optionsGroup[i] = option;
+            }
+            if (i === 0) {
+                this.sensorArr.forEach((item, index) => {
+                    if (index > 0) {
+                        this.getSensorData(item.type, index);
+                    }
+                });
+            }
+            console.log(5);
+        },
         dayTimeChange (type) {
             if (type === 'day') {
                 this.buttonIndex = 'accordingDay';
@@ -2232,6 +2590,7 @@ export default {
         handleSelect (key, keyPath) {
             console.log(key, keyPath);
             this.activeIndex = keyPath[0];
+            this.type = this.sensorArr[key]
             // this.updateChart(this.activeIndex);
         },
         updateChart (type) {
@@ -2267,7 +2626,7 @@ export default {
 <style lang="scss" scoped>
     .bei-dou-sensor-dialog {
         .el-menu-item {
-            width: 120px;
+            padding: 0 30px;
             text-align: center;
             border-bottom: 4px solid rgba(0, 123, 255, 1);
             transform: translate(0, 1px);
@@ -2287,6 +2646,56 @@ export default {
                 padding: 20px 30px 0 27px;
                 position: absolute;
                 z-index: 100;
+                .el {
+                    width: 180px;
+                    height: 64px;
+                    background: rgba(0, 123, 255, 0.2);
+                    border-radius: 5px;
+                    margin-right: 20px;
+                    > div:first-child {
+                        width: 100%;
+                        height: 32px;
+                        line-height: 32px;
+                        font-weight: 400;
+                        text-align: center;
+                        color: #082155;
+                    }
+                    > div:last-child {
+                        width: 100%;
+                        height: 32px;
+                        line-height: 32px;
+                        font-weight: 400;
+                        text-align: center;
+                        color: black;
+
+                    }
+                }
+
+                .el2 {
+                    width: 120px;
+                    height: 64px;
+                    margin-right: 20px;
+                    background: #00bd99;
+                    border-radius: 5px;
+                    > div:first-child {
+                        width: 100%;
+                        height: 32px;
+                        line-height: 32px;
+                        font-size: 16px;
+                        font-weight: 400;
+                        text-align: center;
+                        color: #082155;
+                    }
+                    > div:last-child {
+                        width: 100%;
+                        height: 32px;
+                        line-height: 32px;
+                        font-size: 12px;
+                        font-weight: 400;
+                        text-align: center;
+                        color: black;
+                    }
+                }
                 .button-box {
                     display: flex;
                     > div {
