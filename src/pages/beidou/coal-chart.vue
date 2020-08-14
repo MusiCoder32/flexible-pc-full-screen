@@ -5,38 +5,40 @@
             </el-menu-item>
         </el-menu>
         <div class="bei-dou-sensor-chart-box">
-            <div class="chart-box-head hBox vh_content_start vh_items_start">
+            <div class="chart-box-head hBox vh_content_between vh_items_start">
                 <el-date-picker
                         v-model="value1"
                         class="mr30"
-                        type="daterange"
-                        :picker-options="pickerOptions"
+                        :type="datePickerType"
                         size="large"
+                        @change="dateChange"
                         range-separator="至"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
-                        style="flex: 1"
+                        placeholder="选择日期"
+                        format="yyyy 年 MM 月 dd 日"
+                        value-format="yyyy-MM-dd"
                         align="right">
                 </el-date-picker>
-                <div v-if="type!=='LPG'" class="button-box">
+                <div v-if="type==='sssss' && type==='xsss'" class="button-box">
                     <div @click="dayTimeChange('day')" :class="{'active':buttonIndex==='accordingDay'}">按天排列</div>
                     <div @click="dayTimeChange('time')" :class="{'active':buttonIndex==='accordingTime'}">按时排列</div>
                 </div>
-                <template v-if="type==='LPG'">
+                <div v-if="type==='LPG'" class="hBox vh_content_start vh_items_start">
                     <div class="el">
-                        <div style="font-size: 16px;">0.08824%LEL</div>
+                        <div style="font-size: 16px;">{{lpgObj.current}}%LEL</div>
                         <div style="font-size: 12px">当前监测点气体浓度</div>
                     </div>
                     <div class="el2" style="background: rgba(0,189,153,0.2)">
-                        <div style="font-size: 16px;">0.23m/s</div>
+                        <div style="font-size: 16px;">{{lpgObj.windSpeed}}m/s</div>
                         <div style="font-size: 12px">实时风速</div>
                     </div>
                     <div class="el2" style="background: rgba(232,95,134,0.2)">
-                        <div style="font-size: 16px;">&#8594 西</div>
+                        <div style="font-size: 16px;">{{lpgObj.windDirection}}</div>
                         <div style="font-size: 12px">实时风向</div>
                     </div>
                     <div class="el2" style="background:rgba(255,214,0,0.2) ">
-                        <div style="font-size: 16px;">0</div>
+                        <div style="font-size: 16px;">{{lpgObj.todayCount}}</div>
                         <div style="font-size: 12px">今日泄漏次数</div>
                     </div>
                     <div class="el2" style="background: rgba(8,33,85,0.2)">
@@ -46,7 +48,7 @@
                         </div>
                         <div style="font-size: 12px">整体风险等级</div>
                     </div>
-                </template>
+                </div>
 
             </div>
 
@@ -779,40 +781,11 @@ export default {
     data () {
         return {
             activeIndex: '0',
-            type:'',
+            type: '',
             chartDateReady: false,
-            pickerOptions: {
-                shortcuts: [
-                    {
-                        text: '最近一周',
-                        onClick (picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }, {
-                        text: '最近一个月',
-                        onClick (picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }, {
-                        text: '最近三个月',
-                        onClick (picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }
-                ]
-            },
             value1: '',//设置默认时间
-            value2: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],//设置默认时间
-            value3: '',
+            lpgObj: {},
+            BeginDate: '',
             buttonIndex: 'accordingDay',
             optionsGroup: [
                 // {
@@ -2146,13 +2119,28 @@ export default {
             if (data[0]) {
                 console.log(1);
                 this.getSensorData(data[0].type, 0);
-                this.type = data[0].type
+                this.type = data[0].type;
             }
             console.log(2);
             return data;
+        },
+        datePickerType () {
+            let dateType = '';
+            switch (this.type) {
+                case 'JIANGYULIANG':
+                    dateType = 'date';
+                default :
+                    dateType = 'date';
+                    break;
+            }
+            return dateType;
         }
     },
     methods: {
+        dateChange (e) {
+            console.log(e);
+            this.getSensorData(this.type, this.activeIndex, { BeginDate: e });
+        },
         seriesFunction (arr) {
             let series = [];
 
@@ -2170,7 +2158,7 @@ export default {
                                 'barBorderRadius': 1,
                                 borderWidth: 1,
                                 borderColor: 'white',
-                                areaStyle:item.itemStyle.areaShow? {
+                                areaStyle: item.itemStyle.areaShow ? {
                                     //color: '#94C9EC'
                                     color: {
                                         x1: 0,
@@ -2245,20 +2233,23 @@ export default {
                 ],
                 legend: {
                     icon: 'circle',
-                    top:obj.legend?obj.legend.top?obj.legend.top:28:28,
-                    left:obj.legend? obj.legend.left? obj.legend.left:100:100,
+                    top: obj.legend ? obj.legend.top ? obj.legend.top : 28 : 28,
+                    left: obj.legend ? obj.legend.left ? obj.legend.left : 'center' : 'center',
                     itemWidth: 10,
                     itemGap: 20,
                     textStyle: {
                         color: '#556677',
                         fontSize: 16
                     },
-                    backgroundColor: 'rgba(0,123,255,0.1)'
+                    backgroundColor: 'rgba(0,123,255,0.1)',
+                    borderRadius: 5
                 },
                 'tooltip': {
                     'trigger': 'axis',
                     'axisPointer': {
-                        'type': 'none',
+                        lineStyle: {
+                            color: '#017bff'
+                        },
                         textStyle: {
                             color: '#fff',
                             fontSize: 12
@@ -2270,10 +2261,10 @@ export default {
                 },
                 'grid': {
                     'borderWidth': 0,
-                    top:obj.grid?obj.grid.top?obj.grid.top:100:100,
-                    left:obj.grid? obj.grid.left? obj.grid.left:50:50,
-                    right:obj.grid? obj.grid.right?obj.grid.right:20:20,
-                    bottom:obj.grid? obj.grid.bottom?obj.grid.bottom:100:100,
+                    top: obj.grid ? obj.grid.top ? obj.grid.top : 100 : 100,
+                    left: obj.grid ? obj.grid.left ? obj.grid.left : 50 : 50,
+                    right: obj.grid ? obj.grid.right ? obj.grid.right : 20 : 20,
+                    bottom: obj.grid ? obj.grid.bottom ? obj.grid.bottom : 100 : 100,
                     textStyle: {
                         color: '#fff'
                     }
@@ -2371,25 +2362,9 @@ export default {
             };
         },
         setOptionObj (data, type) {
-            let xData = data.x ||data.xData
-            let seriesData = data.y ||data.yData
-            let obj = {
-                title: {},
-                tooltip: {},
-                xAxis: {},
-                yAxis: {},
-                series: [
-                    {
-                        name: '降雨量',
-                        type: 'bar',
-                        itemStyle: {
-                            normalColor: 'rgba(0,123,255,1)',
-                            colorStart: 'rgba(0,123,255,0.1)',
-                            colorEnd: 'rgba(0,123,255,0)'
-                        }
-                    }
-                ]
-            };
+            let xData = data.x || data.xData;
+            let seriesData = data.y || data.yData;
+            let obj = {};
             switch (type) {
 
                 case 'LPG':
@@ -2398,65 +2373,82 @@ export default {
                             show: false
                         },
                         tooltip: {
-                            formatter: '{b0}  {a0}<br/>{b1}  {a1}<br/>{b2}  {a2}'
+                            formatter: function (series) {
+                                let str = '';
+                                series.forEach(item => {
+                                    let type = item.seriesName.slice(0, 3);
+                                    if(str.length>0) {
+                                        str+='<br>'
+                                    }
+                                    if (type === 'PRE') {
+                                        str += item.axisValueLabel + '  ' + type + ':' + item.data + '%';
+                                    }
+                                    else {
+                                        str += item.axisValueLabel + '  ' + type + ':' + item.data + item.seriesName.slice(-3);
+                                    }
+                                });
+                                return str;
+                            }
                         },
                         legend: {
-                          top:80,
-                          left:30,
+                            top: 90,
+                            left: 30
                         },
                         grid: {
-                            top:140,
-                            right:20,
-                            left:80
+                            top: 140,
+                            right: 20,
+                            left: 80
                         },
                         dataZoomShow: true,
                         xAxis: {
                             data: xData,
                             formatter: function (value, index) {
                                 // 格式化成月/日，只在第一个刻度显示年份
-                                if(index%5===0) {
+                                if (index % 5 === 0) {
                                     return value;
                                 }
                                 return '';
                             }
                         },
-                        yAxis: {
-                        },
+                        yAxis: {},
                         series: [
                             {
-                                name: 'PRE:  ' +seriesData.per.curr + '%' ,
+                                name: 'PRE:  ' + seriesData.per.curr + '%',
+                                id: 'PRE',
                                 type: 'line',
                                 itemStyle: {
-                                    normalColor: 'rgba(0,123,255,0.2)',
-                                    colorStart: 'rgba(0,123,255,0.1)',
-                                    colorEnd: 'rgba(0,123,255,0)',
-                                    areaShow:false
+                                    normalColor: 'rgba(0,189,153,1)',
+                                    colorStart: 'rgba(0,189,153,0.1)',
+                                    colorEnd: 'rgba(0,189,153,0)',
+                                    areaShow: true
                                 },
                                 data: seriesData.per.data
                             },
                             {
-                                name: 'PPM:  ' +seriesData.ppm.curr + 'ppm' ,
+                                name: 'PPM:  ' + seriesData.ppm.curr + 'ppm',
+                                id: 'PPM',
                                 type: 'line',
                                 itemStyle: {
-                                    normalColor: 'rgba(0,123,255,0.4)',
-                                    colorStart: 'rgba(0,123,255,0.1)',
-                                    colorEnd: 'rgba(0,123,255,0)',
-                                    areaShow:false
+                                    normalColor: 'rgba(140,113,255,1)',
+                                    colorStart: 'rgba(140,113,255,0.1)',
+                                    colorEnd: 'rgba(140,113,255,0)',
+                                    areaShow: true
 
                                 },
                                 data: seriesData.ppm.data
                             },
                             {
-                                name: 'LEL:  ' +seriesData.perLEL.curr + 'LEL' ,
+                                name: 'LEL:  ' + seriesData.perLEL.curr + 'LEL',
+                                id: 'LEL',
                                 type: 'line',
                                 itemStyle: {
-                                    normalColor: 'rgba(0,123,255,0.8)',
+                                    normalColor: 'rgba(0,123,255,1)',
                                     colorStart: 'rgba(0,123,255,0.1)',
                                     colorEnd: 'rgba(0,123,255,0)',
-                                    areaShow:false
+                                    areaShow: true
                                 },
                                 data: seriesData.perLEL.data
-                            },
+                            }
                         ]
                     };
                     break;
@@ -2467,14 +2459,17 @@ export default {
                             show: false
                         },
                         tooltip: {
-                            formatter: '{b}日  {a0}:{c0}'
+                            formatter: '{b}  {c}'+data.unit
                         },
                         dataZoomShow: true,
                         xAxis: {
                             data: xData,
                             formatter: function (value, index) {
                                 // 格式化成月/日，只在第一个刻度显示年份
-                                return value + '日';
+                                if (index % 4 === 1) {
+                                    return value;
+                                }
+                                return '';
                             }
                         },
                         yAxis: {
@@ -2488,7 +2483,7 @@ export default {
                                     normalColor: 'rgba(0,123,255,1)',
                                     colorStart: 'rgba(0,123,255,0.1)',
                                     colorEnd: 'rgba(0,123,255,0)',
-                                    areaShow:true
+                                    areaShow: true
                                 },
                                 data: seriesData
                             }
@@ -2508,7 +2503,9 @@ export default {
                             data: xData,
                             formatter: function (value, index) {
                                 // 格式化成月/日，只在第一个刻度显示年份
-                                return value + '日';
+                                if (index % 4 === 1) {
+                                    return value + '日';
+                                }
                             }
                         },
                         yAxis: {
@@ -2520,7 +2517,7 @@ export default {
                                 type: 'bar',
                                 itemStyle: {
                                     color: 'rgba(0,123,255,1)',
-                                    areaShow:true
+                                    areaShow: true
                                 },
                                 data: seriesData
                             }
@@ -2528,26 +2525,71 @@ export default {
                     };
                     break;
                 default:
+                    obj = {
+                        title: {
+                            show: false
+                        },
+                        tooltip: {
+                            formatter: '{b}  {c}'+data.unit
+                        },
+                        dataZoomShow: true,
+                        xAxis: {
+                            data: xData,
+                            formatter: function (value, index) {
+                                // 格式化成月/日，只在第一个刻度显示年份
+                                if (index % 4 === 1) {
+                                    return value;
+                                }
+                                return '';
+                            }
+                        },
+                        yAxis: {
+                            name: data.unit
+                        },
+                        series: [
+                            {
+                                name: seriesData.slice(-1) + data.unit + '  当前' + data.label,
+                                type: 'line',
+                                itemStyle: {
+                                    normalColor: 'rgba(0,123,255,1)',
+                                    colorStart: 'rgba(0,123,255,0.1)',
+                                    colorEnd: 'rgba(0,123,255,0)',
+                                    areaShow: true
+                                },
+                                data: seriesData
+                            }
+                        ]
+                    };
                     break;
             }
             return obj;
         },
-        async getSensorData (type, i) {
-            console.log(3);
+        async getSensorData (type, i, params) {
             let res = {};
+            let queryObj = {
+                SensorMenu: type,
+                Id: sessionStorage.getItem('sensorNumber')
+            };
+            if (params && typeof params === 'object') {
+                Object.assign(queryObj, params);
+            }
             try {
-                res = await this.$req.get(this.$url.start.sensorData, {
-                    SensorMenu: type,
-                    Id: sessionStorage.getItem('sensorNumber')
-                });
+                res = await this.$req.get(this.$url.start.sensorData, queryObj);
                 console.log(res);
-                console.log(4);
             }
             catch (e) {
                 console.log(e);
             }
-            this.chartDateReady = true;
             let data = res.data;
+            if (type === 'LPG') {
+                this.lpgObj = {
+                    current: data.yData.perLEL.curr,
+                    windSpeed: data.windSpeed,
+                    windDirection: data.windDirectionByC,
+                    todayCount: data.todayCount,
+                    status: data.status
+                };
+            }
             if (!data) {
                 this.optionsGroup[i] = {
                     title: {
@@ -2568,9 +2610,11 @@ export default {
                 let option = this.optionFunction(obj);
                 console.log(type);
                 console.log(option);
-                this.optionsGroup[i] = option;
+                this.$set(this.optionsGroup, i, option);
+                // this.optionsGroup[i] = option;
             }
-            if (i === 0) {
+            if (!this.chartDateReady) {
+                this.chartDateReady = true;
                 this.sensorArr.forEach((item, index) => {
                     if (index > 0) {
                         this.getSensorData(item.type, index);
@@ -2590,7 +2634,7 @@ export default {
         handleSelect (key, keyPath) {
             console.log(key, keyPath);
             this.activeIndex = keyPath[0];
-            this.type = this.sensorArr[key]
+            this.type = this.sensorArr[key]['type'];
             // this.updateChart(this.activeIndex);
         },
         updateChart (type) {

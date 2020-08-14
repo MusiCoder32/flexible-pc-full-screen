@@ -14,8 +14,10 @@ var sizeRatio;
 function computedSize() {
     var docEle = document.documentElement;
     var screenRatioByDesign = 16 / 9;
-    var screenRatio = docEle.clientWidth / docEle.clientHeight;
-    sizeRatio = docEle.clientWidth / 1920 * (screenRatio > screenRatioByDesign ? (screenRatioByDesign / screenRatio) : 1);
+    var offsetWidth = docEle.offsetWidth || docEle.clientWidth;
+    var offsetHeight = docEle.offsetHeight || docEle.clientHeight;
+    var screenRatio = offsetWidth / offsetHeight;
+    sizeRatio = offsetWidth / 1920 * (screenRatio > screenRatioByDesign ? (screenRatioByDesign / screenRatio) : 1);
 }
 function draw(call, id, allSize) {
     var svg = d3.select('#' + id).append('svg').attr('id', 'svg_' + id);

@@ -5,8 +5,10 @@ let sizeRatio;
 function computedSize() {
     let docEle = document.documentElement;
     let screenRatioByDesign = 16 / 9;
-    let screenRatio = docEle.clientWidth / docEle.clientHeight;
-    sizeRatio = docEle.clientWidth / 1920 * (screenRatio > screenRatioByDesign ? (screenRatioByDesign / screenRatio) : 1);
+    let  offsetWidth = docEle.offsetWidth || docEle.clientWidth;
+    let  offsetHeight = docEle.offsetHeight || docEle.clientHeight;
+    let screenRatio = offsetWidth / offsetHeight;
+    sizeRatio = offsetWidth / 1920 * (screenRatio > screenRatioByDesign ? (screenRatioByDesign / screenRatio) : 1);
 }
 
 

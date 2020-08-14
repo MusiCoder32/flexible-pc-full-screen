@@ -42,7 +42,7 @@
                                     third-color="rgba(255,214,0,0.25)"
                                     secondary-color="#998F1E"
                                     primary-color="#FFD600"
-                                    fourth-color=" #FFD600"
+                                    fourth-color="#FFD600"
                                     :value="warningCount.disYellow"
                             ></pre-warning-statistics-svg>
                             <pre-warning-statistics-svg

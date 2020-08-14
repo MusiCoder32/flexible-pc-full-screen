@@ -11,12 +11,12 @@
             </div>
         </div>
         <div class="bei-dou-container" id="beidouMapContainer"></div>
-        <el-dialog width="65.62%" title="传感器：W川AJH104R0009F4" :visible.sync="dialogTableVisible"
+        <el-dialog v-if="dialogTableVisible" width="65.62%" title="传感器：W川AJH104R0009F4" :visible.sync="dialogTableVisible"
                    :close-on-click-modal=false>
             <!--<router-view></router-view>-->
             <div>
-                <chemical-chart v-if="type==='chemical'"></chemical-chart>
-                <coal-chart v-else></coal-chart>
+                <!--<chemical-chart v-if="type==='chemical'"></chemical-chart>-->
+                <coal-chart></coal-chart>
             </div>
 
         </el-dialog>

@@ -147,7 +147,7 @@ export default {
         left:50%;
         transform: translate(-50%,0);
         top:10%;
-        width: 15px;
+        width: 30px;
         height: 19px;
         font-size: 16px;
         font-family: BebasNeue;

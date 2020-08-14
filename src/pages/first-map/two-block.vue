@@ -240,7 +240,8 @@ export default {
             this.readyRoll();
         }, 2000);
         window.addEventListener('resize', () => {
-            clearInterval(me._tableSetInterval);
+            clearInterval(me._tableSetInterval3);
+            clearInterval(me._tableSetInterval4);
             me._rollSetTime && clearTimeout(me._rollSetTime);
             me._rollSetTime = setTimeout(() => {
                 me.readyRoll();
@@ -248,7 +249,8 @@ export default {
         });
     },
     destroyed () {
-        clearInterval(this._tableSetInterval);
+        clearInterval(this._tableSetInterval3);
+        clearInterval(this._tableSetInterval4);
         clearTimeout(this._rollSetTime);
     },
     methods: {
@@ -284,7 +286,7 @@ export default {
         },
         beginRolling3 () {
             let me = this;
-            this._tableSetInterval = setInterval(() => {
+            this._tableSetInterval3 = setInterval(() => {
                 if (!me.isMouseEnter3) {
                     this.tableData3.push(this.tableData3[0], this.tableData3[1]);
                     this._containBoxStyle3.transition = 'all .5s';
@@ -305,7 +307,7 @@ export default {
         },
         beginRolling4 () {
             let me = this;
-            this._tableSetInterval = setInterval(() => {
+            this._tableSetInterval4 = setInterval(() => {
                 if (!me.isMouseEnter4) {
                     this.tableData4.push(this.tableData4[0], this.tableData4[1]);
                     this._containBoxStyle4.transition = 'all .5s';

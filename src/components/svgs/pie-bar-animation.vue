@@ -77,6 +77,15 @@ export default {
     destroyed () {
         this.animationInterval && clearInterval(this.animationInterval);
     },
+    watch: {
+      hover(boolean) {
+          if(boolean) {
+              this.svg.attr('transform','scale(1.2)')
+          }else {
+              this.svg.attr('transform','scale(1)')
+          }
+      }
+    },
     methods: {
 
         animationCircle (svg, id, rx, ry, x, y, h) {
@@ -343,7 +352,7 @@ export default {
 
     .map-point {
         width: 110px;
-        height: 110px;
+        height: 120px;
         display: flex;
         flex-direction: column;
         align-items: center;
