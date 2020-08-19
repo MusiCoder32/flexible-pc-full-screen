@@ -2,6 +2,7 @@ import Vue from 'vue';
 import App from './App.vue';
 import '@/assets/main.css';
 import ECharts from 'vue-echarts';
+import 'echarts-gl'
 import sichuanMap from '@/assets/sichuan.json';
 
 import router from './router/router';

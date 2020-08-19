@@ -156,6 +156,7 @@ export default {
         async getStartData () {
             try {
                 let res = await  this.$req.get(this.$url.start.line, { OrgId: 'test' });
+                // let res = await  this.$req.get(this.$url.start.line, { OrgId: '47f449d48159fc489bffb2781ac' });
                 let data = res.data;
                 let imageStartUrl = require('../../assets/img/icon/3.png');
                 let imageCoalUrl = require('../../assets/img/icon/2.png');

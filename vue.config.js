@@ -70,7 +70,11 @@ module.exports = {
                 return args
             })
         }
-    }
+    },
+    transpileDependencies: [
+        'vue-echarts',
+        'resize-detector'
+    ]
 };
 //导出webpack配置
 //npx vue-cli-service inspect > output.js
