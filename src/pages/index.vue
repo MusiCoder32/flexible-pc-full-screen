@@ -84,7 +84,7 @@ export default {
         return {
             isFullScreen: false,
             chemicalType:0,
-            hoverIndex:0
+            hoverIndex:-1
         };
     },
     computed: {

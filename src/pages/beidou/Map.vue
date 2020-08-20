@@ -1,15 +1,15 @@
 <template>
     <div class="bei-dou-box" v-loading="dialogLoading">
-        <div v-if="type==='chemical'" class="bei-dou-nav" style="top: 20px;">
-            <div @click="navClick('left')" :class="{'nav-opacity':rightActive}"
-                 style="padding-right:20px;text-align:right;width: 180px;height:40px;line-height: 40px;font-size: 16px">
-                企业分布
-            </div>
-            <div @click="navClick('right')" :class="{'nav-opacity':!rightActive}"
-                 style="padding-left:20px;text-align:left;width: 180px;height:40px;line-height: 40px;font-size: 16px">
-                预警态势
-            </div>
-        </div>
+        <!--<div v-if="type==='chemical'" class="bei-dou-nav" style="top: 20px;">-->
+            <!--<div @click="navClick('left')" :class="{'nav-opacity':rightActive}"-->
+                 <!--style="padding-right:20px;text-align:right;width: 180px;height:40px;line-height: 40px;font-size: 16px">-->
+                <!--企业分布-->
+            <!--</div>-->
+            <!--<div @click="navClick('right')" :class="{'nav-opacity':!rightActive}"-->
+                 <!--style="padding-left:20px;text-align:left;width: 180px;height:40px;line-height: 40px;font-size: 16px">-->
+                <!--预警态势-->
+            <!--</div>-->
+        <!--</div>-->
         <div class="bei-dou-container" id="beidouMapContainer"></div>
         <el-dialog v-if="dialogTableVisible" width="65.62%" title="传感器：W川AJH104R0009F4" :visible.sync="dialogTableVisible"
                    :close-on-click-modal=false>
@@ -40,7 +40,7 @@ export default {
             startArr: [],
             startIcon: require('../../assets/img/icon/4.png'),
             colorArr: [
-                'blue',
+                'green',
                 'blue',
                 'yellow',
                 'orange',
@@ -48,15 +48,9 @@ export default {
             ]
         };
     },
-    mounted () {
-        // this.getStartData();
-        // this.drawMap();
-        this.drawStart();
-        console.log(this.$route.query);
-        this.type = this.$route.query.type;
-        window.addEventListener('resize', () => {
-            this.drawMap();
-        });
+    mounted () {;
+        let id = this.$route.query.id || 'test'
+        this.drawStart(id);
     },
     methods: {
         navClick (type) {
@@ -77,7 +71,7 @@ export default {
                 me._beiDouMap = new AMap.Map('beidouMapContainer', {
                     resizeEnable: true,
                     mapStyle: 'amap://styles/97dc37fba506b5695a546dfb165032d4',
-                    center: [116.397428, 39.90923],
+                    center: [104.06, 30.67],
                     zoom: 13
                 });
             });
@@ -148,16 +142,23 @@ export default {
                     marker.on('mouseover', (e) => me._markerOver(e, i));
                     marker.on('mouseout', (e) => me._windowTime = setTimeout(() => me._infoWindow.close(), 5000));
                     marker.on('click', (e) => me._markerClick(e, item.id,item.number));
-                    // marker.on('mouseout', (e) => me._markerLeave());
-                    // marker.emit('mouseover', { target: marker });
                 });
             });
         },
-        async getStartData () {
+        async getStartData (id) {
             try {
-                let res = await  this.$req.get(this.$url.start.line, { OrgId: 'test' });
-                // let res = await  this.$req.get(this.$url.start.line, { OrgId: '47f449d48159fc489bffb2781ac' });
-                let data = res.data;
+                // let res = await  this.$req.get(this.$url.start.line, { OrgId: 'test' });
+                let res = await  this.$req.get(this.$url.start.line, { OrgId: id });
+                let data = res.data||[];
+                if(data.length===0) {
+                    this.$alert('', '该企业无北斗数据', {
+                        confirmButtonText: '确定',
+                        type:'info',
+                        center:true,
+                        roundButton:true
+
+                    });
+                }
                 let imageStartUrl = require('../../assets/img/icon/3.png');
                 let imageCoalUrl = require('../../assets/img/icon/2.png');
                 data.forEach(item => {
@@ -178,10 +179,10 @@ export default {
                 console.log(e);
             }
         },
-        async drawStart () {
+        async drawStart (id) {
             let me = this;
             try {
-                await Promise.all([me.drawMap(), me.getStartData()]);
+                await Promise.all([me.drawMap(), me.getStartData(id)]);
                 me.drawLine();
                 me.updateMarkerPosition();
             }
@@ -324,6 +325,19 @@ export default {
                     background: rgba(0, 123, 255, 0.6);
                     > div {
                         background: rgba(0, 123, 255, 1);
+                        padding: 3px;
+                    }
+                }
+            }
+        }
+        .green {
+            border: 1px solid rgba(43,215,0,0.8);
+            > div {
+                background: rgba(43,215,0,0.2);
+                > div {
+                    background: rgba(43,215,0,0.6);
+                    > div {
+                        background: rgba(43,215,0,1);
                         padding: 3px;
                     }
                 }
