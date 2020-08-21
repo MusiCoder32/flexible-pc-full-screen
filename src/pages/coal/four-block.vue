@@ -80,20 +80,23 @@ export default {
         me._rollSetTime = setTimeout(() => {
             this.readyRoll();
         }, 2000);
-        window.addEventListener('resize', () => {
-            me._tableSetInterval = clearInterval(me._tableSetInterval);
-            me._rollSetTime && clearTimeout(me._rollSetTime);
-            me._rollSetTime = setTimeout(() => {
-                me.readyRoll();
-            }, 2000);
-        });
+        window.addEventListener('resize', me.coalResize);
     },
     destroyed () {
         let me = this;
         clearInterval(this._tableSetInterval);
         clearTimeout(me._rollSetTime);
+        window.removeEventListener('resize',me.coalResize)
     },
     methods: {
+        coalResize() {
+            let me = this;
+            me._tableSetInterval = clearInterval(me._tableSetInterval);
+            me._rollSetTime && clearTimeout(me._rollSetTime);
+            me._rollSetTime = setTimeout(() => {
+                me.readyRoll();
+            }, 2000);
+        },
         enterTable () {
             this.isMouseEnter = true;
         },

@@ -39,7 +39,8 @@
                             min-width="1"
                             label="风险等级">
                         <template v-slot="level">
-                            <div class="icon-class" :class="{'high-risk':level.row.riskLevel==4,'medium-risk':level.row.riskLevel==3,'general-risk':level.row.riskLevel==2,'low-risk':level.row.riskLevel==1}"></div>
+                            <div class="icon-class"
+                                 :class="{'high-risk':level.row.riskLevel==4,'medium-risk':level.row.riskLevel==3,'general-risk':level.row.riskLevel==2,'low-risk':level.row.riskLevel==1}"></div>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -74,23 +75,27 @@ export default {
     },
     mounted () {
         let me = this;
-        this.tableData = this.$store.state.chemicalData.hazardChemicalCompanyList || []
-        me._rollSetTime = setTimeout(()=>{
+        this.tableData = this.$store.state.chemicalData.hazardChemicalCompanyList || [];
+        me._rollSetTime = setTimeout(() => {
             this.readyRoll();
-        },1000)
-        window.addEventListener('resize', () => {
+        }, 1000);
+        window.addEventListener('resize', me.chemicalResize);
+    },
+    destroyed () {
+        let me = this;
+        clearInterval(this._tableSetInterval);
+        clearTimeout(this._rollSetTime);
+        window.removeEventListener('resize', me.chemicalResize);
+    },
+    methods: {
+        chemicalResize () {
+            let me = this;
             me._tableSetInterval = clearInterval(me._tableSetInterval);
-            me._rollSetTime && clearTimeout(me._rollSetTime)
+            me._rollSetTime && clearTimeout(me._rollSetTime);
             me._rollSetTime = setTimeout(() => {
                 me.readyRoll();
             }, 2000);
-        });
-    },
-    destroyed () {
-        clearInterval(this._tableSetInterval);
-        clearTimeout(this._rollSetTime)
-    },
-    methods: {
+        },
         enterTable () {
             this.isMouseEnter = true;
         },
@@ -103,7 +108,7 @@ export default {
 
             this._containBoxStyle = document.querySelector('div.emphasis-attention-company-chemical div.el-table__body-wrapper.is-scrolling-none').style;
 
-            if ((this.tableData.length+1)*this._trHeight> bodyHeight) {
+            if ((this.tableData.length + 1) * this._trHeight > bodyHeight) {
                 this._containBoxStyle.transform = `translate(0,-${this._trHeight * 2 + 'px'})`;
                 this._containBoxStyle.paddingTop = this._trHeight * 2 + 'px';
                 this.beginRolling();
@@ -135,7 +140,7 @@ export default {
             }, 4000);
         },
 
-        tableRowClassName ({rowIndex }) {
+        tableRowClassName ({ rowIndex }) {
             if ((rowIndex + 1) % 2 === 0) {
                 return 'row-double';
             }

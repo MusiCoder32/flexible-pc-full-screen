@@ -14,10 +14,9 @@
             </div>
             <div class="sensor-right">
                 <oblique-angle-rect>
-                    <div class="right-rect-content">
-                        <div style="width:100%;" class="sensor-right-title font-size-medium font-weight-medium">传感器预警统计</div>
+                    <div class="right-rect-content vBox vh_content_between">
 
-                        <div style="width:100%" class="font-size-small hBox vh_items_center">北斗位移预警<div class="title-right-border"></div></div>
+                        <div style="width:100%" class="font-size-small hBox vh_items_center"><div class="warining-item-width">北斗位移预警</div><div class="title-right-border"></div></div>
                         <div style="width:100%" class="hBox vh_content_between vh_items_center beidou-warning-box">
                             <div class="beidou-warning-total">{{warningCount.disCount}}</div>
                             <div class="beidou-warning-describe">累计预警次数</div>
@@ -56,7 +55,7 @@
                         </div>
 
 
-                        <div style="width:100%" class="font-size-small hBox vh_items_center">气体预警<div class="title-right-border"></div></div>
+                        <div style="width:100%;" class="font-size-small hBox vh_items_center"><div class="warining-item-width">气体预警</div><div class="title-right-border"></div></div>
                         <div style="width:100%" class="hBox vh_content_between vh_items_center beidou-warning-box">
                             <div class="beidou-warning-total">{{warningCount.gasCount}}</div>
                             <div class="beidou-warning-describe">累计预警次数</div>
@@ -183,6 +182,9 @@ export default {
                     height:100%;
                     padding-left: 16px;
                     padding-right:20px;
+                    .warining-item-width {
+                        width:85px;
+                    }
 
                     .title-right-border {
                         flex: 1;
@@ -205,7 +207,7 @@ export default {
                     }
 
                     .beidou-warning-total {
-                        width: 48px;
+                        width: 70px;
                         height: 40px;
                         font-size: 40px;
                         font-family: BebasNeue;

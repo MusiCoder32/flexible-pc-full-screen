@@ -12,42 +12,19 @@
     <!--<script inline src='node_modules/lib-flexible-for-dashboard/dist/index.js'></script>-->
     <script>
 
-    function setRem(screenRatioByDesign) {
-        if (screenRatioByDesign === void 0) { screenRatioByDesign = 16 / 9; }
-        var docEle = document.documentElement;
-        function setHtmlFontSize() {
-            let screenWidth = window.screen.width;
-            let screenHeight = window.screen.height;
-            //在放大缩小的情况下，bodyOffsetHeight、width与screenHeight、width不相等，全屏且100%时相等
-            if (screenHeight < 1080 || screenWidth < 1920) {
-                document.documentElement.style.width = '1920px';
-                document.documentElement.style.height = '1080px';
-            }
-            let  offsetWidth = docEle.offsetWidth || docEle.clientWidth;
-            let  offsetHeight = docEle.offsetHeight || docEle.clientHeight;
-            let screenRatio = offsetWidth / offsetHeight;
-            let fontSize = (screenRatio > screenRatioByDesign
-                ? (screenRatioByDesign / screenRatio)
-                : 1) * docEle.offsetWidth / 10;
-            docEle.style.fontSize = fontSize.toFixed(3) + "px";
-            console.log(fontSize)
-        }
-        setHtmlFontSize();
-        window.addEventListener('resize', setHtmlFontSize);
-    }
-    setRem(16 / 9)
     </script>
 </head>
 
 <body>
-    <noscript>
-      <strong>We're sorry but play-vuecli3 doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app" style="width: 100%;height:100%;background: rgba(0,0,0,0.4)"></div>
-    <!-- built files will be auto injected -->
-    <% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.js) { %>
-    <script type="text/javascript" src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"></script>
-    <% } %>
+<noscript>
+    <strong>We're sorry but play-vuecli3 doesn't work properly without JavaScript enabled. Please enable it to
+        continue.</strong>
+</noscript>
+<div id="app" style="width: 100%;height:100%;background: rgba(0,0,0,0.4)"></div>
+<!-- built files will be auto injected -->
+<% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.js) { %>
+<script type="text/javascript" src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"></script>
+<% } %>
 </body>
 
 </html>

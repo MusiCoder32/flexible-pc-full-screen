@@ -15,8 +15,7 @@
                    :close-on-click-modal=false>
             <!--<router-view></router-view>-->
             <div>
-                <!--<chemical-chart v-if="type==='chemical'"></chemical-chart>-->
-                <coal-chart></coal-chart>
+                <coal-chemical-chart></coal-chemical-chart>
             </div>
 
         </el-dialog>
@@ -24,12 +23,11 @@
 </template>
 
 <script>
-import ChemicalChart from './chemical-chart';
-import CoalChart from './coal-chart';
+import CoalChemicalChart from './coal-chemical-chart';
 import xss from 'xss';
 
 export default {
-    components: { ChemicalChart, CoalChart },
+    components: { CoalChemicalChart },
     data () {
         return {
             type: 'coal',
@@ -48,7 +46,7 @@ export default {
             ]
         };
     },
-    mounted () {;
+    mounted () {
         let id = this.$route.query.id || 'test'
         this.drawStart(id);
     },

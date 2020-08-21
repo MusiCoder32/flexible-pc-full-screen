@@ -7,7 +7,8 @@
         <slider></slider>
         <div class="map">
             <div class="county-box">
-                <div v-for="(item,index) in mapMarkers" :class="'map-'+item.class" :key="item.name+index" @mouseover="hoverIndex=index" @mouseout="hoverIndex=-1">
+                <div v-for="(item,index) in mapMarkers" :class="'map-'+item.class" :key="item.name+index"
+                     @mouseover="hoverIndex=index" @mouseout="hoverIndex=-1">
                     <map-marker
                             :id="'marker'+item.name+index"
                             :number="item.total"
@@ -51,31 +52,15 @@
 <script>
 import vHeader from './header';
 import Slider from './slider';
-import Doughnut from '@/components/charts_demo/Doughnut';
-import Point from '@/components/charts_demo/Point';
-import LineChart from '@/components/charts_demo/Line';
-
-// import Map from '@/components/charts_demo/Map'
-import Bar from '@/components/charts_demo/Bar';
-import Pie from '@/components/charts_demo/Pie';
-import Gauge from '@/components/charts_demo/Gauge';
-import DoubleLine from '@/components/charts_demo/DoubleLine';
 
 import FirstMap from '../components/svgs/pie-bar-animation';
 import mapMarker from '../components/svgs/pie-bar-animation';
 
-import bus from '../common/bus'
+import bus from '../common/bus';
 
 export default {
     components: {
-        Doughnut,
-        Point,
         FirstMap,
-        LineChart,
-        Bar,
-        Pie,
-        Gauge,
-        DoubleLine,
         vHeader,
         Slider,
         mapMarker
@@ -83,8 +68,8 @@ export default {
     data () {
         return {
             isFullScreen: false,
-            chemicalType:0,
-            hoverIndex:-1
+            chemicalType: 0,
+            hoverIndex: -1
         };
     },
     computed: {
@@ -152,7 +137,7 @@ export default {
                 {
                     name: '泸州市',
                     class: 'lzs',
-                    src: require('../assets/img/map/泸州市_img.png'),
+                    src: require('../assets/img/map/泸州市_img.png')
                 },
                 {
                     name: '南充市',
@@ -207,7 +192,7 @@ export default {
                     name: '宜宾市',
                     class: 'ybs',
                     src: require('../assets/img/map/宜宾市_img.png')
-                },
+                }
 
             ];
             let path = this.$route.path;
@@ -220,9 +205,10 @@ export default {
                 data = this.$store.state.coalData.mapStatistics || [];
             }
             else if (path.indexOf('chemical') > -1) {
-                if(this.chemicalType===0) {
+                if (this.chemicalType === 0) {
                     data = this.$store.state.chemicalData.mapStatistics || [];
-                } else {
+                }
+                else {
                     data = this.$store.state.chemicalData.mapParkStatistics || [];
                 }
             }
@@ -232,14 +218,14 @@ export default {
                 });
                 return { ...item, ...obj[0] };
             });
-            console.log(al)
+            console.log(al);
             return al;
         }
     },
     mounted () {
-        bus.$on('chemicalChangeMap',(type)=>{
-            this.chemicalType = type
-        })
+        bus.$on('chemicalChangeMap', (type) => {
+            this.chemicalType = type;
+        });
     },
     methods: {
         toggleFullscreen () {
@@ -330,7 +316,7 @@ export default {
                 height: 137px;
                 left: 631px;
                 top: 417px;
-                z-index:1000
+                z-index: 1000
             }
             .map-gas {
                 width: 108px;
@@ -490,7 +476,7 @@ export default {
             .center-content {
                 width: 200px;
                 height: 50px;
-                padding-left:15px;
+                padding-left: 15px;
                 background: rgba(0, 123, 255, 0.2);
                 font-size: 10px;
                 display: flex;

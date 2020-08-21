@@ -162,7 +162,7 @@ export default {
                                 width: 94px;
                                 height: 82px;
                                 line-height: 82px;
-                                font-size: 42px;
+                                font-size: 32px;
                                 font-family: BebasNeue;
                                 text-align: center;
                                 background: url("../../assets/img/chemical/17.png") center no-repeat;
@@ -184,7 +184,6 @@ export default {
 
                             }
                             > div:last-child {
-                                width: 111px;
                                 text-align: center;
                                 height: 17px;
                                 line-height: 17px;
@@ -259,7 +258,7 @@ export default {
                                 height: 40px;
                                 line-height: 40px;
                                 text-align: left;
-                                left: 40px;
+                                left: 28px;
                                 top: 2px;
                                 font-family: BebasNeue;
                             }
@@ -268,7 +267,7 @@ export default {
                                 height: 40px;
                                 text-align: left;
                                 top: 1px;
-                                left: 80px;
+                                left: 78px;
                                 font-size: 14px;
                                 display: flex;
                                 justify-content: flex-start;

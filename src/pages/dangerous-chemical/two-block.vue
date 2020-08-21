@@ -297,12 +297,20 @@ export default {
                         height: 58px;
                         background: url("../../assets/img/chemical/8.png") right center no-repeat;
                         background-size: contain;
+                        &:hover {
+                            background: url("../../assets/img/chemical/20.png") right center no-repeat;
+                            background-size: contain;
+                        }
                     }
                     &:nth-child(2) {
                         width: 214px;
                         background: url("../../assets/img/chemical/12.png") right center no-repeat;
                         background-size: contain;
                         left: 12px;
+                        &:hover {
+                            background: url("../../assets/img/chemical/21.png") right center no-repeat;
+                            background-size: contain;
+                        }
                         > div:first-child {
                             left: 26px;
                         }
@@ -310,6 +318,10 @@ export default {
                     &:last-child {
                         background: url("../../assets/img/chemical/1.png") right center no-repeat;
                         background-size: contain;
+                        &:hover {
+                            background: url("../../assets/img/chemical/22.png") right center no-repeat;
+                            background-size: contain;
+                        }
                     }
                     > div {
                         position: absolute;

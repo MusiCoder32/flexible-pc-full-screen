@@ -239,21 +239,25 @@ export default {
         me._rollSetTime = setTimeout(() => {
             this.readyRoll();
         }, 2000);
-        window.addEventListener('resize', () => {
+        window.addEventListener('resize',me.firstResize);
+    },
+    destroyed () {
+        let me = this;
+        clearInterval(this._tableSetInterval3);
+        clearInterval(this._tableSetInterval4);
+        clearTimeout(this._rollSetTime);
+        window.removeEventListener('resize',me.firstResize);
+    },
+    methods: {
+        firstResize() {
+            let me = this;
             clearInterval(me._tableSetInterval3);
             clearInterval(me._tableSetInterval4);
             me._rollSetTime && clearTimeout(me._rollSetTime);
             me._rollSetTime = setTimeout(() => {
                 me.readyRoll();
             }, 2000);
-        });
-    },
-    destroyed () {
-        clearInterval(this._tableSetInterval3);
-        clearInterval(this._tableSetInterval4);
-        clearTimeout(this._rollSetTime);
-    },
-    methods: {
+        },
         enterTable3 () {
             this.isMouseEnter3 = true;
         },

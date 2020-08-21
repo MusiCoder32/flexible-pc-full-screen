@@ -1112,7 +1112,6 @@ export default {
                                 'show': false
                             },
                             'axisLabel': {
-                                'interval': 0,
                                 align: 'right',
                                 inside: false,
                                 formatter: function (value, index) {
@@ -1144,7 +1143,6 @@ export default {
                                 'show': false
                             },
                             'axisLabel': {
-                                'interval': 0,
                                 align: 'right',
                                 inside: false,
                                 formatter: function (value, index) {
@@ -1297,7 +1295,6 @@ export default {
                                 'show': false
                             },
                             'axisLabel': {
-                                'interval': 0,
                                 formatter: obj.xAxis.formatter
                             },
                             'data': obj.xAxis.data
@@ -1320,7 +1317,6 @@ export default {
                                 'show': false
                             },
                             'axisLabel': {
-                                'interval': 0,
                                 align: 'right',
                                 inside: false,
                                 formatter: function (value, index) {
@@ -1486,10 +1482,7 @@ export default {
                             data: data.time,
                             formatter: function (value, index) {
                                 // 格式化成月/日，只在第一个刻度显示年份
-                                if (index % 5 === 0) {
                                     return value;
-                                }
-                                return '';
                             }
                         },
                         yAxis: {
@@ -1613,10 +1606,7 @@ export default {
                             data: data.time,
                             formatter: function (value, index) {
                                 // 格式化成月/日，只在第一个刻度显示年份
-                                if (index % 5 === 0) {
-                                    return value;
-                                }
-                                return '';
+                                return value;
                             }
                         },
                         yAxis: {},
@@ -1645,7 +1635,7 @@ export default {
                 case 'LPG':
                 case 'NH3':
                 case 'SiHCl3':
-                case 'CH4':
+                case 'JIAWAN':
                     let series = [];
                     for (let key in seriesData) {
                         if (seriesData[key]) {
@@ -1682,11 +1672,11 @@ export default {
                             }
                         },
                         legend: {
-                            top: 90,
+                            top: 80,
                             left: 30
                         },
                         grid: {
-                            top: 140,
+                            top: 120,
                             right: 20,
                             left: 80
                         },
@@ -1695,10 +1685,7 @@ export default {
                             data: xData,
                             formatter: function (value, index) {
                                 // 格式化成月/日，只在第一个刻度显示年份
-                                if (index % 5 === 0) {
                                     return value;
-                                }
-                                return '';
                             }
                         },
                         yAxis: {},
@@ -1719,10 +1706,7 @@ export default {
                             data: xData,
                             formatter: function (value, index) {
                                 // 格式化成月/日，只在第一个刻度显示年份
-                                if (index % 4 === 1) {
                                     return value;
-                                }
-                                return '';
                             }
                         },
                         yAxis: {
@@ -1756,9 +1740,7 @@ export default {
                             data: xData,
                             formatter: function (value, index) {
                                 // 格式化成月/日，只在第一个刻度显示年份
-                                if (index % 4 === 1) {
                                     return value + '日';
-                                }
                             }
                         },
                         yAxis: {
@@ -1790,10 +1772,7 @@ export default {
                             data: xData,
                             formatter: function (value, index) {
                                 // 格式化成月/日，只在第一个刻度显示年份
-                                if (index % 4 === 1) {
                                     return value;
-                                }
-                                return '';
                             }
                         },
                         yAxis: {
@@ -1951,11 +1930,14 @@ export default {
                 }
 
                 .el2 {
-                    width: 120px;
-                    height: 64px;
+                    width: 160px;
+                    height: 70px;
                     margin-right: 20px;
                     background: #00bd99;
                     border-radius: 5px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
                     > div:first-child {
                         width: 100%;
                         height: 32px;
