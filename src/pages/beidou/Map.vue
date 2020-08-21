@@ -363,21 +363,6 @@ export default {
                 letter-spacing: 0px;
                 margin: 16px 0 0 0;
             }
-            /*> div:last-child {*/
-            /*width: 112px;*/
-            /*height: 32px;*/
-            /*background: #ffffff;*/
-            /*border: 1px solid rgba(8, 33, 85, 0.29);*/
-            /*border-radius: 5px;*/
-            /*display: flex;*/
-            /*align-items: center;*/
-            /*justify-content: center;*/
-            /*> img {*/
-            /*width: 18px;*/
-            /*height: 18px;*/
-            /*margin-right: 10px;*/
-            /*}*/
-            /*}*/
         }
 
         .el-dialog {

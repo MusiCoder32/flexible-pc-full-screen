@@ -216,6 +216,10 @@ export default {
                         background: url("../../assets/img/chemical/2.png") center center no-repeat;
                         background-size: contain;
                         position: relative;
+                        &:hover {
+                            background: url("../../assets/img/chemical/23.png") center center no-repeat;
+                            background-size: contain;
+                        }
 
                         > div {
                             width: 100%;

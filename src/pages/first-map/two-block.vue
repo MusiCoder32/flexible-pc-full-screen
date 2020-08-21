@@ -558,6 +558,10 @@ export default {
                             width: 214px;
                             height: 58px;
                             position: relative;
+                            &:hover {
+                                background: url("../../assets/img/index/16.png") no-repeat;
+                                background-size: contain;
+                            }
                             > div:last-child {
                                 height: 58px;
                                 line-height: 60px;

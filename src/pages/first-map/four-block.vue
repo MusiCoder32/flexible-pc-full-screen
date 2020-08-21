@@ -104,9 +104,13 @@ export default {
     .problem-statistics {
         width:116px;
         height:167px;
-        background: url("../../assets/img/index/14.png") center no-repeat;
+        background: url("../../assets/img/index/17.png") center no-repeat;
         background-size: contain;
         position: relative;
+        &:hover {
+            background: url("../../assets/img/index/14.png") center no-repeat;
+            background-size: contain;
+        }
         > div {
             width: 100%;
             position: absolute;

@@ -7,7 +7,7 @@
         <slider></slider>
         <div class="map">
             <div class="county-box">
-                <div v-for="(item,index) in mapMarkers" :class="'map-'+item.class" :key="item.name+index"
+                <div v-for="(item,index) in mapMarkers" :class="'map-'+item.class" :key="item.name+item.total+index"
                      @mouseover="hoverIndex=index" @mouseout="hoverIndex=-1">
                     <map-marker
                             :id="'marker'+item.name+index"
