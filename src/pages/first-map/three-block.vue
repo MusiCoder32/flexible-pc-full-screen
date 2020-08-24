@@ -117,14 +117,13 @@ export default {
     },
     data() {
       return   {
-          warningCount:{}
       }
     },
     computed: {
-        ...mapState(['firstData'])
-    },
+        ...mapState(['firstData']),
+        warningCount() {return this.firstData.warningCount || {}}
+},
     mounted() {
-        this.warningCount = this.firstData.warningCount || {}
     }
 
 };

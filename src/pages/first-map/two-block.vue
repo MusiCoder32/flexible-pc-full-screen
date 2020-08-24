@@ -178,10 +178,36 @@ export default {
     },
     data () {
         return {
-            coalStatistics: {},
             isMouseEnter3: false,
             isMouseEnter4: false,
-            chemicalCompanyArr: [
+            borderWidth1: 'two-block-title-width-1',
+            borderWidth2: 'two-block-title-width-2',
+            obliqueTextLeft: '金属非金属矿山领域',
+            obliqueTextRight: '化工园区危险化学品领域',
+            rectHeight: 'two-block-rect-height',
+            rectBorderTop: 'two-block-rect-border-top',
+            rectHeight34: 'two-block-rect-height34',
+            tableData3: [],
+            tableData4: []
+        };
+    },
+    mounted () {
+        let me = this;
+
+        me._rollSetTime = setTimeout(() => {
+            this.readyRoll();
+        }, 2000);
+        window.addEventListener('resize', me.firstResize);
+    },
+    computed: {
+        coalStatistics () {
+            (this.tableData3.length === 0) && (this.tableData3 = this.$store.state.firstData.mineCompanyList || []);
+            (this.tableData4.length === 0) && (this.tableData4 = this.$store.state.firstData.hazardChemicalCompanyList || []);
+            return this.$store.state.firstData.mineCover || {};
+        },
+        chemicalCompanyArr () {
+            let chemicalStatistics = this.$store.state.firstData.hazardChemicalCover || {};
+            let chemicalCompanyArr = [
                 {
                     name: '危险化学品企业数量',
                     value: 0
@@ -195,61 +221,23 @@ export default {
                     name: '重点监管工艺数量',
                     value: 0
                 }
-            ],
-            pieList: [
-                {
-                    value: 427,
-                    name: '尾矿库',
-                    foregroundColor: '#007BFF'
-                },
-                {
-                    value: 254,
-                    name: '排土场',
-                    foregroundColor: '#FFD600'
-                },
-                {
-                    value: 332,
-                    name: '露天矿场',
-                    foregroundColor: '#FF5E54'
-                }
-            ],
-            borderWidth1: 'two-block-title-width-1',
-            borderWidth2: 'two-block-title-width-2',
-            obliqueTextLeft: '金属非金属矿山领域',
-            obliqueTextRight: '化工园区危险化学品领域',
-            rectHeight: 'two-block-rect-height',
-            rectBorderTop: 'two-block-rect-border-top',
-            rectHeight34: 'two-block-rect-height34',
-            tableData3: [],
-            tableData4: [],
-            tableData: []
-        };
-    },
-    mounted () {
-        let me = this;
-
-        this.coalStatistics = this.$store.state.firstData.mineCover || {};
-        let chemicalStatistics = this.$store.state.firstData.hazardChemicalCover || {};
-        this.chemicalCompanyArr[0].value = chemicalStatistics.companyCount || 0;
-        this.chemicalCompanyArr[1].value = chemicalStatistics.majorHazardCount || 0;
-        this.chemicalCompanyArr[2].value = chemicalStatistics.chemicalIndustryParkCount || 0;
-        this.chemicalCompanyArr[3].value = chemicalStatistics.keySupervisionProcessCount || 0;
-        this.tableData3 = this.$store.state.firstData.mineCompanyList || [];
-        this.tableData4 = this.$store.state.firstData.hazardChemicalCompanyList || [];
-        me._rollSetTime = setTimeout(() => {
-            this.readyRoll();
-        }, 2000);
-        window.addEventListener('resize',me.firstResize);
+            ];
+            chemicalCompanyArr[0].value = chemicalStatistics.companyCount || 0;
+            chemicalCompanyArr[1].value = chemicalStatistics.majorHazardCount || 0;
+            chemicalCompanyArr[2].value = chemicalStatistics.chemicalIndustryParkCount || 0;
+            chemicalCompanyArr[3].value = chemicalStatistics.keySupervisionProcessCount || 0;
+            return chemicalCompanyArr;
+        }
     },
     destroyed () {
         let me = this;
         clearInterval(this._tableSetInterval3);
         clearInterval(this._tableSetInterval4);
         clearTimeout(this._rollSetTime);
-        window.removeEventListener('resize',me.firstResize);
+        window.removeEventListener('resize', me.firstResize);
     },
     methods: {
-        firstResize() {
+        firstResize () {
             let me = this;
             clearInterval(me._tableSetInterval3);
             clearInterval(me._tableSetInterval4);

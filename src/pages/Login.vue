@@ -42,8 +42,8 @@ export default {
             errorMsg: '',
             loginLoading: void 0,
             param: {
-                UserName: '',
-                Password: ''
+                UserName: '510000',
+                Password: '123456'
             },
             loginDisabled: false,
             rules: {
