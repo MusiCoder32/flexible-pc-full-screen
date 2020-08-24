@@ -15,7 +15,7 @@ const assetsCDN = {
         'vue-echarts':'VueECharts',
         axios: 'axios',
         d3:'d3',
-        'element-ui':'ElementUI'
+        'element-ui':'ELEMENT'
     },
     css: [],
     // https://unpkg.com/browse/vue@2.6.10/
@@ -27,7 +27,7 @@ const assetsCDN = {
         '//cdn.jsdelivr.net/npm/vue-echarts@4.1.0',
         '//cdn.jsdelivr.net/npm/axios@0.19.0/dist/axios.min.js',
         '//cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js',
-        '//unpkg.com/element-ui/lib/index.js',
+        '//cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/index.js',
     ]
 }
 

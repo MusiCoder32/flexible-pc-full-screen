@@ -7,7 +7,7 @@ import sichuanMap from '@/assets/sichuan.json';
 
 import router from './router/router';
 import store from './store';
-import ElementUI from 'element-ui';
+import ELEMENT from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css'; // 默认主题
 import '@/assets/element-variables.scss';
 
@@ -21,7 +21,7 @@ Vue.prototype.$url = UrlConfig;
 VueECharts.registerMap('sichuan', VueECharts);
 
 Vue.component('chart', VueECharts);
-Vue.use(ElementUI, {
+Vue.use(ELEMENT, {
     size: 'small'
 });
 
