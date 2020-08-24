@@ -11,8 +11,11 @@ const assetsCDN = {
         vue: 'Vue',
         'vue-router': 'VueRouter',
         vuex: 'Vuex',
-        ECharts:'ECharts',
+        echarts:'echarts',
+        'vue-echarts':'VueECharts',
         axios: 'axios',
+        d3:'d3',
+        'element-ui':'ElementUI'
     },
     css: [],
     // https://unpkg.com/browse/vue@2.6.10/
@@ -20,7 +23,11 @@ const assetsCDN = {
         '//cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js',
         '//cdn.jsdelivr.net/npm/vue-router@3.1.3/dist/vue-router.min.js',
         '//cdn.jsdelivr.net/npm/vuex@3.1.1/dist/vuex.min.js',
-        '//cdn.jsdelivr.net/npm/axios@0.19.0/dist/axios.min.js'
+        '//cdn.jsdelivr.net/npm/echarts@4.5.0/dist/echarts.js',
+        '//cdn.jsdelivr.net/npm/vue-echarts@4.1.0',
+        '//cdn.jsdelivr.net/npm/axios@0.19.0/dist/axios.min.js',
+        '//cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js',
+        '//unpkg.com/element-ui/lib/index.js',
     ]
 }
 

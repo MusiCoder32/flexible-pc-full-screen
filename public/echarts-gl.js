@@ -1,4 +1,5 @@
 (function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory(require("echarts"));
 	else if(typeof define === 'function' && define.amd)
 		define(["echarts"], factory);
@@ -17509,7 +17510,7 @@ var Renderer = __WEBPACK_IMPORTED_MODULE_0__core_Base__["a" /* default */].exten
                 }
                 disposedMap[material.__uid__] = true;
             }
-            // Particle pages and AmbientCubemap light need to dispose
+            // Particle system and AmbientCubemap light need to dispose
             if (node.dispose) {
                 node.dispose(this);
             }
@@ -25872,7 +25873,7 @@ function parseDate(value) {
       return new Date(+match[1], +(match[2] || 1) - 1, +match[3] || 1, +match[4] || 0, +(match[5] || 0), +match[6] || 0, +match[7] || 0);
     } // Timezoneoffset of Javascript Date has considered DST (Daylight Saving Time,
     // https://tc39.github.io/ecma262/#sec-daylight-saving-time-adjustment).
-    // For example, pages timezone is set as "Time Zone: America/Toronto",
+    // For example, system timezone is set as "Time Zone: America/Toronto",
     // then these code will get different result:
     // `new Date(1478411999999).getTimezoneOffset();  // get 240`
     // `new Date(1478412000000).getTimezoneOffset();  // get 300`
@@ -27297,7 +27298,7 @@ GLViewHelper.prototype.updateTransform = function (seriesModel, api) {
     }
 };
 
-// Reimplement the dataToPoint of coordinate pages.
+// Reimplement the dataToPoint of coordinate system.
 // Remove the effect of pan/zoom transform
 GLViewHelper.prototype.dataToPoint = function (coordSys, data, pt) {
     pt = coordSys.dataToPoint(data, null, pt);
@@ -28011,7 +28012,7 @@ EChartsGL.prototype.update = function (ecModel, api) {
 
     function getLayerGL(model) {
         var zlevel;
-        // Host on coordinate pages.
+        // Host on coordinate system.
         if (model.coordinateSystem && model.coordinateSystem.model) {
             zlevel = model.get('zlevel');
         }
@@ -28112,7 +28113,7 @@ EChartsGL.prototype.update = function (ecModel, api) {
                 return;
             }
             var viewGL = (coordSys && coordSys.viewGL) || chartView.viewGL;
-            // TODO Check zlevel not same with component of coordinate pages ?
+            // TODO Check zlevel not same with component of coordinate system ?
             var layerGL = getLayerGL(seriesModel);
             layerGL.addView(viewGL);
 
@@ -38866,7 +38867,7 @@ var zrUtil = __webpack_require__(13);
 */
 
 /**
- * Cartesian coordinate pages
+ * Cartesian coordinate system
  * @module  echarts/coord/Cartesian
  *
  */
@@ -45317,7 +45318,7 @@ var GlobeModel = __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.ext
         light: {
             // Main sun light
             main: {
-                // Time, default it will use pages time
+                // Time, default it will use system time
                 time: ''
             }
         },
@@ -46481,7 +46482,7 @@ var TILE_SIZE = 512;
         this._sceneHelper.updateAmbientCubemap(renderer, mapbox3DModel, api);
         this._sceneHelper.updateSkybox(renderer, mapbox3DModel, api);
 
-        // FIXME If other series changes coordinate pages.
+        // FIXME If other series changes coordinate system.
         // FIXME When doing progressive rendering.
         mapbox3DModel.coordinateSystem.viewGL.scene.traverse(function (mesh) {
             if (mesh.material) {
@@ -46901,7 +46902,7 @@ __WEBPACK_IMPORTED_MODULE_3__util_graphicGL__["a" /* default */].Shader.import(_
         this._sceneHelper.updateAmbientCubemap(renderer, maptalks3DModel, api);
         this._sceneHelper.updateSkybox(renderer, maptalks3DModel, api);
 
-        // FIXME If other series changes coordinate pages.
+        // FIXME If other series changes coordinate system.
         // FIXME When doing progressive rendering.
         maptalks3DModel.coordinateSystem.viewGL.scene.traverse(function (mesh) {
             if (mesh.material) {
@@ -47254,10 +47255,10 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.registerLayout(funct
         else {
             if (true) {
                 if (!coordSys) {
-                    throw new Error('bar3D doesn\'t have coordinate pages.');
+                    throw new Error('bar3D doesn\'t have coordinate system.');
                 }
                 else {
-                    throw new Error('bar3D doesn\'t support coordinate pages ' + coordSys.type);
+                    throw new Error('bar3D doesn\'t support coordinate system ' + coordSys.type);
                 }
             }
         }
@@ -48317,7 +48318,7 @@ var Line3DSeries = __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.e
         coordinateSystem: 'cartesian3D',
         zlevel: -10,
 
-        // Cartesian coordinate pages
+        // Cartesian coordinate system
         grid3DIndex: 0,
 
         lineStyle: {
@@ -48797,7 +48798,7 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendSeriesModel({
         progressive: 1e5,
         progressiveThreshold: 1e5,
 
-        // Cartesian coordinate pages
+        // Cartesian coordinate system
         grid3DIndex: 0,
 
         globeIndex: 0,
@@ -48892,7 +48893,7 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendChartView({
         }
         else {
             if (true) {
-                throw new Error('Invalid coordinate pages');
+                throw new Error('Invalid coordinate system');
             }
         }
     },
@@ -48905,7 +48906,7 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendChartView({
         }
         else {
             if (true) {
-                throw new Error('Invalid coordinate pages');
+                throw new Error('Invalid coordinate system');
             }
         }
 
@@ -50480,7 +50481,7 @@ var SurfaceSeries = __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.
         coordinateSystem: 'cartesian3D',
         zlevel: -10,
 
-        // Cartesian coordinate pages
+        // Cartesian coordinate system
         grid3DIndex: 0,
 
         // Surface needs lambert shading to show the difference
@@ -51165,7 +51166,7 @@ var Map3DSeries = __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.ex
             });
             if (ignoredProperties.length) {
                 console.warn(
-                    'Property %s in map3D series will be ignored if coordinate pages is %s',
+                    'Property %s in map3D series will be ignored if coordinate system is %s',
                     ignoredProperties.join(', '), coordSysType
                 );
             }
@@ -51491,14 +51492,14 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendSeriesModel({
         progressive: 1e5,
         progressiveThreshold: 1e5,
 
-        // Cartesian coordinate pages
+        // Cartesian coordinate system
         // xAxisIndex: 0,
         // yAxisIndex: 0,
 
-        // Polar coordinate pages
+        // Polar coordinate system
         // polarIndex: 0,
 
-        // Geo coordinate pages
+        // Geo coordinate system
         // geoIndex: 0,
 
         large: false,
@@ -54913,7 +54914,7 @@ function forceAtlas2Worker() {
         //  barnesHutTheta,
         //  scaling,
         //  jitterTolerence
-        // Will be set by the pages automatically
+        // Will be set by the system automatically
         //  preventOverlap will be set false
         //  if node size is not given
         this.autoSettings = true;
@@ -56743,11 +56744,11 @@ var LinesSeries = __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.ex
         progressive: 1e4,
         progressiveThreshold: 5e4,
 
-        // Cartesian coordinate pages
+        // Cartesian coordinate system
         // xAxisIndex: 0,
         // yAxisIndex: 0,
 
-        // Geo coordinate pages
+        // Geo coordinate system
         // geoIndex: 0,
 
         // Support source-over, lighter

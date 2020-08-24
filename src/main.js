@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import App from './App.vue';
 import '@/assets/main.css';
-import ECharts from 'vue-echarts';
+import VueECharts from 'vue-echarts';
 import 'echarts-gl'
 import sichuanMap from '@/assets/sichuan.json';
 
@@ -18,9 +18,9 @@ Vue.config.productionTip = false;
 Vue.prototype.$req = Request;
 Vue.prototype.$url = UrlConfig;
 
-ECharts.registerMap('sichuan', sichuanMap);
+VueECharts.registerMap('sichuan', VueECharts);
 
-Vue.component('chart', ECharts);
+Vue.component('chart', VueECharts);
 Vue.use(ElementUI, {
     size: 'small'
 });
