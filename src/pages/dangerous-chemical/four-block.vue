@@ -38,9 +38,9 @@
                             prop="riskLevel"
                             min-width="1"
                             label="风险等级">
-                        <template v-slot="level">
+                        <template v-slot="props">
                             <div class="icon-class"
-                                 :class="{'high-risk':level.row.riskLevel==4,'medium-risk':level.row.riskLevel==3,'general-risk':level.row.riskLevel==2,'low-risk':level.row.riskLevel==1}"></div>
+                                 :class="{'high-risk':props.row.riskLevel==4,'medium-risk':props.row.riskLevel==3,'general-risk':props.row.riskLevel==2,'low-risk':props.row.riskLevel==1}"></div>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -178,6 +178,15 @@ export default {
         padding: 0 20px;
         overflow: hidden;
 
+        .icon-class {
+            width: 26px;
+            height: 26px;
+            background-image: url("../../assets/img/icon/3.png");
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 50%;
+            background-size: contain;
+        }
         .el-table::before {
             background-color: transparent;
         }

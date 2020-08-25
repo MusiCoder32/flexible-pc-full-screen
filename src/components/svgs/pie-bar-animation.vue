@@ -131,8 +131,7 @@ export default {
             slices.selectAll().data(_data).enter().append('g').attr('id', function (d, i) {
                 return `${id}_pie_group_${_data.length - 1 - i}`;
             }).each(function (d, i) {
-                let item = d3.select(`#${id}_pie_group_${i}`).on('mouseover', () => _this.mouseover(id, item))
-                             .on('mouseout', () => _this.mouseout(id));
+                let item = d3.select(`#${id}_pie_group_${i}`)
 
 
                 item.append('path').attr('class', 'innerSlice')
@@ -270,23 +269,6 @@ export default {
             // rx ry 两个半轴长度
             ret.push('M', sx, sy, 'A', ir * rx, ir * ry, '0 0 1', ex, ey, 'L', ex, h + ey, 'A', ir * rx, ir * ry, '0 0 0', sx, h + sy, 'z');
             return ret.join(' ');
-        },
-
-        mouseover (id, current) {
-            let selectString = `g[id^=${id}_pie_group_]`;
-            let gArray = d3.selectAll(selectString)._groups[0];
-            for (let j = 0; j < gArray.length; j++) {
-                gArray[j].style = 'opacity:0.5';
-            }
-            current.attr('style', 'opacity:1');
-        },
-
-        mouseout (id) {
-            let selectString = `g[id^=${id}_pie_group_]`;
-            let gArray = d3.selectAll(selectString)._groups[0];
-            for (let j = 0; j < gArray.length; j++) {
-                gArray[j].style = 'opacity:1';
-            }
         },
 
         updateCircle (circleArr, color, rx, ry, h, scale = 1) {

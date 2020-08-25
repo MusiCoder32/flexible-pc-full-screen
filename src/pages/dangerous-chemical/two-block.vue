@@ -1,6 +1,6 @@
 <template>
     <div class="content chemical-two-block">
-        <div class="navigation hBox vh_content_between font-size-medium">
+        <div class="navigation hBox vh_content_between font-size-medium" style="position:relative;z-index: 1000">
             <div class="navigation-item" @click="goTo('first')"><img src="../../assets/img/icon/home_icon.png"/>返回首页
             </div>
             <div class="navigation-item" @click="goTo('coal')"><img src="../../assets/img/icon/not-coal-white.png"/>非煤矿山领域

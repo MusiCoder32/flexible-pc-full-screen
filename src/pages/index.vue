@@ -9,26 +9,47 @@
             <div class="county-box">
                 <div v-for="(item,index) in mapMarkers" :class="'map-'+item.class" :key="item.name+item.total+index"
                      @mouseover="hoverIndex=index" @mouseout="hoverIndex=-1">
-                    <map-marker
-                            :id="'marker'+item.name+index"
-                            :number="item.total"
-                            :name="item.name"
-                            :hover="index===hoverIndex"
-                            :lowRiskCount="item.lowRiskCount"
-                            :generalRiskCount="item.generalRiskCount"
-                            :highRiskCount="item.highRiskCount"
-                            :significantRisk="item.significantRisk"
-                            class="map-marker-normal"
-                    ></map-marker>
+                    <!--<el-tooltip placement="right" popper-class="test">-->
+                    <el-tooltip placement="right">
+                        <div slot="content" class="center-content center-content-tooltip">
+                            <div class="title-icon title-icon-tooltip">
+                                <div class="icon left-top"></div>
+                                <div>低风险：{{item.lowRiskCount}}</div>
+                            </div>
+                            <div class="title-icon title-icon-tooltip">
+                                <div class="icon right-top"></div>
+                                <div>一般风险：{{item.generalRiskCount}}</div>
+                            </div>
+                            <div class="title-icon title-icon-tooltip">
+                                <div class="icon left-bottom"></div>
+                                <div>较大风险：{{item.highRiskCount}}</div>
+                            </div>
+                            <div class="title-icon title-icon-tooltip">
+                                <div class="icon right-bottom"></div>
+                                <div>重大风险：{{item.significantRisk}}</div>
+                            </div>
+                        </div>
+                        <map-marker
+                                :id="'marker'+item.name+index"
+                                :number="item.total"
+                                :name="item.name"
+                                :hover="index===hoverIndex"
+                                :lowRiskCount="item.lowRiskCount"
+                                :generalRiskCount="item.generalRiskCount"
+                                :highRiskCount="item.highRiskCount"
+                                :significantRisk="item.significantRisk"
+                                class="map-marker-normal"
+                        ></map-marker>
+                    </el-tooltip>
                     <img :src="item.src" alt/>
                 </div>
             </div>
             <div class="legend">
                 <div class="top-corner"></div>
-                <div class="center-content">
+                <div class="center-content" style="background: rgba(0, 123, 255, 0.2);">
                     <div class="title-icon">
                         <div class="icon left-top"></div>
-                        <pre>低风险  </pre>
+                        <div>低风险  </div>
                     </div>
                     <div class="title-icon">
                         <div class="icon right-top"></div>
@@ -40,7 +61,7 @@
                     </div>
                     <div class="title-icon">
                         <div class="icon right-bottom"></div>
-                        <pre>重大风险  </pre>
+                        <div>重大风险  </div>
                     </div>
                 </div>
                 <div class="bottom-corner"></div>
@@ -269,7 +290,62 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+    /*.el-tooltip__popper[x-placement^=right] .popper__arrow{*/
+        /*border-right-color: rgba(0, 123, 255, 1) !important;*/
+    /*}*/
+    /*.el-tooltip__popper[x-placement^=right] .popper__arrow:after {*/
+        /*border-right-color: rgba(0, 123, 255, 1) !important;*/
+    /*}*/
+    /*.test{*/
+        /*background: rgba(0, 123, 255, 1) !important;*/
+    /*}*/
+
+    .center-content {
+        width: 200px;
+        height: 50px;
+        padding-left: 15px;
+        font-size: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        .title-icon {
+            width: 50%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            .icon {
+                width: 10px;
+                height: 10px;
+                margin-right: 6px;
+                border-radius: 50%;
+                box-shadow: 0px 0px 8px 0px #007bff;
+            }
+            .left-top {
+                background: #007bff;
+                border: 1px solid #005eff;
+            }
+            .left-bottom {
+                background: #ff732e;
+                border: 1px solid #ff732e;
+            }
+            .right-top {
+                background: #ffd600;
+                border: 1px solid #ffd600;
+            }
+            .right-bottom {
+                background: #ff5e54;
+                border: 1px solid #ff5e54;
+            }
+        }
+    }
+    .center-content-tooltip {
+        width: 120px;
+        height: 100px;
+        padding-left: 0;
+        .title-icon-tooltip {
+            width: 100%;
+        }
+    }
     .dashboard {
         width: 100%;
         height: 100%;
@@ -472,44 +548,6 @@ export default {
                 border-bottom: 15px solid rgba(0, 123, 255, 0.2);
                 border-right: 15px solid transparent;
                 border-left: 15px solid transparent;
-            }
-            .center-content {
-                width: 200px;
-                height: 50px;
-                padding-left: 15px;
-                background: rgba(0, 123, 255, 0.2);
-                font-size: 10px;
-                display: flex;
-                flex-wrap: wrap;
-                .title-icon {
-                    width: 50%;
-                    display: flex;
-                    justify-content: flex-start;
-                    align-items: center;
-                    .icon {
-                        width: 10px;
-                        height: 10px;
-                        margin-right: 6px;
-                        border-radius: 50%;
-                        box-shadow: 0px 0px 8px 0px #007bff;
-                    }
-                    .left-top {
-                        background: #007bff;
-                        border: 1px solid #005eff;
-                    }
-                    .left-bottom {
-                        background: #ff732e;
-                        border: 1px solid #ff732e;
-                    }
-                    .right-top {
-                        background: #ffd600;
-                        border: 1px solid #ffd600;
-                    }
-                    .right-bottom {
-                        background: #ff5e54;
-                        border: 1px solid #ff5e54;
-                    }
-                }
             }
             .bottom-corner {
                 width: 200px;

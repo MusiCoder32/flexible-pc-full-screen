@@ -10,7 +10,7 @@
                     <!--<div class="thumbnails" :style="{background:`url(${item.thumbnails}) 0% 0% / contain`}"></div>-->
                     <el-carousel :interval="5000" class="thumbnails">
                         <el-carousel-item v-for="bg in item.thumbnails" :key="bg" style="width:100%;height:100%"
-                                          :style="{background:`url(${bg}) 0% 0% / contain`}">
+                                          :style="{background:`url(${bg}) no-repeat center / cover`}">
                         </el-carousel-item>
                     </el-carousel>
                     <div class="icon-title">
@@ -119,10 +119,13 @@ export default {
             font-size: 12px;
             font-weight: 500;
             position: absolute;
-            right: 15px;
-            top: 107px;
+            width: 210px;
+            padding:0 5px 0 0;
+            right: 11px;
+            top: 108px;
             display: flex;
-            justify-content: flex-start;
+            justify-content: flex-end;
+            background: linear-gradient(0deg,rgba(12,19,26,0.8),rgba(12,19,26,0.5),rgba(12,19,26,0));
             align-items: center;
             z-index: 1000;
         }

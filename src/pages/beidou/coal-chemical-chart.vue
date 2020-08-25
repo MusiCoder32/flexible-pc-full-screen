@@ -1550,7 +1550,7 @@ export default {
                         yAxis: {},
                         series: [
                             {
-                                name: `红色预警(${data.max})`,
+                                name: `红色预警(${data.redLine})`,
                                 type: 'line',
                                 itemStyle: {
                                     color: 'rgba(255,94,84,1)'
@@ -1558,7 +1558,7 @@ export default {
                                 data: data.redData
                             },
                             {
-                                name: `橙色预警(${data.min})`,
+                                name: `橙色预警(${data.orangeLine})`,
                                 type: 'line',
                                 itemStyle: {
                                     color: 'rgba(255,115,46,1)'
@@ -1683,7 +1683,7 @@ export default {
                         dataZoomShow: true,
                         xAxis: {
                             data: xData,
-                            formatter: function (value, index) {
+                            formatter: function (value) {
                                 // 格式化成月/日，只在第一个刻度显示年份
                                     return value;
                             }
@@ -1704,7 +1704,7 @@ export default {
                         dataZoomShow: true,
                         xAxis: {
                             data: xData,
-                            formatter: function (value, index) {
+                            formatter: function (value) {
                                 // 格式化成月/日，只在第一个刻度显示年份
                                     return value;
                             }
@@ -1738,7 +1738,7 @@ export default {
                         dataZoomShow: true,
                         xAxis: {
                             data: xData,
-                            formatter: function (value, index) {
+                            formatter: function (value) {
                                 // 格式化成月/日，只在第一个刻度显示年份
                                     return value + '日';
                             }

@@ -67,7 +67,7 @@
                     :rectBorderTop="rectBorderTop"
             >
                 <div class="two-rect-content vBox" style="height: 100%;">
-                    <div class="two-block-rect-title font-size-medium font-weight-medium">传感器布设数量统计</div>
+                    <div class="two-block-rect-title font-size-medium font-weight-medium">覆盖企业</div>
                     <div class="hBox vh_content_around " style="width: 100%;flex-wrap:wrap;flex-grow: 1">
                         <div v-for="(item,index) in chemicalCompanyArr" :key="item.name + index"
                              class="chemical-company-item">
