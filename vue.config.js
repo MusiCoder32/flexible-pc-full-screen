@@ -1,5 +1,9 @@
 const HtmlWebpackInlinePlugin = require('html-webpack-inline-plugin');
 
+const CompressionWebpackPlugin = require('compression-webpack-plugin');
+// 定义压缩文件类型
+const productionGzipExtensions = ['js', 'css']
+
 const moment = require('moment');
 process.env.VUE_APP_TIME = moment().format('YYYY.MM.DD hh:mm:ss a');
 
@@ -58,6 +62,14 @@ module.exports = {
         plugins: [
             new HtmlWebpackInlinePlugin({
                 compress: false
+            }),
+            new CompressionWebpackPlugin({
+                filename: '[path].gz[query]',
+                algorithm: 'gzip',
+                test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),//匹配文件名
+                threshold: 10240,//对10K以上的数据进行压缩
+                minRatio: 0.8,
+                deleteOriginalAssets:false,//是否删除源文件
             })
         ],
         // if prod, add externals

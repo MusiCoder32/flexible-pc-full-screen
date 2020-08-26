@@ -9,8 +9,7 @@
             <div class="county-box">
                 <div v-for="(item,index) in mapMarkers" :class="'map-'+item.class" :key="item.name+item.total+index"
                      @mouseover="hoverIndex=index" @mouseout="hoverIndex=-1">
-                    <!--<el-tooltip placement="right" popper-class="test">-->
-                    <el-tooltip placement="right">
+                    <el-tooltip placement="right" popper-class="test">
                         <div slot="content" class="center-content center-content-tooltip">
                             <div class="title-icon title-icon-tooltip">
                                 <div class="icon left-top"></div>
@@ -291,15 +290,15 @@ export default {
 </script>
 
 <style lang="scss">
-    /*.el-tooltip__popper[x-placement^=right] .popper__arrow{*/
-        /*border-right-color: rgba(0, 123, 255, 1) !important;*/
-    /*}*/
-    /*.el-tooltip__popper[x-placement^=right] .popper__arrow:after {*/
-        /*border-right-color: rgba(0, 123, 255, 1) !important;*/
-    /*}*/
-    /*.test{*/
-        /*background: rgba(0, 123, 255, 1) !important;*/
-    /*}*/
+    .el-tooltip__popper[x-placement^=right] .popper__arrow{
+        border-right-color: #082155 !important;
+    }
+    .el-tooltip__popper[x-placement^=right] .popper__arrow:after {
+        border-right-color: #082155 !important;
+    }
+    .test{
+        background: #082155 !important;
+    }
 
     .center-content {
         width: 200px;
