@@ -1,23 +1,20 @@
 <template>
     <div class="bei-dou-box" v-loading="dialogLoading">
         <!--<div v-if="type==='chemical'" class="bei-dou-nav" style="top: 20px;">-->
-            <!--<div @click="navClick('left')" :class="{'nav-opacity':rightActive}"-->
-                 <!--style="padding-right:20px;text-align:right;width: 180px;height:40px;line-height: 40px;font-size: 16px">-->
-                <!--企业分布-->
-            <!--</div>-->
-            <!--<div @click="navClick('right')" :class="{'nav-opacity':!rightActive}"-->
-                 <!--style="padding-left:20px;text-align:left;width: 180px;height:40px;line-height: 40px;font-size: 16px">-->
-                <!--预警态势-->
-            <!--</div>-->
+        <!--<div @click="navClick('left')" :class="{'nav-opacity':rightActive}"-->
+        <!--style="padding-right:20px;text-align:right;width: 180px;height:40px;line-height: 40px;font-size: 16px">-->
+        <!--企业分布-->
+        <!--</div>-->
+        <!--<div @click="navClick('right')" :class="{'nav-opacity':!rightActive}"-->
+        <!--style="padding-left:20px;text-align:left;width: 180px;height:40px;line-height: 40px;font-size: 16px">-->
+        <!--预警态势-->
+        <!--</div>-->
         <!--</div>-->
         <div class="bei-dou-container" id="beidouMapContainer"></div>
-        <el-dialog v-if="dialogTableVisible" width="65.62%" title="传感器：W川AJH104R0009F4" :visible.sync="dialogTableVisible"
+        <el-dialog v-if="dialogTableVisible" width="65.62%" title="传感器：W川AJH104R0009F4"
+                   :visible.sync="dialogTableVisible"
                    :close-on-click-modal=false>
-            <!--<router-view></router-view>-->
-            <div>
-                <coal-chemical-chart></coal-chemical-chart>
-            </div>
-
+            <coal-chemical-chart></coal-chemical-chart>
         </el-dialog>
     </div>
 </template>
@@ -47,7 +44,7 @@ export default {
         };
     },
     mounted () {
-        let id = this.$route.query.id || 'test'
+        let id = this.$route.query.id || 'test';
         this.drawStart(id);
     },
     methods: {
@@ -139,7 +136,7 @@ export default {
                     });
                     marker.on('mouseover', (e) => me._markerOver(e, i));
                     marker.on('mouseout', (e) => me._windowTime = setTimeout(() => me._infoWindow.close(), 5000));
-                    marker.on('click', (e) => me._markerClick(e, item.id,item.number));
+                    marker.on('click', (e) => me._markerClick(e, item.id, item.number));
                 });
             });
         },
@@ -147,13 +144,13 @@ export default {
             try {
                 // let res = await  this.$req.get(this.$url.start.line, { OrgId: 'test' });
                 let res = await  this.$req.get(this.$url.start.line, { OrgId: id });
-                let data = res.data||[];
-                if(data.length===0) {
+                let data = res.data || [];
+                if (data.length === 0) {
                     this.$alert('', '该企业无北斗数据', {
                         confirmButtonText: '确定',
-                        type:'info',
-                        center:true,
-                        roundButton:true
+                        type: 'info',
+                        center: true,
+                        roundButton: true
 
                     });
                 }
@@ -197,14 +194,13 @@ export default {
             me._infoWindow.setContent(me._infoContent);
             me._infoWindow.open(me._beiDouMap, e.target.getPosition());
         },
-        _markerClick (e, id,sensorNumber) {
-            let me = this;
-            console.log(id);
+        _markerClick (e, id, sensorNumber) {
             this.dialogLoading = true;
+            // types:'api/BDSatellite/GetSensBdSensorMenus',
             this.$req.get(this.$url.start.types, { id }).then((res) => {
                 if (res.code === 200) {
-                    this.$store.commit('setSensorTypesData', { data: res.data });
-                    sessionStorage.setItem('sensorNumber',sensorNumber)
+                    sessionStorage.setItem('sensorTypesData', JSON.stringify(res.data));
+                    sessionStorage.setItem('sensorNumber', sensorNumber);
                 }
                 else {
                     console.log(res);
@@ -329,13 +325,13 @@ export default {
             }
         }
         .green {
-            border: 1px solid rgba(43,215,0,0.8);
+            border: 1px solid rgba(43, 215, 0, 0.8);
             > div {
-                background: rgba(43,215,0,0.2);
+                background: rgba(43, 215, 0, 0.2);
                 > div {
-                    background: rgba(43,215,0,0.6);
+                    background: rgba(43, 215, 0, 0.6);
                     > div {
-                        background: rgba(43,215,0,1);
+                        background: rgba(43, 215, 0, 1);
                         padding: 3px;
                     }
                 }

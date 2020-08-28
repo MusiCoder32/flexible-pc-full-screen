@@ -34,7 +34,7 @@ function setRem (screenRatioByDesign, path) {
         let screenWidth = window.screen.width;
         let screenHeight = window.screen.height;
         //在放大缩小的情况下，bodyOffsetHeight、width与screenHeight、width不相等，全屏且100%时相等
-        if ((screenHeight < 1080 || screenWidth < 1920) && (path !== '/login' && path !== '/beidou')) {
+        if ((screenHeight < 1080 || screenWidth < 1920) && (path !== '/login' && path !== '/beidou' && path !== '/sensors')) {
             document.documentElement.style.width = '1920px';
             document.documentElement.style.height = '1080px';
         }
@@ -59,6 +59,7 @@ function setRem (screenRatioByDesign, path) {
 
 //使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {
+    setRem(16 / 9, to.path);
     document.title = `${to.meta.title} | 安信科创`;
     const isLogin = sessionStorage.getItem('isLogin');
     if (!isLogin && to.path !== '/login') {
@@ -73,7 +74,6 @@ router.beforeEach((to, from, next) => {
         next();
     }
 
-    setRem(16 / 9, to.path);
 });
 
 new Vue({

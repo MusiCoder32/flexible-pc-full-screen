@@ -65,7 +65,7 @@
 
 <script>
 import moment from 'moment';
-import {shuffle, cloneDeep} from '../../utils/function-list';
+import {shuffle, cloneDeep, setSessionStorage} from '../../utils/function-list';
 
 export default {
     components: {},
@@ -89,7 +89,7 @@ export default {
     },
     computed: {
         sensorArr () {
-            let arr = this.$store.state.sensorTypes;
+            let arr = JSON.parse(sessionStorage.getItem('sensorTypesData'));
             let data = [];
             arr.forEach(item => {
                 data.push({
@@ -101,7 +101,6 @@ export default {
                 this.getSensorData(data[0].type, 0, false, true);
                 this.type = data[0].type;
             }
-            console.log(2);
             return data;
         },
         datePickerType () {

@@ -23,13 +23,5 @@ const mutations = {
         }
         localStorage.setItem('chemicalData', JSON.stringify(state.chemicalData));
     },
-    setSensorTypesData(state, data) {
-        switch (data.type) {
-            default :
-                state.sensorTypes = data.data;
-                break;
-        }
-        localStorage.setItem('sensorTypes', JSON.stringify(state.sensorTypes));
-    },
 };
 export default mutations;
