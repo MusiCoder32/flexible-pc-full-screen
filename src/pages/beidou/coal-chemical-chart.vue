@@ -64,8 +64,6 @@
 </template>
 
 <script>
-import moment from 'moment';
-import {shuffle, cloneDeep, setSessionStorage} from '../../utils/function-list';
 
 export default {
     components: {},
@@ -421,7 +419,7 @@ export default {
                             'axisLabel': {
                                 align: 'right',
                                 inside: false,
-                                formatter: function (value, index) {
+                                formatter: function (value) {
                                     // 格式化成月/日，只在第一个刻度显示年份
                                     return value + 'm';
                                 }
@@ -452,7 +450,7 @@ export default {
                             'axisLabel': {
                                 align: 'right',
                                 inside: false,
-                                formatter: function (value, index) {
+                                formatter: function (value) {
                                     // 格式化成月/日，只在第一个刻度显示年份
                                     return value + 'm';
                                 }
@@ -626,7 +624,7 @@ export default {
                             'axisLabel': {
                                 align: 'right',
                                 inside: false,
-                                formatter: function (value, index) {
+                                formatter: function (value) {
                                     // 格式化成月/日，只在第一个刻度显示年份
                                     return value;
                                 }
@@ -789,7 +787,7 @@ export default {
                         dataZoomEnd: 100,
                         xAxis: {
                             data: data.time,
-                            formatter: function (value, index) {
+                            formatter: function (value) {
                                 // 格式化成月/日，只在第一个刻度显示年份
                                 return value;
                             }
@@ -913,7 +911,7 @@ export default {
                         dataZoomEnd: 100,
                         xAxis: {
                             data: data.time,
-                            formatter: function (value, index) {
+                            formatter: function (value) {
                                 // 格式化成月/日，只在第一个刻度显示年份
                                 return value;
                             }
@@ -1079,7 +1077,7 @@ export default {
                         dataZoomShow: true,
                         xAxis: {
                             data: xData,
-                            formatter: function (value, index) {
+                            formatter: function (value) {
                                 // 格式化成月/日，只在第一个刻度显示年份
                                 return value;
                             }

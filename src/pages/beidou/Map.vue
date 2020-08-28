@@ -135,7 +135,7 @@ export default {
                         offset: new AMap.Pixel(-width / 2, -height / 2)
                     });
                     marker.on('mouseover', (e) => me._markerOver(e, i));
-                    marker.on('mouseout', (e) => me._windowTime = setTimeout(() => me._infoWindow.close(), 5000));
+                    marker.on('mouseout', () => me._windowTime = setTimeout(() => me._infoWindow.close(), 5000));
                     marker.on('click', (e) => me._markerClick(e, item.id, item.number));
                 });
             });

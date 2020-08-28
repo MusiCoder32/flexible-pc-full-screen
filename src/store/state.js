@@ -18,7 +18,7 @@ catch (e) {
 const state = {
     firstData,
     coalData,
-    chemicalData,
+    chemicalData
 };
 
 export default state;
