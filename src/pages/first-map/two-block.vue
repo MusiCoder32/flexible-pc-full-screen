@@ -87,7 +87,7 @@
                     :rectHeight="rectHeight34"
             >
                 <div class="two-rect-content">
-                    <div class="two-block-rect-title font-size-medium font-weight-medium">重点关注企业</div>
+                    <div class="two-block-rect-title font-size-medium font-weight-medium">金属非金属矿山领域重点关注企业</div>
                 </div>
                 <div class="hBox vh_content_center table-box emphasis-attention-company3">
                     <el-table
@@ -125,7 +125,7 @@
                     :rectHeight="rectHeight34"
             >
                 <div class="two-rect-content">
-                    <div class="two-block-rect-title font-size-medium font-weight-medium">重点关注企业</div>
+                    <div class="two-block-rect-title font-size-medium font-weight-medium">化工园区危险化学品领域重点关注企业</div>
                 </div>
                 <div class="hBox vh_content_center table-box emphasis-attention-company4">
                     <el-table

@@ -8,7 +8,7 @@
         <div class="map">
             <div class="county-box">
                 <div v-for="(item,index) in mapMarkers" :class="'map-'+item.class" :key="item.name+item.total+index"
-                     @mouseover="hoverIndex=index" @mouseout="hoverIndex=-1">
+                     @mouseenter="markerEnter(index,item.class)" @mouseleave="hoverIndex=-1">
                     <el-tooltip placement="right" popper-class="test">
                         <div slot="content" class="center-content center-content-tooltip">
                             <div class="title-icon title-icon-tooltip">
@@ -48,7 +48,7 @@
                 <div class="center-content" style="background: rgba(0, 123, 255, 0.2);">
                     <div class="title-icon">
                         <div class="icon left-top"></div>
-                        <div>低风险  </div>
+                        <div>低风险</div>
                     </div>
                     <div class="title-icon">
                         <div class="icon right-top"></div>
@@ -60,7 +60,7 @@
                     </div>
                     <div class="title-icon">
                         <div class="icon right-bottom"></div>
-                        <div>重大风险  </div>
+                        <div>重大风险</div>
                     </div>
                 </div>
                 <div class="bottom-corner"></div>
@@ -89,7 +89,8 @@ export default {
         return {
             isFullScreen: false,
             chemicalType: 0,
-            hoverIndex: -1
+            hoverIndex: -1,
+            init: 0
         };
     },
     computed: {
@@ -243,11 +244,41 @@ export default {
         }
     },
     mounted () {
+
         bus.$on('chemicalChangeMap', (type) => {
             this.chemicalType = type;
         });
+        this.$nextTick(() => {
+            let a = document.querySelector('.map-lzs');
+            let b = new Event('mouseenter');
+            a.firstElementChild.dispatchEvent(b);
+            a.dispatchEvent(b);
+        });
     },
     methods: {
+        markerEnter (index, type) {
+            this.hoverIndex = index;
+            console.log(index)
+            console.log(type)
+            if(this.init===0 && type==='lzs') {
+                setTimeout(()=>{
+                    this._lzsTooltip = document.querySelector('.test');
+                    this._lzsTooltip.style.display = 'block';
+                },100)
+            }
+            if (this.init === 0) {
+                this.init = 1;
+            }
+            else if (this.init === 1) {
+                this._lzsTooltip = document.querySelector('.test');
+                this._lzsTooltip.style.display = 'none';
+                this.init = 2;
+            }
+            else if (this.init === 2 && type === 'lzs') {
+                this._lzsTooltip.style.display = 'block';
+                this.init = 3;
+            }
+        },
         toggleFullscreen () {
             if (this.isFullScreen) {
                 this.exitFullScreen();
@@ -290,13 +321,15 @@ export default {
 </script>
 
 <style lang="scss">
-    .el-tooltip__popper[x-placement^=right] .popper__arrow{
+    .el-tooltip__popper[x-placement^=right] .popper__arrow {
         border-right-color: #082155 !important;
     }
+
     .el-tooltip__popper[x-placement^=right] .popper__arrow:after {
         border-right-color: #082155 !important;
     }
-    .test{
+
+    .test {
         background: #082155 !important;
     }
 
@@ -337,6 +370,7 @@ export default {
             }
         }
     }
+
     .center-content-tooltip {
         width: 120px;
         height: 100px;
@@ -345,6 +379,7 @@ export default {
             width: 100%;
         }
     }
+
     .dashboard {
         width: 100%;
         height: 100%;
