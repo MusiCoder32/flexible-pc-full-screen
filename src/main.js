@@ -45,10 +45,14 @@ function setRem (screenRatioByDesign, path) {
         let offsetWidth = docEle.offsetWidth || docEle.clientWidth;
         let offsetHeight = docEle.offsetHeight || docEle.clientHeight;
 
+
         let screenRatio = offsetWidth / offsetHeight;
         let fontSize = (screenRatio > screenRatioByDesign
             ? (screenRatioByDesign / screenRatio)
             : 1) * docEle.offsetWidth / 10;
+        if (path ==='/sensors') {
+            fontSize*=2;
+        }
         docEle.style.fontSize = fontSize.toFixed(3) + 'px';
         console.log(fontSize);
     }
@@ -62,8 +66,12 @@ router.beforeEach((to, from, next) => {
     setRem(16 / 9, to.path);
     document.title = `${to.meta.title} | 安信科创`;
     const isLogin = sessionStorage.getItem('isLogin');
+    if (to.path !== '/beidou' && to.path !== '/sensors') {
+        let img = require('./assets/img/bg.png');
+        document.body.style.background = `url(${img}) 0% 0% / cover no-repeat`;
+    }
     if (!isLogin && to.path !== '/login') {
-        if (to.path === '/beidou') {
+        if (to.path === '/beidou' || to.path === '/sensors') {
             next();
         }
         else {

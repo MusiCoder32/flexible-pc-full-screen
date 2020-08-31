@@ -372,6 +372,7 @@ export default {
             }
             .el-dialog__body {
                 padding-top: 10px;
+                height: 720px;
             }
         }
     }

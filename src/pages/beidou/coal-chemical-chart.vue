@@ -1,6 +1,6 @@
 <template>
     <div class="content bei-dou-sensor-dialog" v-loading="loading">
-        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+        <el-menu :default-active="activeIndex" style="width: 100%" mode="horizontal" @select="handleSelect">
             <el-menu-item v-for="(item,i) in sensorArr" :index="i+''" :key="item.name + i">{{item.name}}
             </el-menu-item>
         </el-menu>
@@ -78,6 +78,7 @@ export default {
             BeginDate: '',
             buttonIndex: 'accordingDay',
             optionsGroup: [],
+            sensorArr: [],
             pickerOptions: {
                 disabledDate (time) {
                     return time.getTime() > Date.now();
@@ -86,21 +87,6 @@ export default {
         };
     },
     computed: {
-        sensorArr () {
-            let arr = JSON.parse(sessionStorage.getItem('sensorTypesData'));
-            let data = [];
-            arr.forEach(item => {
-                data.push({
-                    type: item.menuCode,
-                    name: item.menuName
-                });
-            });
-            if (data[0]) {
-                this.getSensorData(data[0].type, 0, false, true);
-                this.type = data[0].type;
-            }
-            return data;
-        },
         datePickerType () {
             let dateType = '';
             switch (this.type) {
@@ -126,7 +112,43 @@ export default {
             return dateType;
         }
     },
+    mounted () {
+        let me = this;
+        this.setSensorArr();
+        if(this.$route.path.indexOf())
+        window.addEventListener('message', function (event) {
+            console.log('我收到了数据')
+            console.log(event);
+            if (event.origin.indexOf('yzt.scdem.cn') < 0) {
+                return '';
+            }
+            else {
+                console.log(event.data);
+                sessionStorage.setItem('sensorTypesData', JSON.stringify(event.data.sensorTypesData));
+                sessionStorage.setItem('sensorNumber', JSON.stringify(event.data.sensorNumber));
+                me.setSensorArr();
+            }
+        });
+    },
     methods: {
+        setSensorArr () {
+            let sensorTypesData = sessionStorage.getItem('sensorTypesData');
+            if (sensorTypesData) {
+                let arr = JSON.parse(sensorTypesData) || [];
+                let data = [];
+                arr.forEach(item => {
+                    data.push({
+                        type: item.menuCode,
+                        name: item.menuName
+                    });
+                });
+                if (data[0]) {
+                    this.getSensorData(data[0].type, 0, false, true);
+                    this.type = data[0].type;
+                }
+                this.sensorArr =  data;
+            }
+        },
         dateChange (e) {
             console.log(e);
             if (Array.isArray(e)) {
@@ -1191,6 +1213,10 @@ export default {
 
 <style lang="scss" scoped>
     .bei-dou-sensor-dialog {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
         .el-menu-item {
             padding: 0 30px;
             text-align: center;
@@ -1204,9 +1230,10 @@ export default {
         }
         .bei-dou-sensor-chart-box {
             width: 100%;
-            height: 613px;
+            flex: 1;
             position: relative;
             .chart-box-head {
+                width: 100%;
                 height: 84px;
                 padding: 20px 30px 0 27px;
                 position: absolute;
@@ -1292,7 +1319,7 @@ export default {
             }
             .chart-container {
                 width: 100%;
-                height: 613px;
+                height: 100%;
             }
         }
     }
