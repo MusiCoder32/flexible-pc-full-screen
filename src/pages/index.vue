@@ -94,7 +94,7 @@ export default {
         };
     },
     computed: {
-        mapMarkers () {
+        mapMarkers: function () {
             let all = [
                 {
                     name: '阿坝州',
@@ -233,14 +233,12 @@ export default {
                     data = this.$store.state.chemicalData.mapParkStatistics || [];
                 }
             }
-            let al = data.map(item => {
+            return data.map(item => {
                 let obj = all.filter(AItem => {
                     return AItem.name.indexOf(item.areaName) > -1;
                 });
                 return { ...item, ...obj[0] };
             });
-            console.log(al);
-            return al;
         }
     },
     mounted () {
@@ -258,13 +256,13 @@ export default {
     methods: {
         markerEnter (index, type) {
             this.hoverIndex = index;
-            console.log(index)
-            console.log(type)
-            if(this.init===0 && type==='lzs') {
-                setTimeout(()=>{
+            console.log(index);
+            console.log(type);
+            if (this.init === 0 && type === 'lzs') {
+                setTimeout(() => {
                     this._lzsTooltip = document.querySelector('.test');
                     this._lzsTooltip.style.display = 'block';
-                },100)
+                }, 100);
             }
             if (this.init === 0) {
                 this.init = 1;
