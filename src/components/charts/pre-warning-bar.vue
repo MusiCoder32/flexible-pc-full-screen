@@ -62,7 +62,6 @@ export default {
                     'xAxis': [
                         {
                             'type': 'category',
-                            dimensions:['date'],
                             'axisLine': {
                                 lineStyle: {
                                     color: 'rgba(0,123,255,.5)',
