@@ -188,18 +188,10 @@ export default {
                     .title-right-border {
                         flex: 1;
                         height:15px;
-                        border-bottom:1px solid rgba(0,94,255,0.37);
+                        background: rgba(0,94,255,0.37);
                         margin-left:4px;
-                        border-left:5px solid rgba(0,94,255,0.5);
-                        position:relative;
-                        &::before {
-                            border-bottom:14px solid rgba(0,94,255,0.5);
-                            border-right:14px solid transparent;
-                            content: "";
-                            position:absolute;
-                            left: 0;
-                            bottom:0;
-                        }
+                        clip-path: polygon(0 0 ,5px 0,19px 14px ,100% 14px,100% 15px,0 100%);
+
                     }
                     .sensor-right-title {
                         transform: translate(0,-3px);

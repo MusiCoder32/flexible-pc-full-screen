@@ -964,7 +964,8 @@ export default {
                 case 'LPG':
                 case 'NH3':
                 case 'SiHCl3':
-                case 'JIAWAN':
+                case "JIAWAN":
+
                     let series = [];
                     for (let key in seriesData) {
                         if (seriesData[key]) {
@@ -1211,7 +1212,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     .bei-dou-sensor-dialog {
         display: flex;
         flex-direction: column;
@@ -1315,6 +1316,10 @@ export default {
                     .active {
                         background: #007bff;
                     }
+                }
+
+                .el-date-editor .el-range-separator {
+                    padding:0;
                 }
             }
             .chart-container {

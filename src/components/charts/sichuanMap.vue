@@ -1,5 +1,5 @@
 <template>
-  <chart :auto-resize='true' :options='options'></chart>
+  <chart :autoresize='true' :options='options'></chart>
 </template>
 
 <script>

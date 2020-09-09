@@ -1,8 +1,6 @@
 <template>
-    <div :class="[captionHeight]" class="caption">
-        <div :class="[borderWidth1]" class="caption-border-1"></div>
-        <div :class="[borderWidth2]" class="caption-border-2"></div>
-        <div :class="[captionHeight]" class="caption-content font-size-x">{{title}}</div>
+    <div :class="[borderWidth2]" class="caption">
+        {{title}}
     </div>
 </template>
 
@@ -14,60 +12,31 @@ export default {
             type:String,
             default:'北斗+技术'
         },
-        captionHeight: {
-            type: String,
-            default: 'content-height'
-        },
-        borderWidth1: {
-            type: String,
-            default: 'border-width-1'
-        },
         borderWidth2: {
             type: String,
-            default: 'border-width-2'
-        }
+            default: 'border-width'
+        },
     }
 }
 </script>
 
 <style lang="scss" scoped>
-    .content-height {
-        height: 44px;
-    }
 
-    .border-width-1 {
-        width: 761px;
-
-    }
-
-    .border-width-2 {
+    .border-width {
         width: 790px;
-
     }
-
     .caption {
         position: relative;
+        height: 44px;
+        background: rgba(0, 123, 255, 0.2);
+        clip-path:polygon(0 15px, 15px 0 , calc(100% - 44px) 0, 100% 100% ,0 100%);
+        padding-left:16px;
 
-        .caption-border-1 {
-            position: absolute;
-            border-bottom: 15px solid rgba(0, 123, 255, 0.2);
-            border-right: 15px solid transparent;
-            border-left: 15px solid transparent;
-        }
+        font-size: 20px;
+        text-align: left;
+        color: #ffffff;
+        line-height: 44px;
 
-        .caption-border-2 {
-            position: absolute;
-            top: 15px;
-            border-bottom: 29px solid rgba(0, 123, 255, 0.2);
-            border-right: 29px solid transparent;
-        }
-
-        .caption-content {
-            line-height: 44px;
-            margin-left: 15px;
-            font-weight: 600;
-
-        }
     }
 
 </style>

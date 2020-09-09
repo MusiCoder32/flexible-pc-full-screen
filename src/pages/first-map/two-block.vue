@@ -4,7 +4,6 @@
             <oblique-icon @icon-click="goto('coal')" class="two-block-oblique-icon"></oblique-icon>
             <oblique-angle
                     class="mb6"
-                    :borderWidth1="borderWidth1"
                     :borderWidth2="borderWidth2"
                     :title="obliqueTextLeft"
             ></oblique-angle>

@@ -29,6 +29,7 @@
                 <!--</div>-->
             </el-form>
         </div>
+        <div class="beian">蜀ICP备19017581号-1 \ 公安备案编号：51010402000507 \ Powered by &#169 2010-2020 DEM.CN</div>
     </div>
 </template>
 
@@ -137,6 +138,7 @@ export default {
 </script>
 
 <style lang="scss">
+
     .login-wrap {
         position: relative;
         width: 100%;
@@ -151,6 +153,17 @@ export default {
             position: absolute;
             top: 100px;
             margin: 0 auto;
+        }
+        .beian {
+            position: absolute;
+            bottom: 164px;
+            width: 100%;
+            height: 16px;
+            font-size: 16px;
+            font-weight: 400;
+            text-align: center;
+            color: #1e407f;
+            line-height: 16px;
         }
     }
 

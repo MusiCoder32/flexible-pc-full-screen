@@ -1,5 +1,5 @@
 <template>
-    <chart class='line-chart' :auto-resize='true' :options='options'>
+    <chart class='line-chart' :autoresize='true' :options='options'>
     </chart>
 </template>
 

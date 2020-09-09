@@ -1,5 +1,5 @@
 <template>
-    <chart class='line-chart' :auto-resize='true' :options='options'>
+    <chart class='line-chart' :autoresize='true' :options='options'>
     </chart>
 </template>
 
@@ -52,7 +52,7 @@ export default {
                     icon: 'circle',
                     left: '38%',
                     data: this.getBdSensorStatistics,
-                    formatter: (name, value, ss) => {
+                    formatter: (name) => {
                         let obj = this.getBdSensorStatistics.filter(item => {
                             return item.name === name;
                         });
