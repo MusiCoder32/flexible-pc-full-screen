@@ -107,7 +107,7 @@ export default {
             this._trHeight = document.querySelector('div.emphasis-attention-company-coal table  tbody  tr').offsetHeight;
             let bodyHeight = document.querySelector('div.emphasis-attention-company-coal').offsetHeight;
 
-            this._containBoxStyle = document.querySelector('div.emphasis-attention-company-coal div.el-table__body-wrapper.is-scrolling-none').style;
+            this._containBoxStyle = document.querySelector('div.emphasis-attention-company-coal div.el-table__body-wrapper.is-scrolling-none >table').style;
 
             if ((this.tableData.length + 1) * this._trHeight > bodyHeight) {
                 this._containBoxStyle.transform = `translate(0,-${this._trHeight * 2 + 'px'})`;

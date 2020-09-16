@@ -181,7 +181,7 @@ export default {
         .icon-class {
             width: 26px;
             height: 26px;
-            background-image: url("../../assets/img/icon/3.png");
+            background-image: url("../../assets/img/icon/chemical-white.png");
             background-position: center;
             background-repeat: no-repeat;
             border-radius: 50%;
