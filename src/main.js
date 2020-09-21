@@ -66,7 +66,6 @@ function setRem(screenRatioByDesign, path) {
 
 //使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {
-    setRem(16 / 9, to.path);
     document.title = `${to.meta.title} | 安信科创`;
     const isLogin = sessionStorage.getItem("isLogin");
     if (to.path !== "/beidou" && to.path !== "/sensors") {
@@ -84,6 +83,7 @@ router.beforeEach((to, from, next) => {
     else {
         next();
     }
+    setRem(16 / 9, to.path);
 
 });
 

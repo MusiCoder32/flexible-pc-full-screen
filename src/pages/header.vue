@@ -10,7 +10,7 @@
             </div>
             <div @click="goto('chemical')" class="menu hBox vh_items_center header-chemical-icon">
                 <img class="mr8" src="../assets/img/web1x_化工logo_img.png"/>
-                化工园区危险化学品应急监控及事故预警
+                化工园区危险化学品应急监控及事故预警系统
             </div>
             <div class=" hBox vh_content_between vh_items_center header-left">
                 <div class="hBox vh_items_center header-left-date">
