@@ -44,7 +44,7 @@
                                 </div>
                             </div>
                             <div>
-                                <div>露天广场</div>
+                                <div>露天矿场</div>
                                 <div>{{coalStatistics.openPitMineCount||0}}</div>
                             </div>
                         </div>
