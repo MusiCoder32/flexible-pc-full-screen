@@ -18,18 +18,24 @@
                     <div class="company-statistics-box">
                         <div class="total-box">
                             <div class="total-number">
-                                <img src="../../assets/img/index/13.png"/>
-                                <img src="../../assets/img/index/12.png"/>
+                                <img src="../../assets/img/index/96.png"/>
+                                <img src="../../assets/img/index/95.png"/>
                                 <div class="icon-box">
                                     <img src="../../assets/img/index/9.png"/>
                                     <img src="../../assets/img/index/8.png"/>
                                     <img src="../../assets/img/index/11.png"/>
                                     <img src="../../assets/img/index/10.png"/>
                                 </div>
-                                <div class="number">{{coalStatistics.companyCount||0}}</div>
+                                <div class="number">
+                                    <div>
+                                        {{coalStatistics.pilotCount||0}}
+                                    </div>
+                                    <div class="font-size-small font-weight-medium">试点企业</div>
+                                </div>
+
                             </div>
                             <div class="total-title">
-                                企业总数
+                                基础信息数量:{{coalStatistics.companyCount}}
                             </div>
                         </div>
                         <div class="item-box">
@@ -65,15 +71,25 @@
                     :rectHeight="rectHeight"
                     :rectBorderTop="rectBorderTop"
             >
-                <div class="two-rect-content vBox" style="height: 100%;">
+                <div class="two-rect-content vBox vh_content_start" style="height: 100%;">
                     <div class="two-block-rect-title font-size-medium font-weight-medium">覆盖企业</div>
-                    <div class="hBox vh_content_around " style="width: 100%;flex-wrap:wrap;flex-grow: 1">
-                        <div v-for="(item,index) in chemicalCompanyArr" :key="item.name + index"
-                             class="chemical-company-item">
-                            <div>
-                                <div>{{item.value}}</div>
-                                <div>{{item.name}}</div>
+                    <div style="width: 100%;flex: 1" class="hBox">
+                        <div style="width: 40%" class="vBox vh_content_around vh_items_center">
+                            <div class="test-company">
+                                <div>{{chemicalCompanyArr[4].value}}</div>
+                                <div>{{chemicalCompanyArr[4].name}}</div>
                             </div>
+                            <div class="base-info font-size-small font-weight-medium">基础信息数量:231</div>
+                        </div>
+                        <div class="vBox vh_content_around " style="width: 60%;flex-wrap:wrap;flex-grow: 1">
+                            <template v-for="(item,index) in chemicalCompanyArr">
+                                <div v-if="index<3" class="chemical-company-item"  :key="item.name + index">
+                                    <div>
+                                        <div>{{item.value}}</div>
+                                        <div>{{item.name}}</div>
+                                    </div>
+                                </div>
+                            </template>
                         </div>
                     </div>
                 </div>
@@ -208,23 +224,27 @@ export default {
             let chemicalStatistics = this.$store.state.firstData.hazardChemicalCover || {};
             let chemicalCompanyArr = [
                 {
-                    name: '危险化学品企业数量',
+                    name: '重大危险源',
                     value: 0
                 }, {
-                    name: '重大危险源数量',
+                    name: '重点监管企业',
                     value: 0
                 }, {
-                    name: '化工园区数量',
+                    name: '化工园区',
                     value: 0
                 }, {
-                    name: '重点监管工艺数量',
+                    name: '基础信息数量',
+                    value: 0
+                },{
+                    name: '试点企业',
                     value: 0
                 }
             ];
-            chemicalCompanyArr[0].value = chemicalStatistics.companyCount || 0;
-            chemicalCompanyArr[1].value = chemicalStatistics.majorHazardCount || 0;
+            chemicalCompanyArr[0].value = chemicalStatistics.majorHazardCount || 0;
+            chemicalCompanyArr[1].value = chemicalStatistics.companyCount || 0;
             chemicalCompanyArr[2].value = chemicalStatistics.chemicalIndustryParkCount || 0;
             chemicalCompanyArr[3].value = chemicalStatistics.keySupervisionProcessCount || 0;
+            chemicalCompanyArr[4].value = chemicalStatistics.pilotCount || 0;
             return chemicalCompanyArr;
         }
     },
@@ -480,19 +500,23 @@ export default {
                                 display: flex;
                                 justify-content: center;
                                 align-items: center;
+                                flex-direction: column;
                                 position: absolute;
-                                top: 3px;
+                                top: 2px;
                                 left: -2px;
                                 z-index: 1000;
                                 font-size: 36px;
                                 font-family: BebasNeue;
+                                >div:first-child {
+                                    height: 34px;
+                                }
                             }
                         }
                         .total-title {
-                            width: 80px;
+                            width: 138px;
                             height: 30px;
-                            background: url("../../assets/img/index/7.png") center no-repeat;
-                            background-size: contain;
+                            background: url("../../assets/img/index/94.png") center no-repeat;
+                            background-size: cover;
                             line-height: 30px;
                             text-align: center;
                             font-size: 12px;
@@ -569,9 +593,40 @@ export default {
                         }
                     }
                 }
-
+                .test-company {
+                    background: url("../../assets/img/index/93.png") center no-repeat;
+                    background-size: contain;
+                    width: 170px;
+                    height: 124px;
+                    &:hover {
+                        background: url("../../assets/img/index/92.png") center no-repeat;
+                        background-size: contain;
+                    }
+                    >div:first-child {
+                        width:100%;
+                        height:92px;
+                        line-height: 92px;
+                        text-align: center;
+                        font-size: 36px;
+                        font-family: BebasNeue;
+                    }
+                    >div:last-child {
+                        width:100%;
+                        height:32px;
+                        line-height: 32px;
+                        text-align: center;
+                    }
+                }
+                .base-info {
+                    background: url("../../assets/img/index/94.png") center no-repeat;
+                    background-size: contain;
+                    width: 138px;
+                    height: 30px;
+                    text-align: center;
+                    line-height: 30px;
+                }
                 .chemical-company-item {
-                    width: 50%;
+                    width: 100%;
                     display: flex;
                     justify-content: center;
                     align-items: center;
@@ -579,29 +634,31 @@ export default {
                         align-items: flex-end;
                     }
                     & > div {
-                        width: 190px;
-                        height: 67px;
-                        background: url("../../assets/img/index/2.png") center no-repeat;
+                        width: 196px;
+                        height: 52px;
+                        background: url("../../assets/img/index/91.png") center no-repeat;
                         background-size: contain;
                         position: relative;
                         display: flex;
                         justify-content: center;
                         &:hover {
-                            background: url("../../assets/img/index/1.png") center no-repeat;
+                            background: url("../../assets/img/index/97.png") center no-repeat;
                             background-size: contain;
                         }
                         & > div {
                             width: 100%;
                             position: absolute;
-                            text-align: center;
                         }
                         & > div:first-child {
-                            top: 2px;
+                            top: 8px;
+                            right:6px;
                             font-size: 36px;
+                            text-align: right;
                             font-family: BebasNeue;
                         }
                         & > div:last-child {
-                            bottom: 7px;
+                            top: 12px;
+                            left:16px;
                             font-size: 12px;
                         }
                     }
