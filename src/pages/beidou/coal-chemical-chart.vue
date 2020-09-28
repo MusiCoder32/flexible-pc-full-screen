@@ -67,72 +67,71 @@
 
 export default {
     components: {},
-    data () {
+    data() {
         return {
-            activeIndex: '0',
-            type: '',
+            activeIndex: "0",
+            type: "",
             chartDateReady: false,
-            value1: '',//设置默认时间
+            value1: "",//设置默认时间
             lpgObj: {},
             loading: false,
-            BeginDate: '',
-            buttonIndex: 'accordingDay',
+            BeginDate: "",
+            buttonIndex: "accordingDay",
             optionsGroup: [],
             sensorArr: [],
             pickerOptions: {
-                disabledDate (time) {
+                disabledDate(time) {
                     return time.getTime() > Date.now();
                 }
             }
         };
     },
     computed: {
-        datePickerType () {
-            let dateType = '';
+        datePickerType() {
+            let dateType = "";
             switch (this.type) {
-                case 'JIANGYULIANG':
-                    dateType = 'date';
+                case "JIANGYULIANG":
+                    dateType = "date";
                     break;
-                case 'LPG':
-                case 'NH3':
-                case 'SiHCl3':
-                case 'CH4':
-                case 'WEIYI':
-                case 'SUDU':
-                case 'JIASUDU':
-                case 'SHUIPING':
-                case 'KONGJIAN':
-                case 'GANTAN':
-                    dateType = 'daterange';
+                case "LPG":
+                case "NH3":
+                case "SiHCl3":
+                case "CH4":
+                case "WEIYI":
+                case "SUDU":
+                case "JIASUDU":
+                case "SHUIPING":
+                case "KONGJIAN":
+                case "GANTAN":
+                    dateType = "daterange";
                     break;
                 default :
-                    dateType = 'date';
+                    dateType = "date";
                     break;
             }
             return dateType;
         }
     },
-    mounted () {
+    mounted() {
         let me = this;
         this.setSensorArr();
-        if(this.$route.path.indexOf())
-        window.addEventListener('message', function (event) {
-            console.log('我收到了数据')
+        window.addEventListener("message", function (event) {
+            console.log("我收到了数据");
             console.log(event);
-            if (event.origin.indexOf('yzt.scdem.cn') < 0) {
-                return '';
+            if (event.origin.indexOf("yzt.scdem.cn") < 0) {
+                return "";
             }
             else {
                 console.log(event.data);
-                sessionStorage.setItem('sensorTypesData', JSON.stringify(event.data.sensorTypesData));
-                sessionStorage.setItem('sensorNumber', JSON.stringify(event.data.sensorNumber));
+                sessionStorage.setItem("sensorTypesData", JSON.stringify(event.data.sensorTypesData));
+                sessionStorage.setItem("sensorNumber", JSON.stringify(event.data.sensorNumber));
                 me.setSensorArr();
             }
         });
     },
     methods: {
-        setSensorArr () {
-            let sensorTypesData = sessionStorage.getItem('sensorTypesData');
+        setSensorArr() {
+            let sensorTypesData = sessionStorage.getItem("sensorTypesData");
             if (sensorTypesData) {
                 let arr = JSON.parse(sensorTypesData) || [];
                 let data = [];
@@ -146,35 +145,35 @@ export default {
                     this.getSensorData(data[0].type, 0, false, true);
                     this.type = data[0].type;
                 }
-                this.sensorArr =  data;
+                this.sensorArr = data;
             }
         },
-        dateChange (e) {
+        dateChange(e) {
             console.log(e);
             if (Array.isArray(e)) {
-                this.getSensorData(this.type, this.activeIndex, { BeginDate: e[0], EndDate: e[1] }, true);
+                this.getSensorData(this.type, this.activeIndex, {BeginDate: e[0], EndDate: e[1]}, true);
             }
             else {
-                this.getSensorData(this.type, this.activeIndex, { BeginDate: e }, true);
+                this.getSensorData(this.type, this.activeIndex, {BeginDate: e}, true);
             }
         },
-        seriesFunction (arr) {
+        seriesFunction(arr) {
             let series = [];
 
             arr.forEach(item => {
-                if (item.type === 'line') {
+                if (item.type === "line") {
                     series.push({
-                        'name': item.name,
-                        'type': item.type,
+                        "name": item.name,
+                        "type": item.type,
                         symbolSize: 10,
-                        symbol: 'circle',
-                        showSymbol: true,
-                        'itemStyle': {
-                            'normal': {
+                        symbol: "circle",
+                        showSymbol: item.showSymbol,
+                        "itemStyle": {
+                            "normal": {
                                 color: item.itemStyle.normalColor,
-                                'barBorderRadius': 1,
+                                "barBorderRadius": 1,
                                 borderWidth: 1,
-                                borderColor: 'white',
+                                borderColor: "white",
                                 areaStyle: item.itemStyle.areaShow ? {
                                     //color: '#94C9EC'
                                     color: {
@@ -192,7 +191,7 @@ export default {
                                             }
                                         ]
                                     }
-                                } : ''
+                                } : ""
 
                             }
                         },
@@ -202,12 +201,12 @@ export default {
                                 color: item.itemStyle.normalColor
                             }
                         },
-                        'data': item.data,
+                        "data": item.data,
+                        markLine: item.markLine,
                         smooth: true
                     });
-
                 }
-                else if (item.type === 'bar') {
+                else if (item.type === "bar") {
                     series.push(
                         {
                             data: item.data,
@@ -228,31 +227,31 @@ export default {
 
             return series;
         },
-        optionFunction (data, type) {
+        optionFunction(data, type) {
             console.log(data);
             let itemStyleArr = [
                 {
-                    normalColor: 'rgba(0,189,153,1)',
-                    colorStart: 'rgba(0,189,153,0.1)',
-                    colorEnd: 'rgba(0,189,153,0)',
+                    normalColor: "rgba(0,189,153,1)",
+                    colorStart: "rgba(0,189,153,0.1)",
+                    colorEnd: "rgba(0,189,153,0)",
                     areaShow: true
                 },
                 {
-                    normalColor: 'rgba(140,113,255,1)',
-                    colorStart: 'rgba(140,113,255,0.1)',
-                    colorEnd: 'rgba(140,113,255,0)',
+                    normalColor: "rgba(140,113,255,1)",
+                    colorStart: "rgba(140,113,255,0.1)",
+                    colorEnd: "rgba(140,113,255,0)",
                     areaShow: true
 
                 },
                 {
-                    normalColor: 'rgba(0,123,255,1)',
-                    colorStart: 'rgba(0,123,255,0.1)',
-                    colorEnd: 'rgba(0,123,255,0)',
+                    normalColor: "rgba(0,123,255,1)",
+                    colorStart: "rgba(0,123,255,0.1)",
+                    colorEnd: "rgba(0,123,255,0)",
                     areaShow: true
                 }
 
             ];
-            if (type === 'KONGJIAN') {
+            if (type === "KONGJIAN") {
                 let startPoint = data.shift();
                 let arr = [-0.88, -1.76, 0.37];
                 data.forEach((item, index) => {
@@ -266,16 +265,16 @@ export default {
                 return {
                     grid3D: {},
                     legend: {
-                        icon: 'circle',
+                        icon: "circle",
                         top: 28,
-                        left: 'center',
+                        left: "center",
                         itemWidth: 10,
                         itemGap: 20,
                         textStyle: {
-                            color: '#556677',
+                            color: "#556677",
                             fontSize: 16
                         },
-                        backgroundColor: 'rgba(0,123,255,0.1)',
+                        backgroundColor: "rgba(0,123,255,0.1)",
                         borderRadius: 5
                     },
                     xAxis3D: {},
@@ -283,27 +282,27 @@ export default {
                     zAxis3D: {},
                     series: [
                         {
-                            type: 'scatter3D',
-                            name: '起始点',
+                            type: "scatter3D",
+                            name: "起始点",
                             data: [startPoint],
                             itemStyle: {
-                                color: 'rgba(8,33,85,1)'
+                                color: "rgba(8,33,85,1)"
                             },
                             symbolSize: 16
                         },
                         {
-                            type: 'scatter3D',
-                            name: '结束点',
+                            type: "scatter3D",
+                            name: "结束点",
                             itemStyle: {
-                                color: 'rgba(255,94,84,1)'
+                                color: "rgba(255,94,84,1)"
                             },
                             symbolSize: 16,
                             data: [endPoint]
                         },
                         {
-                            type: 'scatter3D',
+                            type: "scatter3D",
                             itemStyle: {
-                                color: 'rgba(0,123,255,0.3)'
+                                color: "rgba(0,123,255,0.3)"
                             },
                             symbolSize: 8,
                             data
@@ -313,79 +312,79 @@ export default {
                     ]
                 };
             }
-            else if (type === 'GANTAN') {
+            else if (type === "GANTAN") {
                 return {
-                    backgroundColor: 'transparent',
+                    backgroundColor: "transparent",
                     textStyle: {
                         fontSize: 12,
-                        fontFamily: 'PingFang',
+                        fontFamily: "PingFang",
                         fontWeight: 600,
-                        color: '#1E2C41'
+                        color: "#1E2C41"
                     },
                     legend: {
-                        icon: 'circle',
+                        icon: "circle",
                         top: 28,
-                        left: 'center',
+                        left: "center",
                         itemWidth: 10,
                         itemGap: 20,
                         textStyle: {
-                            color: '#556677',
+                            color: "#556677",
                             fontSize: 16
                         },
-                        backgroundColor: 'rgba(0,123,255,0.1)',
+                        backgroundColor: "rgba(0,123,255,0.1)",
                         borderRadius: 5
                     },
                     tooltip: {
-                        trigger: 'axis',
+                        trigger: "axis",
                         axisPointer: {
                             lineStyle: {
-                                color: '#017bff'
+                                color: "#017bff"
                             },
                             textStyle: {
-                                color: '#fff',
+                                color: "#fff",
                                 fontSize: 12
                             }
                         },
                         formatter: function (series) {
-                            let str = '';
+                            let str = "";
                             series.forEach((item, index) => {
                                 let type = item.seriesName;
                                 if (index === 0) {
                                     str += item.axisValueLabel;
                                 }
                                 if (str.length > 0) {
-                                    str += '<br>';
+                                    str += "<br>";
                                 }
-                                str += type + ':' + item.data;
+                                str += type + ":" + item.data;
                             });
                             return str;
                         }
                     },
                     grid: {
-                        'borderWidth': 0,
+                        "borderWidth": 0,
                         top: 100,
                         left: 80,
                         right: 50,
                         bottom: 100,
                         textStyle: {
-                            color: '#fff'
+                            color: "#fff"
                         }
                     },
-                    'calculable': true,
+                    "calculable": true,
                     dataZoom: [
                         {
                             realtime: true,
                             bottom: 10,
                             height: 32,
-                            backgroundColor: 'rgba(19,114,255,0.2)',
-                            borderColor: 'transparent',
-                            fillerColor: 'rgba(19,114,255,0.2)',
-                            handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-                            handleSize: '80%',
+                            backgroundColor: "rgba(19,114,255,0.2)",
+                            borderColor: "transparent",
+                            fillerColor: "rgba(19,114,255,0.2)",
+                            handleIcon: "M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z",
+                            handleSize: "80%",
                             handleStyle: {
-                                color: '#fff',
+                                color: "#fff",
                                 shadowBlur: 3,
-                                shadowColor: 'rgba(0, 0, 0, 0.6)',
+                                shadowColor: "rgba(0, 0, 0, 0.6)",
                                 shadowOffsetX: 2,
                                 shadowOffsetY: 2
                             },
@@ -393,110 +392,110 @@ export default {
                             end: 100,
                             borderRadius: 5,
                             textStyle: {
-                                height: '10px'
+                                height: "10px"
                             }
                         },
                         {
-                            type: 'inside'
+                            type: "inside"
                         }
 
                     ],
-                    'xAxis': [
+                    "xAxis": [
                         {
-                            'axisLine': {
+                            "axisLine": {
                                 lineStyle: {
-                                    color: '#A5BFE2',
+                                    color: "#A5BFE2",
                                     width: 1
                                 }
                             },
-                            'splitLine': {
-                                'show': false
+                            "splitLine": {
+                                "show": false
                             },
-                            'axisTick': {
-                                'show': false
+                            "axisTick": {
+                                "show": false
                             },
-                            'splitArea': {
-                                'show': false
+                            "splitArea": {
+                                "show": false
                             },
 
-                            'data': data.xData
+                            "data": data.xData
                         }
                     ],
-                    'yAxis': [
+                    "yAxis": [
                         {
-                            'type': 'value',
-                            name: '干摊长度',
-                            'splitLine': {
-                                'show': true,
+                            "type": "value",
+                            name: "干摊长度",
+                            "splitLine": {
+                                "show": true,
                                 lineStyle: {
-                                    color: 'rgba(165,191,226,0.2)'
+                                    color: "rgba(165,191,226,0.2)"
                                 }
                             },
-                            'axisLine': {
-                                'show': false
+                            "axisLine": {
+                                "show": false
                             },
-                            'axisTick': {
-                                'show': false
+                            "axisTick": {
+                                "show": false
                             },
-                            'axisLabel': {
-                                align: 'right',
+                            "axisLabel": {
+                                align: "right",
                                 inside: false,
                                 formatter: function (value) {
                                     // 格式化成月/日，只在第一个刻度显示年份
-                                    return value + 'm';
+                                    return value + "m";
                                 }
 
                             },
                             offset: 20,
-                            'splitArea': {
-                                'show': false
+                            "splitArea": {
+                                "show": false
                             }
 
 
                         },
                         {
-                            'type': 'value',
-                            name: '水位沉降',
-                            'splitLine': {
-                                'show': true,
+                            "type": "value",
+                            name: "水位沉降",
+                            "splitLine": {
+                                "show": true,
                                 lineStyle: {
-                                    color: 'rgba(165,191,226,0.2)'
+                                    color: "rgba(165,191,226,0.2)"
                                 }
                             },
-                            'axisLine': {
-                                'show': false
+                            "axisLine": {
+                                "show": false
                             },
-                            'axisTick': {
-                                'show': false
+                            "axisTick": {
+                                "show": false
                             },
-                            'axisLabel': {
-                                align: 'right',
+                            "axisLabel": {
+                                align: "right",
                                 inside: false,
                                 formatter: function (value) {
                                     // 格式化成月/日，只在第一个刻度显示年份
-                                    return value + 'm';
+                                    return value + "m";
                                 }
 
                             },
                             offset: 20,
-                            'splitArea': {
-                                'show': false
+                            "splitArea": {
+                                "show": false
                             }
 
                         }
                     ],
                     series: [
                         {
-                            name: '干摊长度',
-                            type: 'line',
+                            name: "干摊长度",
+                            type: "line",
                             itemStyle: itemStyleArr.shift(),
                             data: data.yData,
-                            symbol: 'none',
+                            symbol: "none",
                             yAxisIndex: 0
                         }, {
-                            name: '水位沉降',
-                            type: 'line',
-                            symbol: 'none',
+                            name: "水位沉降",
+                            type: "line",
+                            symbol: "none",
                             itemStyle: itemStyleArr.shift(),
                             data: data.hData,
                             yAxisIndex: 1
@@ -509,13 +508,14 @@ export default {
 
                 //散点图时，去掉trigger与axispointer
                 let tooltip = {
-                    trigger: 'axis',
+                    trigger: "axis",
+                    show: obj.tooltip.hidden ? false : true,
                     axisPointer: {
                         lineStyle: {
-                            color: '#017bff'
+                            color: "#017bff"
                         },
                         textStyle: {
-                            color: '#fff',
+                            color: "#fff",
                             fontSize: 12
                         }
                     },
@@ -527,12 +527,12 @@ export default {
                     delete tooltip.axisPointer;
                 }
                 return {
-                    backgroundColor: 'transparent',
+                    backgroundColor: "transparent",
                     textStyle: {
                         fontSize: 12,
-                        fontFamily: 'PingFang',
+                        fontFamily: "PingFang",
                         fontWeight: 600,
-                        color: '#1E2C41'
+                        color: "#1E2C41"
                     },
                     title: [
                         {
@@ -541,54 +541,54 @@ export default {
                             textStyle: {
                                 fontSize: 16,
                                 fontWeight: 400,
-                                fontFamily: 'PingFang'
+                                fontFamily: "PingFang"
                             },
                             top: 62,
-                            left: obj.title.left || 'center'
+                            left: obj.title.left || "center"
                             // backgroundColor: 'rgba(0,123,255,0.1)'
                         }
                     ],
                     legend: {
-                        icon: 'circle',
+                        icon: "circle",
                         top: obj.legend ? obj.legend.top ? obj.legend.top : 28 : 28,
-                        left: obj.legend ? obj.legend.left ? obj.legend.left : 'center' : 'center',
+                        left: obj.legend ? obj.legend.left ? obj.legend.left : "center" : "center",
                         itemWidth: 10,
                         itemGap: 20,
                         textStyle: {
-                            color: '#556677',
+                            color: "#556677",
                             fontSize: 16
                         },
-                        backgroundColor: 'rgba(0,123,255,0.1)',
+                        backgroundColor: "rgba(0,123,255,0.1)",
                         borderRadius: 5,
-                        data: obj.legend ? obj.legend.data : ''
+                        data: obj.legend ? obj.legend.data : ""
                     },
                     tooltip,
-                    'grid': {
-                        'borderWidth': 0,
+                    "grid": {
+                        "borderWidth": 0,
                         top: obj.grid ? obj.grid.top ? obj.grid.top : 100 : 100,
                         left: obj.grid ? obj.grid.left ? obj.grid.left : 50 : 50,
                         right: obj.grid ? obj.grid.right ? obj.grid.right : 20 : 20,
                         bottom: obj.grid ? obj.grid.bottom ? obj.grid.bottom : 100 : 100,
                         textStyle: {
-                            color: '#fff'
+                            color: "#fff"
                         }
                     },
-                    'calculable': true,
+                    "calculable": true,
                     dataZoom: [
                         {
                             show: obj.dataZoomShow,
                             realtime: true,
                             bottom: 10,
                             height: 32,
-                            backgroundColor: 'rgba(19,114,255,0.2)',
-                            borderColor: 'transparent',
-                            fillerColor: 'rgba(19,114,255,0.2)',
-                            handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-                            handleSize: '80%',
+                            backgroundColor: "rgba(19,114,255,0.2)",
+                            borderColor: "transparent",
+                            fillerColor: "rgba(19,114,255,0.2)",
+                            handleIcon: "M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z",
+                            handleSize: "80%",
                             handleStyle: {
-                                color: '#fff',
+                                color: "#fff",
                                 shadowBlur: 3,
-                                shadowColor: 'rgba(0, 0, 0, 0.6)',
+                                shadowColor: "rgba(0, 0, 0, 0.6)",
                                 shadowOffsetX: 2,
                                 shadowOffsetY: 2
                             },
@@ -596,95 +596,106 @@ export default {
                             end: obj.dataZoomEnd || 100,
                             borderRadius: 5,
                             textStyle: {
-                                height: '10px'
+                                height: "10px"
                             }
                         },
                         {
-                            type: 'inside'
+                            type: "inside"
                         }
 
                     ],
-                    'xAxis': [
+                    "xAxis": [
                         {
-                            'axisLine': {
+                            "axisLine": {
                                 lineStyle: {
-                                    color: '#A5BFE2',
+                                    color: "#A5BFE2",
                                     width: 1
                                 }
                             },
-                            'splitLine': {
-                                'show': false
+                            "splitLine": {
+                                "show": false
                             },
-                            'axisTick': {
-                                'show': false
+                            "axisTick": {
+                                "show": false
                             },
-                            'splitArea': {
-                                'show': false
+                            "splitArea": {
+                                "show": false
                             },
-                            'axisLabel': {
+                            "axisLabel": {
+                                show: obj.xAxis.data.length > 0,
                                 formatter: obj.xAxis.formatter
                             },
-                            'data': obj.xAxis.data
+                            "data": obj.xAxis.data.length > 0 ? obj.xAxis.data : null
                         }
                     ],
-                    'yAxis': [
+                    "yAxis": [
                         {
-                            'type': 'value',
+                            "type": "value",
                             name: obj.yAxis.name,
-                            'splitLine': {
-                                'show': true,
+                            "splitLine": {
+                                "show": true,
                                 lineStyle: {
-                                    color: 'rgba(165,191,226,0.2)'
+                                    color: "rgba(165,191,226,0.2)"
                                 }
                             },
-                            'axisLine': {
-                                'show': false
+                            "axisLine": {
+                                "show": obj.yAxis.axisLineShow || false,
+                                lineStyle: {
+                                    color: "#A5BFE2",
+                                    width: 1
+                                }
                             },
-                            'axisTick': {
-                                'show': false
+                            inverse: obj.yAxis.inverse || false,
+                            "axisTick": {
+                                "show": false
                             },
-                            'axisLabel': {
-                                align: 'right',
+                            "axisLabel": {
+                                align: "right",
                                 inside: false,
                                 formatter: function (value) {
                                     // 格式化成月/日，只在第一个刻度显示年份
+                                    if (obj.yAxis.formatter) {
+                                        value += obj.yAxis.formatter;
+                                    }
                                     return value;
                                 }
 
                             },
-                            offset: 20,
-                            'splitArea': {
-                                'show': false
-                            }
+                            "splitArea": {
+                                "show": false
+                            },
+                            max: obj.yAxis.max || null,
+                            interval: obj.yAxis.max ? 1 : null
+
 
                         }
                     ],
-                    'series': this.seriesFunction(obj.series)
+                    "series": this.seriesFunction(obj.series)
                 };
             }
 
         },
-        setOptionObj (data, type) {
+        setOptionObj(data, type) {
             let xData = data.x || data.xData;
             let seriesData = data.y || data.yData;
             let itemStyleArr = [
                 {
-                    normalColor: 'rgba(0,189,153,1)',
-                    colorStart: 'rgba(0,189,153,0.1)',
-                    colorEnd: 'rgba(0,189,153,0)',
+                    normalColor: "rgba(0,189,153,1)",
+                    colorStart: "rgba(0,189,153,0.1)",
+                    colorEnd: "rgba(0,189,153,0)",
                     areaShow: true
                 },
                 {
-                    normalColor: 'rgba(140,113,255,1)',
-                    colorStart: 'rgba(140,113,255,0.1)',
-                    colorEnd: 'rgba(140,113,255,0)',
+                    normalColor: "rgba(140,113,255,1)",
+                    colorStart: "rgba(140,113,255,0.1)",
+                    colorEnd: "rgba(140,113,255,0)",
                     areaShow: true
 
                 },
                 {
-                    normalColor: 'rgba(0,123,255,1)',
-                    colorStart: 'rgba(0,123,255,0.1)',
-                    colorEnd: 'rgba(0,123,255,0)',
+                    normalColor: "rgba(0,123,255,1)",
+                    colorStart: "rgba(0,123,255,0.1)",
+                    colorEnd: "rgba(0,123,255,0)",
                     areaShow: true
                 }
 
@@ -692,7 +703,7 @@ export default {
 
             let obj = {};
             switch (type) {
-                case 'SHUIPIN':
+                case "SHUIPIN":
                     let startPoint = data.shift();
                     let endPoint = data.pop();
                     obj = {
@@ -707,8 +718,8 @@ export default {
                         },
                         legend: {
                             top: 25,
-                            left: 'center',
-                            data: ['起始点', '结束点']
+                            left: "center",
+                            data: ["起始点", "结束点"]
                         },
                         grid: {
                             top: 80,
@@ -722,20 +733,20 @@ export default {
                         yAxis: {},
                         series: [
                             {
-                                type: 'scatter',
+                                type: "scatter",
                                 itemStyle: {
-                                    color: 'rgba(0,123,255,0.3)',
-                                    borderColor: 'white',
+                                    color: "rgba(0,123,255,0.3)",
+                                    borderColor: "white",
                                     borderWidth: 1
                                 },
                                 data: data
                             },
                             {
-                                name: '起始点',
-                                type: 'scatter',
+                                name: "起始点",
+                                type: "scatter",
                                 itemStyle: {
-                                    color: 'rgba(8,33,85,1)',
-                                    borderColor: 'white',
+                                    color: "rgba(8,33,85,1)",
+                                    borderColor: "white",
                                     borderWidth: 1
                                 },
                                 symbolSize: 16,
@@ -744,11 +755,11 @@ export default {
                                 ]
                             },
                             {
-                                name: '结束点',
-                                type: 'scatter',
+                                name: "结束点",
+                                type: "scatter",
                                 itemStyle: {
-                                    color: 'rgba(255,94,84,1)',
-                                    borderColor: 'white',
+                                    color: "rgba(255,94,84,1)",
+                                    borderColor: "white",
                                     borderWidth: 1
                                 },
                                 symbolSize: 16,
@@ -759,45 +770,45 @@ export default {
                         ]
                     };
                     break;
-                case 'SUDU':
-                case 'JIASUDU':
+                case "SUDU":
+                case "JIASUDU":
                     let sx, sy, sh, yAxisName;
-                    if (type === 'SUDU') {
+                    if (type === "SUDU") {
                         sx = data.xSpeed;
                         sy = data.ySpeed;
                         sh = data.hSpeed;
-                        yAxisName = '速度(cm/d)';
+                        yAxisName = "速度(cm/d)";
                     }
                     else {
                         sx = data.xacceleration;
                         sy = data.yacceleration;
                         sh = data.hacceleration;
-                        yAxisName = '加速度(cm/d²)';
+                        yAxisName = "加速度(cm/d²)";
                     }
                     obj = {
                         title: {
                             show: true,
-                            text: 'X：-X西/X东     Y：-Y南/Y北     H：沉降'
+                            text: "X：-X西/X东     Y：-Y南/Y北     H：沉降"
                         },
                         tooltip: {
                             formatter: function (series) {
-                                let str = '';
+                                let str = "";
                                 series.forEach((item, index) => {
                                     let type = item.seriesName;
                                     if (index === 0) {
                                         str += item.axisValueLabel;
                                     }
                                     if (str.length > 0) {
-                                        str += '<br>';
+                                        str += "<br>";
                                     }
-                                    str += type + ':' + item.data;
+                                    str += type + ":" + item.data;
                                 });
                                 return str;
                             }
                         },
                         legend: {
                             top: 25,
-                            left: 'center'
+                            left: "center"
                         },
                         grid: {
                             top: 100,
@@ -820,50 +831,38 @@ export default {
                         series: [
                             {
                                 name: `X`,
-                                type: 'line',
+                                type: "line",
                                 itemStyle: itemStyleArr.shift(),
                                 data: sx
                             },
                             {
                                 name: `Y`,
-                                type: 'line',
+                                type: "line",
                                 itemStyle: itemStyleArr.shift(),
                                 data: sy
                             },
                             {
                                 name: `H`,
-                                type: 'line',
+                                type: "line",
                                 itemStyle: itemStyleArr.shift(),
                                 data: sh
                             }
                         ]
                     };
                     break;
-                case 'SHUIJIN':
+                case "SHUIJIN":
+                    //无数据情况下仍想显示mark，进行的额外配置的
                     obj = {
                         title: {
                             show: false,
-                            text: ''
+                            text: ""
                         },
                         tooltip: {
-                            formatter: function (series) {
-                                let str = '';
-                                series.forEach((item, index) => {
-                                    let type = item.seriesName;
-                                    if (index === 0) {
-                                        str += item.axisValueLabel;
-                                    }
-                                    if (str.length > 0) {
-                                        str += '<br>';
-                                    }
-                                    str += type + ':' + item.data;
-                                });
-                                return str;
-                            }
+                            hidden: true
                         },
                         legend: {
                             top: 25,
-                            left: 'center'
+                            left: "center"
                         },
                         grid: {
                             top: 100,
@@ -876,52 +875,91 @@ export default {
                         xAxis: {
                             data: data.xData
                         },
-                        yAxis: {},
+                        yAxis: {
+                            axisLineShow: true,
+                            inverse: true,
+                            max: 10,
+                            formatter: "m"
+                        },
                         series: [
                             {
                                 name: `红色预警(${data.redLine})`,
-                                type: 'line',
+                                type: "line",
+                                showSymbol: false,
                                 itemStyle: {
-                                    color: 'rgba(255,94,84,1)'
+                                    normalColor: "rgba(255,94,84,1)"
                                 },
-                                data: data.redData
+                                "markLine": {
+                                    silent: true,
+                                    "data": [
+                                        {
+                                            "lineStyle": {
+                                                "color": "rgba(255,94,84,1)",
+                                                type: "solid"
+                                            },
+                                            "label": {
+                                                "position": "end"
+                                            },
+                                            "name": "min",
+                                            "yAxis": 4,
+                                            formatter: "{c}m"
+                                        }]
+                                },
+                                data: data.redData.length > 0 ? data.redData : [0]
                             },
                             {
                                 name: `橙色预警(${data.orangeLine})`,
-                                type: 'line',
+                                showSymbol: false,
+                                type: "line",
                                 itemStyle: {
-                                    color: 'rgba(255,115,46,1)'
+                                    normalColor: "rgba(255,115,46,1)"
                                 },
-                                data: data.orangeData
+                                data: data.orangeData.length > 0 ? data.orangeData : [0],
+                                "markLine": {
+                                    silent: true,
+                                    "data": [
+                                        {
+                                            "lineStyle": {
+                                                "color": "rgba(255,115,46,1)",
+                                                type: "solid"
+                                            },
+                                            "label": {
+                                                "position": "end"
+                                            },
+                                            "name": "min",
+                                            "yAxis": 5,
+                                            formatter: "{c}.0m"
+                                        }]
+                                }
                             }
                         ]
                     };
                     break;
-                case 'WEIYI':
+                case "WEIYI":
                     obj = {
                         title: {
                             show: true,
-                            text: '空间偏移量: 三维空间XYH的位移偏移量  水平偏移量: 平面XY方位的位移偏移量  沉降: 垂直H方位的位移偏移量'
+                            text: "空间偏移量: 三维空间XYH的位移偏移量  水平偏移量: 平面XY方位的位移偏移量  沉降: 垂直H方位的位移偏移量"
                         },
                         tooltip: {
                             formatter: function (series) {
-                                let str = '';
+                                let str = "";
                                 series.forEach((item, index) => {
                                     let type = item.seriesName;
                                     if (index === 0) {
                                         str += item.axisValueLabel;
                                     }
                                     if (str.length > 0) {
-                                        str += '<br>';
+                                        str += "<br>";
                                     }
-                                    str += type + ':' + item.data;
+                                    str += type + ":" + item.data;
                                 });
                                 return str;
                             }
                         },
                         legend: {
                             top: 25,
-                            left: 'center'
+                            left: "center"
                         },
                         grid: {
                             top: 100,
@@ -942,28 +980,28 @@ export default {
                         series: [
                             {
                                 name: `空间偏移量`,
-                                type: 'line',
+                                type: "line",
                                 itemStyle: itemStyleArr.shift(),
                                 data: data.space
                             },
                             {
                                 name: `水平偏移量`,
-                                type: 'line',
+                                type: "line",
                                 itemStyle: itemStyleArr.shift(),
                                 data: data.level
                             },
                             {
                                 name: `沉降`,
-                                type: 'line',
+                                type: "line",
                                 itemStyle: itemStyleArr.shift(),
                                 data: data.h
                             }
                         ]
                     };
                     break;
-                case 'LPG':
-                case 'NH3':
-                case 'SiHCl3':
+                case "LPG":
+                case "NH3":
+                case "SiHCl3":
                 case "JIAWAN":
 
                     let series = [];
@@ -971,7 +1009,7 @@ export default {
                         if (seriesData[key]) {
                             let obj = {
                                 name: `${data.name}(${seriesData[key].unit}):  ${seriesData[key].curr}`,
-                                type: 'line',
+                                type: "line",
                                 itemStyle: itemStyleArr.shift(),
                                 data: seriesData[key].data
 
@@ -986,17 +1024,17 @@ export default {
                         },
                         tooltip: {
                             formatter: function (series) {
-                                let str = '';
+                                let str = "";
 
                                 series.forEach((item, index) => {
-                                    let type = item.seriesName.split(':')[0];
+                                    let type = item.seriesName.split(":")[0];
                                     if (index === 0) {
                                         str += item.axisValueLabel;
                                     }
                                     if (str.length > 0) {
-                                        str += '<br>';
+                                        str += "<br>";
                                     }
-                                    str += type + ':' + item.data;
+                                    str += type + ":" + item.data;
                                 });
                                 return str;
                             }
@@ -1022,14 +1060,14 @@ export default {
                         series
                     };
                     break;
-                case 'SHIDU':
-                case 'WENDU':
+                case "SHIDU":
+                case "WENDU":
                     obj = {
                         title: {
                             show: false
                         },
                         tooltip: {
-                            formatter: '{b}  {c}' + data.unit
+                            formatter: "{b}  {c}" + data.unit
                         },
                         dataZoomShow: true,
                         xAxis: {
@@ -1044,12 +1082,12 @@ export default {
                         },
                         series: [
                             {
-                                name: data.currValue + data.unit + '  最新' + data.label,
-                                type: 'line',
+                                name: data.currValue + data.unit + "  最新" + data.label,
+                                type: "line",
                                 itemStyle: {
-                                    normalColor: 'rgba(0,123,255,1)',
-                                    colorStart: 'rgba(0,123,255,0.1)',
-                                    colorEnd: 'rgba(0,123,255,0)',
+                                    normalColor: "rgba(0,123,255,1)",
+                                    colorStart: "rgba(0,123,255,0.1)",
+                                    colorEnd: "rgba(0,123,255,0)",
                                     areaShow: true
                                 },
                                 data: seriesData
@@ -1057,20 +1095,20 @@ export default {
                         ]
                     };
                     break;
-                case 'JIANGYULIANG':
+                case "JIANGYULIANG":
                     obj = {
                         title: {
                             show: false
                         },
                         tooltip: {
-                            formatter: '{b}日  {a0}:{c0}'
+                            formatter: "{b}日  {a0}:{c0}"
                         },
                         dataZoomShow: true,
                         xAxis: {
                             data: xData,
                             formatter: function (value) {
                                 // 格式化成月/日，只在第一个刻度显示年份
-                                return value + '日';
+                                return value + "日";
                             }
                         },
                         yAxis: {
@@ -1078,10 +1116,10 @@ export default {
                         },
                         series: [
                             {
-                                name: '降雨量',
-                                type: 'bar',
+                                name: "降雨量",
+                                type: "bar",
                                 itemStyle: {
-                                    color: 'rgba(0,123,255,1)',
+                                    color: "rgba(0,123,255,1)",
                                     areaShow: true
                                 },
                                 data: seriesData
@@ -1095,7 +1133,7 @@ export default {
                             show: false
                         },
                         tooltip: {
-                            formatter: '{b}  {c}' + data.unit
+                            formatter: "{b}  {c}" + data.unit
                         },
                         dataZoomShow: true,
                         xAxis: {
@@ -1110,12 +1148,12 @@ export default {
                         },
                         series: [
                             {
-                                name: '',
-                                type: 'line',
+                                name: "",
+                                type: "line",
                                 itemStyle: {
-                                    normalColor: 'rgba(0,123,255,1)',
-                                    colorStart: 'rgba(0,123,255,0.1)',
-                                    colorEnd: 'rgba(0,123,255,0)',
+                                    normalColor: "rgba(0,123,255,1)",
+                                    colorStart: "rgba(0,123,255,0.1)",
+                                    colorEnd: "rgba(0,123,255,0)",
                                     areaShow: true
                                 },
                                 data: seriesData
@@ -1126,16 +1164,16 @@ export default {
             }
             return obj;
         },
-        async getSensorData (type, i, params = false, showLoading = false) {
+        async getSensorData(type, i, params = false, showLoading = false) {
             if (showLoading) {
                 this.loading = true;
             }
             let res = {};
             let queryObj = {
                 SensorMenu: type,
-                Id: sessionStorage.getItem('sensorNumber')
+                Id: sessionStorage.getItem("sensorNumber")
             };
-            if (params && typeof params === 'object') {
+            if (params && typeof params === "object") {
                 Object.assign(queryObj, params);
             }
             try {
@@ -1147,7 +1185,7 @@ export default {
             }
             this.loading = false;
             let data = res.data;
-            if (type === 'LPG' || type === 'NH3' || type === 'SiHCl3' || type === 'CH4') {
+            if (type === "LPG" || type === "NH3" || type === "SiHCl3" || type === "CH4") {
                 this.lpgObj = {
                     windSpeed: data.windSpeed,
                     windDirection: data.windDirectionByC,
@@ -1159,15 +1197,15 @@ export default {
             if (!data) {
                 this.optionsGroup[i] = {
                     title: {
-                        text: '未查询到数据',
+                        text: "未查询到数据",
                         textStyle: {
                             fontSize: 32,
                             fontWeight: 600,
-                            fontFamily: 'PingFang'
+                            fontFamily: "PingFang"
                         },
-                        top: 'center',
-                        left: 'center',
-                        backgroundColor: 'rgba(0,123,255,0.1)'
+                        top: "center",
+                        left: "center",
+                        backgroundColor: "rgba(0,123,255,0.1)"
                     }
                 };
             }
@@ -1188,19 +1226,19 @@ export default {
             }
             console.log(5);
         },
-        dayTimeChange (type) {
-            if (type === 'day') {
-                this.buttonIndex = 'accordingDay';
+        dayTimeChange(type) {
+            if (type === "day") {
+                this.buttonIndex = "accordingDay";
             }
-            else if (type === 'time') {
-                this.buttonIndex = 'accordingTime';
+            else if (type === "time") {
+                this.buttonIndex = "accordingTime";
             }
         },
-        handleSelect (key, keyPath) {
+        handleSelect(key, keyPath) {
             console.log(key, keyPath);
             this.activeIndex = keyPath[0];
-            this.value1 = '';
-            this.type = this.sensorArr[key]['type'];
+            this.value1 = "";
+            this.type = this.sensorArr[key]["type"];
             let type = this.type;
             console.log(type);
             this.$nextTick(() => {
@@ -1319,7 +1357,7 @@ export default {
                 }
 
                 .el-date-editor .el-range-separator {
-                    padding:0;
+                    padding: 0;
                 }
             }
             .chart-container {
