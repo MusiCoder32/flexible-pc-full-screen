@@ -4,7 +4,7 @@
             <el-menu-item v-for="(item,i) in sensorArr" :index="i+''" :key="item.name + i">{{item.name}}
             </el-menu-item>
         </el-menu>
-        <div class="bei-dou-sensor-chart-box">
+        <div v-if="showEchart" class="bei-dou-sensor-chart-box">
             <div class="chart-box-head hBox vh_content_between vh_items_start">
                 <el-date-picker
                         v-model="value1"
@@ -57,7 +57,7 @@
 
             <div class="chart-container">
                 <chart v-for="(item,i) in sensorArr" :key="item.type + i" v-show="activeIndex==i && chartDateReady"
-                       :auto-resize='true' :options='optionsGroup[i]' :ref="item.type"></chart>
+                       :autoresize='true' :options='optionsGroup[i]' :ref="item.type"></chart>
             </div>
         </div>
     </div>
@@ -67,6 +67,10 @@
 
 export default {
     components: {},
+    props: {
+		isSelf:Boolean,
+        default:false
+    },
     data() {
         return {
             activeIndex: "0",
@@ -79,6 +83,7 @@ export default {
             buttonIndex: "accordingDay",
             optionsGroup: [],
             sensorArr: [],
+			showEchart:true,
             pickerOptions: {
                 disabledDate(time) {
                     return time.getTime() > Date.now();
@@ -114,18 +119,21 @@ export default {
     },
     mounted() {
         let me = this;
-        this.setSensorArr();
+        this.loading = true;
+        if(this.isSelf) {
+			this.setSensorArr();
+		}
         window.addEventListener("message", function (event) {
-            console.log("我收到了数据");
-            console.log(event);
             if (event.origin.indexOf("yzt.scdem.cn") < 0) {
                 return "";
             }
             else {
-                console.log(event.data);
+                this.showEchart = false;
                 sessionStorage.setItem("sensorTypesData", JSON.stringify(event.data.sensorTypesData));
                 sessionStorage.setItem("sensorNumber", JSON.stringify(event.data.sensorNumber));
-                me.setSensorArr();
+                setTimeout(()=>{
+					me.setSensorArr();
+				},100)
             }
         });
     },
@@ -901,7 +909,7 @@ export default {
                                                 "position": "end"
                                             },
                                             "name": "min",
-                                            "yAxis": 4,
+                                            "yAxis":+data.redLine,
                                             formatter: "{c}m"
                                         }]
                                 },
@@ -927,7 +935,7 @@ export default {
                                                 "position": "end"
                                             },
                                             "name": "min",
-                                            "yAxis": 5,
+                                            "yAxis": +data.orangeLine,
                                             formatter: "{c}.0m"
                                         }]
                                 }
@@ -1184,6 +1192,7 @@ export default {
                 console.log(e);
             }
             this.loading = false;
+            this.showEchart = true;
             let data = res.data;
             if (type === "LPG" || type === "NH3" || type === "SiHCl3" || type === "CH4") {
                 this.lpgObj = {
@@ -1211,8 +1220,6 @@ export default {
             }
             else {
                 let option = this.optionFunction(data, type);
-                console.log(type);
-                console.log(option);
                 this.$set(this.optionsGroup, i, option);
                 // this.optionsGroup[i] = option;
             }
@@ -1224,7 +1231,7 @@ export default {
                     }
                 });
             }
-            console.log(5);
+
         },
         dayTimeChange(type) {
             if (type === "day") {

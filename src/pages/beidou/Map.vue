@@ -14,7 +14,7 @@
         <el-dialog v-if="dialogTableVisible" width="65.62%" title="传感器：W川AJH104R0009F4"
                    :visible.sync="dialogTableVisible"
                    :close-on-click-modal=false>
-            <coal-chemical-chart></coal-chemical-chart>
+            <coal-chemical-chart :isSelf="true"></coal-chemical-chart>
         </el-dialog>
     </div>
 </template>
