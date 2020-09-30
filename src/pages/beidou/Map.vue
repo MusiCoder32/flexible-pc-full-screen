@@ -44,7 +44,7 @@ export default {
         };
     },
     mounted () {
-        let id = this.$route.query.id || '738d0e1031224c8e9a53519dad7471e1';
+        let id = this.$route.query.id || 'a4a03c142a624ee28f40225c1e764fbc';
         this.drawStart(id);
     },
     methods: {
